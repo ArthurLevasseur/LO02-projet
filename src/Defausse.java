@@ -2,14 +2,16 @@
 public class Defausse {
 
 	static Defausse instance;
-	private CarteRumeur[] contenu = new CarteRumeur[12];
+	public CarteRumeur[] contenu = new CarteRumeur[12];
+	private int nbCartes = 0;
 	
-	private Defausse() {
+	public Defausse() {
 		
 	}
 	
-	public void defausserUneCarte() {
-		
+	public void defausserUneCarte(CarteRumeur carteDef) {
+		contenu[nbCartes] = carteDef;
+		nbCartes += 1;
 	}
 	
 	 static public Defausse getInstance() {

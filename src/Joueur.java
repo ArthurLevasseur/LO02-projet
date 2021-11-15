@@ -1,11 +1,12 @@
 
 public abstract class Joueur {
 	
-	private int points;
+	private int points = 0;
 	private int id;
-	private CarteRumeur[] carteRevelees = new CarteRumeur[4];
-	private CarteRumeur[] carteEnMain = new CarteRumeur[4];
+	public CarteRumeur[] carteRevelees = new CarteRumeur[4];
+	public CarteRumeur[] carteEnMain = new CarteRumeur[4];
 	private boolean accusable;
+	private int nbCartesEnMain = 0;
 	
 	public Joueur() {
 		
@@ -19,8 +20,9 @@ public abstract class Joueur {
 		
 	}
 	
-	public void reprendreCarteRumeur() {
-		
+	public void prendreCarteRumeur(CarteRumeur carteAjoutée) {
+		carteEnMain[nbCartesEnMain] = carteAjoutée;
+		this.nbCartesEnMain += 1;
 	}
 	
 	public void seFairePrendreCarteRumeur() {
