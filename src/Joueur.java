@@ -7,9 +7,12 @@ public abstract class Joueur {
 	public CarteRumeur[] carteEnMain = new CarteRumeur[4];
 	private boolean accusable;
 	private int nbCartesEnMain = 0;
+	public Identite identiteAssociee;
 	
 	public Joueur() {
-		
+		this.points = 0;
+		this.accusable = true;
+		this.identiteAssociee = new Identite();
 	}
 	
 	public void gagnerPoints() {
@@ -18,6 +21,16 @@ public abstract class Joueur {
 	
 	public void revelerCarteRumeur() {
 		
+	}
+	
+	public boolean isIA() {
+		if (this instanceof JoueurVirtuel) {
+			return true;
+		}
+		
+		else {
+			return false;
+		}
 	}
 	
 	public void prendreCarteRumeur(CarteRumeur carteAjoutée) {

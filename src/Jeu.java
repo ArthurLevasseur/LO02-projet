@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Jeu {
 	
 	private int nombreJoueurs;
+	private int nombrePhy;
 	private int nombreIA;
 	private int nombreDefausse;
 	private static Jeu Instance;
@@ -12,19 +13,51 @@ public class Jeu {
 	private Joueur[] ensembleJoueurs;
 	private Defausse tasDefausse;
 	
-	private Jeu(int nbPhy, int nbIA){
+	private Jeu(){
+		Scanner saisieUtilisateur = new Scanner(System.in);
+		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
+		int choix = 0;
+		int joueursPhysiques = 0;
+		int nbPhy = 0;
+		int nbIA = 0;
+		while (choix < 1 || choix > 6) {
+			choix = saisieUtilisateur.nextInt();
+			if (choix < 1 || choix > 6) {
+				System.out.println("Veuillez choisir entre 1 et 6 joueurs");
+			}
+			else {
+				nbPhy = choix;
+			}
+		}
+		
+		//initialisation du nombre de joueurs virtuels
+		System.out.println("Combien de joueurs virtuels voulez vous dans votre partie ? (minimum 3 et maximum 6 joueurs physiques et virtuels en combinés)");
+		choix = 0;
+		while ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 1 || choix > 6)) {
+			choix = saisieUtilisateur.nextInt();
+			if ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 1 || choix > 6)) {
+				System.out.println("Choix invalide");
+			}
+			else {
+				nbIA = choix;
+			}
+		}
+		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + nbPhy + "\n	- Nombre de joueurs virtuels : " + nbIA);
+		
 		
 		System.out.println("Création des joueurs...");
-		ensembleJoueurs = new Joueur[nbPhy + nbIA];
+		
+		this.nombreJoueurs = nbPhy + nbIA;
+		this.ensembleJoueurs = new Joueur[this.nombreJoueurs];
 		for (int i = 0; i < nbPhy; i++) {
-			ensembleJoueurs[i] = new JoueurPhysique();
+			this.ensembleJoueurs[i] = new JoueurPhysique();
 		}
 		for (int i = 0; i < nbIA; i++) {
-			ensembleJoueurs[i + nbPhy] = new JoueurVirtuel();
+			this.ensembleJoueurs[i + nbPhy] = new JoueurVirtuel();
 		}
 		
 		System.out.println("Création de la défausse...");
-		this.nombreJoueurs = nbPhy;
+		//this.nombreJoueurs = nbPhy; // à modifier, le nombre de joueurs = nombre de joueurs totaux
 		this.nombreIA = nbIA;
 		if (nbPhy + nbIA == 5) {
 			this.nombreDefausse = 2;
@@ -34,7 +67,6 @@ public class Jeu {
 		}
 		tasDefausse = new Defausse();
 		
-		this.Instance = this;
 		
 		System.out.println("Création des cartes rumeurs...");
 		this.ensembleCartes = new CarteRumeur[12];
@@ -75,14 +107,14 @@ public class Jeu {
 			}
 		}
 		else {
-			for (int i = 0; i < nombreIA + nombreJoueurs ; i++) {
-				if (nombreIA + nombreJoueurs == 3) {
+			for (int i = 0; i < nombrePhy ; i++) {
+				if (nombreIA + nombrePhy == 3) {
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+1]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+2]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+3]);
 				}
-				else if (nombreIA + nombreJoueurs == 4) {
+				else if (nombreIA + nombrePhy == 4) {
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3+1]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3+2]);
@@ -103,9 +135,12 @@ public class Jeu {
 		
 	}
 	
-	public static Joueur getInstance() {
-		
-	}
+	public static Jeu getInstance() {
+		if (Instance == null) {
+            Instance = new Jeu();
+        }
+        return Instance;
+    }
 	
 	public static void main(String[] args) {
 		Scanner saisieUtilisateur = new Scanner(System.in);
@@ -116,36 +151,14 @@ public class Jeu {
 			System.out.println("Que voulez vous faire (entrez l'indice de vos choix) : \n1) Lancer une nouvelle partie \n2) Quitter le programme");
 			choix = saisieUtilisateur.nextInt();
 			if (choix == 1) {
-				System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
-				choix = 0;
-				int joueursPhysiques = 0;
-				while (choix < 1 || choix > 6) {
-					choix = saisieUtilisateur.nextInt();
-					if (choix < 1 || choix > 6) {
-						System.out.println("Veuillez choisir entre 1 et 6 joueurs");
-					}
-					else {
-						joueursPhysiques = choix;
-					}
-				}
 				
-				//initialisation du nombre de joueurs virtuels
-				System.out.println("Combien de joueurs virtuels voulez vous dans votre partie ? (minimum 3 et maximum 6 joueurs physiques et virtuels en combinés)");
-				choix = 0;
-				int joueursVirtuels = 0;
-				while ((choix + joueursPhysiques < 3 || choix + joueursPhysiques > 6) || (choix < 1 || choix > 6)) {
-					choix = saisieUtilisateur.nextInt();
-					if ((choix + joueursPhysiques < 3 || choix + joueursPhysiques > 6) || (choix < 1 || choix > 6)) {
-						System.out.println("Choix invalide");
-					}
-					else {
-						joueursVirtuels = choix;
-					}
-				}
-				System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + joueursPhysiques + "\n	- Nombre de joueurs virtuels : " + joueursVirtuels);
+				Instance = Jeu.getInstance();
+				Instance.distributionCartesRumeurs();
 				
-				Jeu instanceJeu = new Jeu(joueursPhysiques, joueursVirtuels);
-				instanceJeu.distributionCartesRumeurs();
+				
+				for (int i = 0; i < Instance.nombreJoueurs; i++) {
+					Instance.ensembleJoueurs[i].identiteAssociee.choisirIdentite(Instance.ensembleJoueurs[i].isIA());
+				}
 				
 				break;
 				
@@ -156,6 +169,8 @@ public class Jeu {
 			else {
 				System.out.println("veuillez choisir entre 1 et 2 !\n");
 			}
+			
+			
 		}
 		System.out.println("A une prochaine !");
 		System.exit(1);
