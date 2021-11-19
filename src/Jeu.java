@@ -12,6 +12,19 @@ public class Jeu {
 	private CarteRumeur[] ensembleCartes;
 	private Joueur[] ensembleJoueurs;
 	private Defausse tasDefausse;
+	private Joueur gagnant;
+	
+	public int getNombreJoueurs() {
+		return this.nombreJoueurs;
+	}
+	
+	public Joueur getJoueur(int i) {
+		return this.ensembleJoueurs[i];
+	}
+	
+	public void setGagnant(Joueur gagnantDuJeu) {
+		this.gagnant = gagnantDuJeu;
+	}
 	
 	private Jeu(){
 		Scanner saisieUtilisateur = new Scanner(System.in);
@@ -32,10 +45,10 @@ public class Jeu {
 		
 		//initialisation du nombre de joueurs virtuels
 		System.out.println("Combien de joueurs virtuels voulez vous dans votre partie ? (minimum 3 et maximum 6 joueurs physiques et virtuels en combinés)");
-		choix = 0;
-		while ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 1 || choix > 6)) {
+		choix = -1;
+		while ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 0 || choix > 6)) {
 			choix = saisieUtilisateur.nextInt();
-			if ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 1 || choix > 6)) {
+			if ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 0 || choix > 6)) {
 				System.out.println("Choix invalide");
 			}
 			else {
@@ -135,6 +148,33 @@ public class Jeu {
 		
 	}
 	
+	public void orgaRounds() {
+		int maxPoints = 0;
+		int premierJoueur = (int) (Math.random() * Instance.nombreJoueurs);
+		while (maxPoints < 5) {
+			
+
+			
+			this.distributionCartesRumeurs();
+		
+			Round roundEnCours = new Round(Instance, Instance.getJoueur(premierJoueur));
+			
+			
+			
+			for (int i=0; i<this.nombreJoueurs; i++ ) {
+				if (this.ensembleJoueurs[i].getPoints() > maxPoints) {
+					maxPoints = this.ensembleJoueurs[i].getPoints();
+				}
+			}
+			
+		}
+		System.out.println("Bravo " + Instance.gagnant.pseudo + ", vous avez gagné la partie !");
+
+		
+			
+		
+	}
+	
 	public static Jeu getInstance() {
 		if (Instance == null) {
             Instance = new Jeu();
@@ -153,14 +193,8 @@ public class Jeu {
 			if (choix == 1) {
 				
 				Instance = Jeu.getInstance();
-				Instance.distributionCartesRumeurs();
 				
-				
-				for (int i = 0; i < Instance.nombreJoueurs; i++) {
-					Instance.ensembleJoueurs[i].identiteAssociee.choisirIdentite(Instance.ensembleJoueurs[i].isIA());
-				}
-				
-				break;
+				Instance.orgaRounds();
 				
 			}
 			else if (choix == 2) {

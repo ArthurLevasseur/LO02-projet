@@ -4,13 +4,28 @@ public class Identite {
 
 	private boolean isWitch;
 	private boolean devoilee;
+	private Joueur joueurAssocie;
 	
 	public Identite() {
 		this.isWitch = false;
 		this.devoilee = false;
 	}
 	
-	public void choisirIdentite(boolean isIA) {
+	public boolean getDevoilee() {
+		return this.devoilee;
+	}
+	
+	public void ReveleIdentite() {
+		this.devoilee = true;
+	}
+	
+	public boolean getIsWitch() {
+		return this.isWitch;
+	}
+	
+	public void choisirIdentite(Joueur joueurAsso, boolean isIA) {
+		
+		this.joueurAssocie = joueurAsso;
 		if (isIA) {
 			int choix = (int)Math.random()*2;
 			
@@ -30,7 +45,7 @@ public class Identite {
 			int choix = 0;
 			Scanner saisieUtilisateur = new Scanner(System.in);
 			while (choix <= 0 || choix >= 3) {
-				System.out.println("Choisissez votre identité. 1 pour Villageois, 2 pour sorcière.");
+				System.out.println("Joueur " + this.joueurAssocie.pseudo + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.");
 				choix = saisieUtilisateur.nextInt();
 			}
 			

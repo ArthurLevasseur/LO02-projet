@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public abstract class Joueur {
 	
@@ -8,6 +9,7 @@ public abstract class Joueur {
 	private boolean accusable;
 	private int nbCartesEnMain = 0;
 	public Identite identiteAssociee;
+	protected String pseudo;
 	
 	public Joueur() {
 		this.points = 0;
@@ -15,8 +17,19 @@ public abstract class Joueur {
 		this.identiteAssociee = new Identite();
 	}
 	
+	public int getPoints() {
+		return this.points;
+	}
+	
 	public void gagnerPoints() {
-		
+		if (this.identiteAssociee.getIsWitch()==true) {
+			this.points += 2;
+			System.out.println("Bravo Joueur " + this.pseudo + " ! Vous avez gagné ce round en Witch ! Vous gagnez deux points");
+		}
+		else {
+			this.points += 1;
+			System.out.println("Bravo Joueur " + this.pseudo + " ! Vous avez gagné ce round en Villager ! Vous gagnez un points");
+		}
 	}
 	
 	public void revelerCarteRumeur() {
@@ -38,20 +51,60 @@ public abstract class Joueur {
 		this.nbCartesEnMain += 1;
 	}
 	
-	public void seFairePrendreCarteRumeur() {
+	public Joueur seFairePrendreCarteRumeur() {
 		
 	}
 	
-	public void accuser() {
+	public boolean accuser(Jeu Instance, int choix) {
+		
+		return true;
+	}
+	
+	public Joueur estAccuse(Jeu instance, Joueur accusateur) {
+		if (this.isIA() == false) {
+			System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
+			Scanner saisieUtilisateur = new Scanner(System.in);
+			int choix=0;
+			while (choix!=1 && choix!=2) {
+				choix = saisieUtilisateur.nextInt();
+				if (choix==1) {
+					return this.revelerIdentite(instance, accusateur);
+				}
+				else if (choix==2) {
+					
+				}
+				else {
+					System.out.println("Choix invalide !");
+				}
+			}
+		}
+		else {
+			
+		}
+		
+		return accusateur;
+	}
+	
+	public Joueur jouerCarteWitch() {
 		
 	}
 	
-	public void jouerCarteWitch() {
+	public joueur jouerCarteHunt(Jeu Instance) {
 		
 	}
 	
-	public void jouerCarteHunt() {
-		
+	public Joueur revelerIdentite(Jeu Instance, Joueur accusateur) {
+		this.identiteAssociee.ReveleIdentite();
+		if (this.identiteAssociee.getIsWitch() == true) {
+			System.out.println("C'était une Witch! Bravo joueur " + accusateur.pseudo + ", vous gagnez un point et prenez le prochain tour !");
+			accusateur.points += 1;
+			return accusateur;
+		}
+		else {
+			System.out.println("C'était un Villager! Dommage joueur " + accusateur.pseudo + ", " + this.pseudo + ", vous gagnez un point et prenez le prochain tour !");
+			this.points +=1;
+			return this;
+		}
 	}
 	
 }
