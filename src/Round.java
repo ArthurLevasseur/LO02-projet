@@ -16,7 +16,7 @@ public class Round {
 		}
 		System.out.println("c'est au joueur " + premierJoueur.pseudo + " de commencer ce round !");
 		
-		Joueur joueurEnTour = jouerTour(Instance, premierJoueur);
+		Joueur joueurEnTour = this.jouerTour(Instance, premierJoueur);
 		
 		int nombreIdenDevoilee = 0;
 		int maxPoints = 0;
@@ -30,7 +30,7 @@ public class Round {
 		while (nombreIdenDevoilee < Instance.getNombreJoueurs()-1 && maxPoints<5) {
 			System.out.println("c'est au joueur " + joueurEnTour.pseudo + " de jouer son tour !");
 			
-			joueurEnTour = jouerTour(Instance, joueurEnTour);
+			joueurEnTour = this.jouerTour(Instance, joueurEnTour);
 			
 			nombreIdenDevoilee = 0;
 			for (int i=0; i<Instance.getNombreJoueurs(); i++) {
@@ -65,6 +65,7 @@ public class Round {
 	
 	public Joueur jouerTour(Jeu Instance, Joueur joueurEnTour) {
 		System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)");
+		// affichage des cartes : (ne marche pas) joueurEnTour.carteEnMain.forEach(card -> System.out.println(card));
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		Joueur prochainJoueur;
 		int choix = 0;

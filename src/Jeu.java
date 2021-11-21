@@ -86,18 +86,20 @@ public class Jeu {
 		for (int i = 0; i < 12; i++) {
 			this.ensembleCartes[i] = new CarteRumeur();
 		}
+		
 	}
-	/* TEST DU TABLEAU DE CARTES DU DEBUT
+	 /*TEST DU TABLEAU DE CARTES DU DEBUT
 	public void afficherCartes() {
 		for (int i = 0; i < 12; i++) {
 			System.out.println(this.ensembleCartes[i]);
 		}
-	}
-	*/
+	}*/
+	
 	
 	public void distributionCartesRumeurs() {
 		CarteRumeur transition;
 		System.out.println("Mélange des cartes Rumeurs...");
+		
 		int carteEch1;
 		int carteEch2;
 		for (int i = 0; i < 100; i++) {

@@ -43,7 +43,42 @@ public class Hunt{
 	}
 	
 	public void executerEffet() {
-		
+		if (numCarte == 1) {
+			
+		}
+		else if (numCarte == 2) {
+			
+		}
+		else if (numCarte == 3) {
+			
+		}
+		else if (numCarte == 4) {
+			
+		}
+		else if (numCarte == 5) {
+			
+		}
+		else if (numCarte == 6) {
+			
+		}
+		else if (numCarte == 7) {
+			
+		}
+		else if (numCarte == 8) {
+			
+		}
+		else if (numCarte == 9) {
+			
+		}
+		else if (numCarte == 10) {
+			
+		}
+		else if (numCarte == 11) {
+			
+		}
+		else if (numCarte == 12) {
+			
+		}
 	}
 	
 	public String toString() {

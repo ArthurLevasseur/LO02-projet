@@ -1,11 +1,13 @@
 import java.util.Scanner;
+import java.util.*;
 
 public abstract class Joueur {
 	
 	private int points = 0;
 	private int id;
 	public CarteRumeur[] carteRevelees = new CarteRumeur[4];
-	public CarteRumeur[] carteEnMain = new CarteRumeur[4];
+	//public CarteRumeur[] carteEnMain = new CarteRumeur[4];
+	public ArrayList<CarteRumeur> carteEnMain = new ArrayList<CarteRumeur>();
 	private boolean accusable;
 	private int nbCartesEnMain = 0;
 	public Identite identiteAssociee;
@@ -47,8 +49,7 @@ public abstract class Joueur {
 	}
 	
 	public void prendreCarteRumeur(CarteRumeur carteAjoutée) {
-		carteEnMain[nbCartesEnMain] = carteAjoutée;
-		this.nbCartesEnMain += 1;
+		this.carteEnMain.add(carteAjoutée);
 	}
 	
 	public Joueur seFairePrendreCarteRumeur() {

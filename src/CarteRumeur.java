@@ -58,10 +58,18 @@ public class CarteRumeur {
 	
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		str.append("Carte Rumeur : " + this.nomCarte + "(n°" + this.numCarte + ")" + "\n\n" + effetSupp);
-		str.append(this.effetHunt + "\n\n");
-		str.append(this.effetWitch + "\n\n\n");
+		str.append("Carte Rumeur : " + this.nomCarte + "(n°" + this.numCarte + ")" + "\n" + effetSupp);
+		str.append(this.effetHunt + "\n");
+		str.append(this.effetWitch + "\n\n");
 		return str.toString();
+	}
+	
+	public void appliquerEffetHunt() {
+		this.effetHunt.executerEffet();
+	}
+	
+	public void appliquerEffetWitch() {
+		this.effetWitch.executerEffet();
 	}
 	
 }
