@@ -85,6 +85,7 @@ public class Jeu {
 		this.ensembleCartes = new CarteRumeur[12];
 		for (int i = 0; i < 12; i++) {
 			this.ensembleCartes[i] = new CarteRumeur();
+			//System.out.println(this.ensembleCartes[i]);
 		}
 		
 	}
@@ -122,14 +123,14 @@ public class Jeu {
 			}
 		}
 		else {
-			for (int i = 0; i < nombrePhy ; i++) {
-				if (nombreIA + nombrePhy == 3) {
+			for (int i = 0; i < nombreJoueurs ; i++) {
+				if (nombreJoueurs == 3) {
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+1]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+2]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+3]);
 				}
-				else if (nombreIA + nombrePhy == 4) {
+				else if (nombreJoueurs == 4) {
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3+1]);
 					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3+2]);

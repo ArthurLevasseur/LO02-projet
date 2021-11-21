@@ -48,8 +48,8 @@ public abstract class Joueur {
 		}
 	}
 	
-	public void prendreCarteRumeur(CarteRumeur carteAjoutée) {
-		this.carteEnMain.add(carteAjoutée);
+	public void prendreCarteRumeur(CarteRumeur carteAjoutee) {
+		this.carteEnMain.add(carteAjoutee);
 	}
 	
 	public Joueur seFairePrendreCarteRumeur() {
@@ -90,8 +90,9 @@ public abstract class Joueur {
 		
 	}
 	
-	public joueur jouerCarteHunt(Jeu Instance) {
-		
+	public void jouerCarteHunt() {
+		System.out.println("Choisissez la carte que vous souhaitez jouer.");
+		this.carteEnMain.forEach(card -> System.out.println(card));
 	}
 	
 	public Joueur revelerIdentite(Jeu Instance, Joueur accusateur) {
