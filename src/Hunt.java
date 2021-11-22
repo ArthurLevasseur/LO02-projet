@@ -42,7 +42,8 @@ public class Hunt{
 		}
 	}
 	
-	public void executerEffet() {
+	public void executerEffet(int numCarte) {
+		System.out.println("Effet appliqué == " + effet); // à retirer par la suite
 		if (numCarte == 1) {
 			
 		}
@@ -83,7 +84,7 @@ public class Hunt{
 	
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		str.append("effet Hunt! : \n\n" + this.effet);
+		str.append("effet Hunt! : " + this.effet);
 		return str.toString();
 	}
 }

@@ -27,11 +27,11 @@ public class CarteRumeur {
 		}
 		else if (numCarte == 5) {
 			this.nomCarte = "Un manche à balai";
-			this.effetSupp = "Lorsque cette carte est révélée, vous ne pouvez pas être ciblé par la carte \"Une foule en colère\".\n\n";
+			this.effetSupp = "Lorsque cette carte est révélée, vous ne pouvez pas être ciblé par la carte \"Une foule en colère\".\n";
 		}
 		else if (numCarte == 6) {
 			this.nomCarte = "Une verrue";
-			this.effetSupp = "Lorsque cette carte est révélée, vous ne pouvez pas être ciblé par la carte \"Le bûcher\".\n\n";
+			this.effetSupp = "Lorsque cette carte est révélée, vous ne pouvez pas être ciblé par la carte \"Le bûcher\".\n";
 		}
 		else if (numCarte == 7) {
 			this.nomCarte = "Un bûcher";
@@ -60,16 +60,16 @@ public class CarteRumeur {
 		StringBuffer str = new StringBuffer();
 		str.append("Carte Rumeur : " + this.nomCarte + "(n°" + this.numCarte + ")" + "\n" + effetSupp);
 		str.append(this.effetHunt + "\n");
-		str.append(this.effetWitch + "\n\n");
+		str.append(this.effetWitch + "\n");
 		return str.toString();
 	}
 	
 	public void appliquerEffetHunt() {
-		this.effetHunt.executerEffet();
+		this.effetHunt.executerEffet(numCarte);
 	}
 	
 	public void appliquerEffetWitch() {
-		this.effetWitch.executerEffet();
+		this.effetWitch.executerEffet(numCarte);
 	}
 	
 }

@@ -42,13 +42,49 @@ public class Witch{
 		}
 	}
 	
-	public void executerEffet() {
-		
+	public void executerEffet(int numCarte) {
+		System.out.println("Effet appliqué == " + effet); // à retirer par la suite
+		if (numCarte == 1) {
+			
+		}
+		else if (numCarte == 2) {
+			
+		}
+		else if (numCarte == 3) {
+			
+		}
+		else if (numCarte == 4) {
+			
+		}
+		else if (numCarte == 5) {
+			
+		}
+		else if (numCarte == 6) {
+			
+		}
+		else if (numCarte == 7) {
+			
+		}
+		else if (numCarte == 8) {
+			
+		}
+		else if (numCarte == 9) {
+			
+		}
+		else if (numCarte == 10) {
+			
+		}
+		else if (numCarte == 11) {
+			
+		}
+		else if (numCarte == 12) {
+			
+		}
 	}
 	
 	public String toString() {
 		StringBuffer str = new StringBuffer();
-		str.append("effet Witch? : \n\n" + this.effet);
+		str.append("effet Witch? : " + this.effet);
 		return str.toString();
 	}
 }

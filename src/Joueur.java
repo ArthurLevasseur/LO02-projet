@@ -5,7 +5,8 @@ public abstract class Joueur {
 	
 	private int points = 0;
 	private int id;
-	public CarteRumeur[] carteRevelees = new CarteRumeur[4];
+	//public CarteRumeur[] carteRevelees = new CarteRumeur[4];
+	public ArrayList<CarteRumeur> carteRevelees = new ArrayList<CarteRumeur>();
 	//public CarteRumeur[] carteEnMain = new CarteRumeur[4];
 	public ArrayList<CarteRumeur> carteEnMain = new ArrayList<CarteRumeur>();
 	private boolean accusable;
@@ -72,7 +73,7 @@ public abstract class Joueur {
 					return this.revelerIdentite(instance, accusateur);
 				}
 				else if (choix==2) {
-					
+					this.jouerCarteWitch();
 				}
 				else {
 					System.out.println("Choix invalide !");
@@ -86,13 +87,24 @@ public abstract class Joueur {
 		return accusateur;
 	}
 	
-	public Joueur jouerCarteWitch() {
-		
+	public void jouerCarteWitch() {
+		System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
+		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
+		Scanner saisieUtilisateur = new Scanner(System.in);
+		int choix = saisieUtilisateur.nextInt();
+		this.carteEnMain.get(choix).appliquerEffetWitch();
+		this.carteRevelees.add(this.carteEnMain.get(choix));
+		this.carteEnMain.remove(choix);
 	}
 	
 	public void jouerCarteHunt() {
-		System.out.println("Choisissez la carte que vous souhaitez jouer.");
-		this.carteEnMain.forEach(card -> System.out.println(card));
+		System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
+		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
+		Scanner saisieUtilisateur = new Scanner(System.in);
+		int choix = saisieUtilisateur.nextInt();
+		this.carteEnMain.get(choix).appliquerEffetHunt();
+		this.carteRevelees.add(this.carteEnMain.get(choix));
+		this.carteEnMain.remove(choix);
 	}
 	
 	public Joueur revelerIdentite(Jeu Instance, Joueur accusateur) {
