@@ -24,6 +24,10 @@ public abstract class Joueur {
 		return this.points;
 	}
 	
+	public void ajouterPoints(int pointsAjoutes) {
+		this.points = this.points+pointsAjoutes;
+	}
+	
 	public void gagnerPoints() {
 		if (this.identiteAssociee.getIsWitch()==true) {
 			this.points += 2;
@@ -97,14 +101,15 @@ public abstract class Joueur {
 		this.carteEnMain.remove(choix);
 	}
 	
-	public void jouerCarteHunt() {
+	public Joueur jouerCarteHunt() {
 		System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
 		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
-		this.carteEnMain.get(choix).appliquerEffetHunt();
+		Joueur next = this.carteEnMain.get(choix).appliquerEffetHunt();
 		this.carteRevelees.add(this.carteEnMain.get(choix));
 		this.carteEnMain.remove(choix);
+		return next;
 	}
 	
 	public Joueur revelerIdentite(Jeu Instance, Joueur accusateur) {

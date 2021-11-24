@@ -42,13 +42,39 @@ public class Hunt{
 		}
 	}
 	
-	public void executerEffet(int numCarte) {
+	public Joueur executerEffet(int numCarte) {
 		System.out.println("Effet appliqué == " + effet); // à retirer par la suite
+		Jeu instanceJeu = Jeu.getInstance();
+		
 		if (numCarte == 1) {
+			
+			// AJOUTER CONDITION
+			Joueur choix = instanceJeu.selectionnerAdversaire("De quel joueur souhaitez vous réveler l'identité ?");
+			if (choix.identiteAssociee.getIsWitch() == true) {
+				System.out.println("Ce joueur est bien une Witch, vous remportez 2 points.");
+				instanceJeu.getEnTour().ajouterPoints(2);
+				choix.identiteAssociee.ReveleIdentite();
+				return instanceJeu.getEnTour();
+			}
+			else {
+				System.out.println("Ce joueur est un villager, vous perdez 2 points.");
+				instanceJeu.getEnTour().ajouterPoints(-2);
+				choix.identiteAssociee.ReveleIdentite();
+				return choix;
+			}
+			
 			
 		}
 		else if (numCarte == 2) {
-			
+			// AJOUTER CONDITION
+			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le prochain joueur, son identité sera secrètement révelée.");
+			if (choix.identiteAssociee.getIsWitch() == true) {
+				System.out.println("Ce joueur est une witch.");
+			}
+			else {
+				System.out.println("Ce joueur est un villager.");
+			}
+			return choix;
 		}
 		else if (numCarte == 3) {
 			
@@ -80,6 +106,8 @@ public class Hunt{
 		else if (numCarte == 12) {
 			
 		}
+		
+		return null;
 	}
 	
 	public String toString() {

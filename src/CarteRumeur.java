@@ -64,8 +64,8 @@ public class CarteRumeur {
 		return str.toString();
 	}
 	
-	public void appliquerEffetHunt() {
-		this.effetHunt.executerEffet(numCarte);
+	public Joueur appliquerEffetHunt() {
+		return this.effetHunt.executerEffet(numCarte);
 	}
 	
 	public void appliquerEffetWitch() {

@@ -26,6 +26,30 @@ public class Jeu {
 		this.gagnant = gagnantDuJeu;
 	}
 	
+	public Joueur selectionnerAdversaire(String Message) {
+		Scanner saisieUtilisateur = new Scanner(System.in);
+		System.out.println(Message);
+		Joueur selection = null;
+		for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
+			if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=this.enTour) {
+				//i += 1;
+				System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+			}
+		}
+		
+		
+		int choix = -1;
+		
+		while (choix<0 || choix>Instance.getNombreJoueurs()) {
+			choix = saisieUtilisateur.nextInt();
+			if (0<choix && choix<Instance.getNombreJoueurs()+1) {
+				selection = this.ensembleJoueurs[choix-1];
+			}
+		}
+		
+		return selection;
+	}
+	
 	private Jeu(){
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
@@ -178,12 +202,21 @@ public class Jeu {
 		
 	}
 	
+	public Joueur getEnTour() {
+		return this.enTour;
+	}
+	
+	public void setEnTour(Joueur joueur) {
+		this.enTour = joueur;
+	}
+	
 	public static Jeu getInstance() {
 		if (Instance == null) {
             Instance = new Jeu();
         }
         return Instance;
     }
+	
 	
 	public static void main(String[] args) {
 		Scanner saisieUtilisateur = new Scanner(System.in);

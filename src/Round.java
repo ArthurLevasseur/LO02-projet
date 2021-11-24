@@ -65,6 +65,7 @@ public class Round {
 	
 	public Joueur jouerTour(Jeu Instance, Joueur joueurEnTour) {
 		System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)");
+		Instance.setEnTour(joueurEnTour);
 		// affichage des cartes : (ne marche pas) joueurEnTour.carteEnMain.forEach(card -> System.out.println(card));
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		Joueur prochainJoueur;
