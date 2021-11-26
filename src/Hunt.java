@@ -80,14 +80,20 @@ public class Hunt{
 			
 		}
 		else if (numCarte == 4) {
-			
+			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le prochain joueur. Vous prendez une carte de sa main.");
+			int random = (int)(Math.random() * (choix.carteEnMain.size()+ 1));
+			CarteRumeur carteVolee = choix.carteEnMain.get(random);
+			choix.carteEnMain.remove(random);
+			instanceJeu.getEnTour().carteEnMain.add(carteVolee);
+			System.out.println("Vous avez volé : ");
+			System.out.println(carteVolee);
+			return choix;
 		}
-		else if (numCarte == 5) {
-			
+		else if (numCarte == 5 || numCarte == 6) {
+			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le prochain joueur.");
+			return choix;
 		}
-		else if (numCarte == 6) {
-			
-		}
+		
 		else if (numCarte == 7) {
 			
 		}

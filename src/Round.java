@@ -99,7 +99,7 @@ public class Round {
 			}
 			
 			else if (choix == 2) {
-				joueurEnTour.jouerCarteHunt();
+				return joueurEnTour.jouerCarteHunt();
 			}
 			else {
 				System.out.println("Choix invalide !");
