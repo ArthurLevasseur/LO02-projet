@@ -67,6 +67,10 @@ public abstract class Joueur {
 	}
 	
 	public Joueur estAccuse(Jeu instance, Joueur accusateur) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		instanceJeu.setEnTour(this);
 		if (this.isIA() == false) {
 			System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
 			Scanner saisieUtilisateur = new Scanner(System.in);
@@ -77,7 +81,7 @@ public abstract class Joueur {
 					return this.revelerIdentite(instance, accusateur);
 				}
 				else if (choix==2) {
-					this.jouerCarteWitch();
+					return this.jouerCarteWitch();
 				}
 				else {
 					System.out.println("Choix invalide !");
@@ -91,14 +95,15 @@ public abstract class Joueur {
 		return accusateur;
 	}
 	
-	public void jouerCarteWitch() {
+	public Joueur jouerCarteWitch() {
 		System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
 		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
-		this.carteEnMain.get(choix).appliquerEffetWitch();
+		Joueur next = this.carteEnMain.get(choix).appliquerEffetWitch();
 		this.carteRevelees.add(this.carteEnMain.get(choix));
 		this.carteEnMain.remove(choix);
+		return next;
 	}
 	
 	public Joueur jouerCarteHunt() {

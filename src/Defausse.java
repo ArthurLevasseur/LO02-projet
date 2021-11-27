@@ -1,20 +1,24 @@
+import java.util.*;
 
 public class Defausse {
 
 	static Defausse instance;
-	public CarteRumeur[] contenu = new CarteRumeur[12];
-	private int nbCartes = 0;
+	//public CarteRumeur[] contenu = new CarteRumeur[12];
+	ArrayList<CarteRumeur> contenu = new ArrayList<CarteRumeur>();
+	//private int nbCartes = 0;
 	
-	public Defausse() {
+	private Defausse() {
 		
 	}
 	
 	public void defausserUneCarte(CarteRumeur carteDef) {
-		contenu[nbCartes] = carteDef;
-		nbCartes += 1;
+		this.contenu.add(carteDef);
 	}
 	
 	 static public Defausse getInstance() {
-		
+		 if (instance == null) {
+	            instance = new Defausse();
+	        }
+	        return instance;
 	}
 }

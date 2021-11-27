@@ -96,13 +96,7 @@ public class Jeu {
 		System.out.println("Création de la défausse...");
 		//this.nombreJoueurs = nbPhy; // à modifier, le nombre de joueurs = nombre de joueurs totaux
 		this.nombreIA = nbIA;
-		if (nbPhy + nbIA == 5) {
-			this.nombreDefausse = 2;
-		}
-		else {
-			this.nombreDefausse = 0;
-		}
-		tasDefausse = new Defausse();
+		this.tasDefausse = Defausse.getInstance();
 		
 		
 		System.out.println("Création des cartes rumeurs...");

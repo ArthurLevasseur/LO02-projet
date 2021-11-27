@@ -68,8 +68,8 @@ public class CarteRumeur {
 		return this.effetHunt.executerEffet(numCarte);
 	}
 	
-	public void appliquerEffetWitch() {
-		this.effetWitch.executerEffet(numCarte);
+	public Joueur appliquerEffetWitch() {
+		return this.effetWitch.executerEffet(numCarte);
 	}
 	
 }

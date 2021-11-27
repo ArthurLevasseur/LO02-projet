@@ -28,6 +28,9 @@ public class Round {
 		}
 		
 		while (nombreIdenDevoilee < Instance.getNombreJoueurs()-1 && maxPoints<5) {
+			// reset le boolean "accusable" \/ \/ \/
+			
+			
 			System.out.println("c'est au joueur " + joueurEnTour.pseudo + " de jouer son tour !");
 			
 			joueurEnTour = this.jouerTour(Instance, joueurEnTour);

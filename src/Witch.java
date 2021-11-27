@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class Witch{
 
@@ -42,13 +43,22 @@ public class Witch{
 		}
 	}
 	
-	public void executerEffet(int numCarte) {
+	public Joueur executerEffet(int numCarte) {
+
 		System.out.println("Effet appliqué == " + effet); // à retirer par la suite
-		if (numCarte == 1) {
-			
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		
+		if (numCarte == 1 || numCarte == 10 || numCarte == 11 || numCarte == 12) {
+			return instanceJeu.getEnTour();
 		}
 		else if (numCarte == 2) {
-			
+			instanceJeu.getEnTour().carteEnMain.forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().carteEnMain.indexOf(card) + " pour défausser " + card));
+			Scanner saisieUtilisateur = new Scanner(System.in);
+			int choix = saisieUtilisateur.nextInt();
+			CarteRumeur carteADefausser = instanceJeu.getEnTour().carteEnMain.get(choix);
+			instanceDefausse.defausserUneCarte(carteADefausser);
+			return instanceJeu.getEnTour();
 		}
 		else if (numCarte == 3) {
 			
@@ -63,7 +73,8 @@ public class Witch{
 			
 		}
 		else if (numCarte == 7) {
-			
+			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le prochain joueur.");
+			return choix;			
 		}
 		else if (numCarte == 8) {
 			
@@ -80,6 +91,8 @@ public class Witch{
 		else if (numCarte == 12) {
 			
 		}
+		
+		return null;
 	}
 	
 	public String toString() {
