@@ -16,8 +16,9 @@ public class Round {
 		}
 		System.out.println("c'est au joueur " + premierJoueur.pseudo + " de commencer ce round !");
 		
-		Joueur joueurEnTour = this.jouerTour(Instance, premierJoueur);
 		
+		Instance.setEnTour(premierJoueur);
+		Instance.setEnTour(this.jouerTour(Instance));
 		int nombreIdenDevoilee = 0;
 		int maxPoints = 0;
 		
@@ -28,12 +29,14 @@ public class Round {
 		}
 		
 		while (nombreIdenDevoilee < Instance.getNombreJoueurs()-1 && maxPoints<5) {
-			// reset le boolean "accusable" \/ \/ \/
+			for (int i=0; i<Instance.getNombreJoueurs(); i++) {
+				Instance.getJoueur(i).setAccusable(true);
+			}
 			
 			
-			System.out.println("c'est au joueur " + joueurEnTour.pseudo + " de jouer son tour !");
+			System.out.println("c'est au joueur " + Instance.getEnTour().pseudo + " de jouer son tour !");
 			
-			joueurEnTour = this.jouerTour(Instance, joueurEnTour);
+			Instance.setEnTour(this.jouerTour(Instance));
 			
 			nombreIdenDevoilee = 0;
 			for (int i=0; i<Instance.getNombreJoueurs(); i++) {
@@ -66,22 +69,34 @@ public class Round {
 		
 	}
 	
-	public Joueur jouerTour(Jeu Instance, Joueur joueurEnTour) {
-		System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)");
-		Instance.setEnTour(joueurEnTour);
-		// affichage des cartes : (ne marche pas) joueurEnTour.carteEnMain.forEach(card -> System.out.println(card));
-		Scanner saisieUtilisateur = new Scanner(System.in);
-		Joueur prochainJoueur;
+	public Joueur jouerTour(Jeu Instance) {
 		int choix = 0;
+		Scanner saisieUtilisateur = new Scanner(System.in);
+
+		Joueur prochainJoueur;
+		
 		while (choix!=1 && choix!=2) {
-			choix = saisieUtilisateur.nextInt();
+			
+			if (Instance.getEnTour().isMustAccuse() == true) {
+				System.out.println("Vous ne pouvez pas utiliser de carte rumeur ce tour-ci, vous devez accuser un joueur.");
+				choix = 1;
+			}
+			else {
+				System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)");
+				// affichage des cartes : (ne marche pas) joueurEnTour.carteEnMain.forEach(card -> System.out.println(card));
+				
+				choix = saisieUtilisateur.nextInt();
+			}
+			
+			Instance.getEnTour().setMustAccuse(false);
+			
 			if (choix == 1) {
 				
 				System.out.println("Qui voulez vous accuser?");
 				int compteur = 0;
 
 				for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
-					if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=joueurEnTour) {
+					if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=Instance.getEnTour() && Instance.getJoueur(i-1).isAccusable()==true) {
 						compteur += 1;
 						System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")");
 					}
@@ -91,24 +106,26 @@ public class Round {
 				int choixAccuse=-1;
 				while (choixAccuse<0 || choixAccuse>Instance.getNombreJoueurs()) {
 					choixAccuse = saisieUtilisateur.nextInt();
-					if (0<choixAccuse && choixAccuse<Instance.getNombreJoueurs()+1) {
-						prochainJoueur = Instance.getJoueur(choixAccuse-1).estAccuse(Instance, joueurEnTour);
+					if (0<choixAccuse && choixAccuse<Instance.getNombreJoueurs()+1 && Instance.getJoueur(choixAccuse-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(choixAccuse-1)!=Instance.getEnTour() && Instance.getJoueur(choixAccuse-1).isAccusable()==true) {
+						Instance.setAccused(Instance.getJoueur(choixAccuse-1));
+						prochainJoueur = Instance.getJoueur(choixAccuse-1).estAccuse();
 						return prochainJoueur;
 					}
 					else {
 						System.out.println("Choix invalide !");
+						choixAccuse = -1;
 					}
 				}
 			}
 			
 			else if (choix == 2) {
-				return joueurEnTour.jouerCarteHunt();
+				return Instance.getEnTour().jouerCarteHunt();
 			}
 			else {
 				System.out.println("Choix invalide !");
 			}
 		}
-		return joueurEnTour;
+		return null;
 	}
 	
 	public void revelerIdentiteJoueur() {

@@ -8,7 +8,7 @@ public class Jeu {
 	private int nombreDefausse;
 	private static Jeu Instance;
 	private Joueur enTour;
-	private Joueur accuse;
+	private Joueur accused;
 	private CarteRumeur[] ensembleCartes;
 	private Joueur[] ensembleJoueurs;
 	private Defausse tasDefausse;
@@ -202,6 +202,14 @@ public class Jeu {
 	
 	public void setEnTour(Joueur joueur) {
 		this.enTour = joueur;
+	}
+	
+	public Joueur getAccused() {
+		return this.accused;
+	}
+	
+	public void setAccused(Joueur joueur) {
+		this.accused = joueur;
 	}
 	
 	public static Jeu getInstance() {

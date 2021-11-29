@@ -9,10 +9,11 @@ public abstract class Joueur {
 	public ArrayList<CarteRumeur> carteRevelees = new ArrayList<CarteRumeur>();
 	//public CarteRumeur[] carteEnMain = new CarteRumeur[4];
 	public ArrayList<CarteRumeur> carteEnMain = new ArrayList<CarteRumeur>();
-	private boolean accusable;
+	private boolean accusable=true;
 	private int nbCartesEnMain = 0;
 	public Identite identiteAssociee;
 	protected String pseudo;
+	private boolean mustAccuse = false;
 	
 	public Joueur() {
 		this.points = 0;
@@ -57,8 +58,10 @@ public abstract class Joueur {
 		this.carteEnMain.add(carteAjoutee);
 	}
 	
-	public Joueur seFairePrendreCarteRumeur() {
-		
+	public CarteRumeur seFairePrendreCarteRumeur(int indexOfCarte) {
+		CarteRumeur cartePrise = this.carteEnMain.get(indexOfCarte);
+		this.carteEnMain.remove(indexOfCarte);
+		return cartePrise;
 	}
 	
 	public boolean accuser(Jeu Instance, int choix) {
@@ -66,7 +69,7 @@ public abstract class Joueur {
 		return true;
 	}
 	
-	public Joueur estAccuse(Jeu instance, Joueur accusateur) {
+	public Joueur estAccuse() {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		
@@ -78,7 +81,7 @@ public abstract class Joueur {
 			while (choix!=1 && choix!=2) {
 				choix = saisieUtilisateur.nextInt();
 				if (choix==1) {
-					return this.revelerIdentite(instance, accusateur);
+					return this.revelerIdentite();
 				}
 				else if (choix==2) {
 					return this.jouerCarteWitch();
@@ -92,7 +95,7 @@ public abstract class Joueur {
 			
 		}
 		
-		return accusateur;
+		return instanceJeu.getEnTour();
 	}
 	
 	public Joueur jouerCarteWitch() {
@@ -100,7 +103,7 @@ public abstract class Joueur {
 		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
-		Joueur next = this.carteEnMain.get(choix).appliquerEffetWitch();
+		Joueur next = this.carteEnMain.get(choix).appliquerEffetWitch(this);
 		this.carteRevelees.add(this.carteEnMain.get(choix));
 		this.carteEnMain.remove(choix);
 		return next;
@@ -117,18 +120,35 @@ public abstract class Joueur {
 		return next;
 	}
 	
-	public Joueur revelerIdentite(Jeu Instance, Joueur accusateur) {
+	public Joueur revelerIdentite() {
+		Jeu instanceJeu = Jeu.getInstance();
 		this.identiteAssociee.ReveleIdentite();
 		if (this.identiteAssociee.getIsWitch() == true) {
-			System.out.println("C'était une Witch! Bravo joueur " + accusateur.pseudo + ", vous gagnez un point et prenez le prochain tour !");
-			accusateur.points += 1;
-			return accusateur;
+			System.out.println("C'était une Witch! Bravo joueur " + instanceJeu.getEnTour().pseudo + ", vous gagnez un point et prenez le prochain tour !");
+			instanceJeu.getEnTour().points += 1;
+			return instanceJeu.getEnTour();
 		}
 		else {
-			System.out.println("C'était un Villager! Dommage joueur " + accusateur.pseudo + ", " + this.pseudo + ", vous gagnez un point et prenez le prochain tour !");
+			System.out.println("C'était un Villager! Dommage joueur " + instanceJeu.getEnTour().pseudo + ", " + this.pseudo + ", vous gagnez un point et prenez le prochain tour !");
 			this.points +=1;
 			return this;
 		}
+	}
+
+	public boolean isMustAccuse() {
+		return mustAccuse;
+	}
+
+	public void setMustAccuse(boolean mustAccuse) {
+		this.mustAccuse = mustAccuse;
+	}
+
+	public boolean isAccusable() {
+		return accusable;
+	}
+
+	public void setAccusable(boolean accusable) {
+		this.accusable = accusable;
 	}
 	
 }
