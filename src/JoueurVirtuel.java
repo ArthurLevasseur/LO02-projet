@@ -6,6 +6,18 @@ public class JoueurVirtuel extends Joueur {
 	
 	public JoueurVirtuel() {
 		nombreJoueursVirtuels += 1;
+		Strategie strategieTest = new StrategieSimple();
+		this.strategieActuelle = strategieTest;
 		this.pseudo = "bot" + nombreJoueursVirtuels;
 	}
+
+	public Strategie getStrategieActuelle() {
+		return strategieActuelle;
+	}
+
+	public void setStrategieActuelle(Strategie strategieActuelle) {
+		this.strategieActuelle = strategieActuelle;
+	}
+	
+	
 }

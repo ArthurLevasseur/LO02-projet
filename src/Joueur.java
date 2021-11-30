@@ -70,31 +70,37 @@ public abstract class Joueur {
 	}
 	
 	public Joueur estAccuse() {
-		
+
 		Jeu instanceJeu = Jeu.getInstance();
-		
+
 		instanceJeu.setEnTour(this);
-		if (this.isIA() == false) {
-			System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
-			Scanner saisieUtilisateur = new Scanner(System.in);
-			int choix=0;
-			while (choix!=1 && choix!=2) {
+
+		System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
+		Scanner saisieUtilisateur = new Scanner(System.in);
+		int choix=0;
+		while (choix!=1 && choix!=2) {
+
+			if (instanceJeu.getEnTour() instanceof JoueurPhysique) {
 				choix = saisieUtilisateur.nextInt();
-				if (choix==1) {
-					return this.revelerIdentite();
-				}
-				else if (choix==2) {
-					return this.jouerCarteWitch();
-				}
-				else {
-					System.out.println("Choix invalide !");
-				}
+			}
+			else {
+				choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().seDefendre();
+			}
+
+
+			if (choix==1) {
+				return this.revelerIdentite();
+			}
+			else if (choix==2) {
+				return this.jouerCarteWitch();
+			}
+			else {
+				System.out.println("Choix invalide !");
 			}
 		}
-		else {
-			
-		}
-		
+
+
+
 		return instanceJeu.getEnTour();
 	}
 	

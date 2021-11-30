@@ -85,7 +85,13 @@ public class Round {
 				System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)");
 				// affichage des cartes : (ne marche pas) joueurEnTour.carteEnMain.forEach(card -> System.out.println(card));
 				
-				choix = saisieUtilisateur.nextInt();
+				if (Instance.getEnTour() instanceof JoueurPhysique) {
+					choix = saisieUtilisateur.nextInt();
+				}
+				else {
+					choix = ((JoueurVirtuel) Instance.getEnTour()).getStrategieActuelle().choisirActionTour();
+				}
+				
 			}
 			
 			Instance.getEnTour().setMustAccuse(false);
@@ -104,8 +110,18 @@ public class Round {
 				
 				
 				int choixAccuse=-1;
+				
+				
+				
 				while (choixAccuse<0 || choixAccuse>Instance.getNombreJoueurs()) {
-					choixAccuse = saisieUtilisateur.nextInt();
+					
+					if (Instance.getEnTour() instanceof JoueurPhysique) {
+						choixAccuse = saisieUtilisateur.nextInt();
+					}
+					else {
+						choixAccuse = ((JoueurVirtuel) Instance.getEnTour()).getStrategieActuelle().choisirAccuse();
+					}
+					
 					if (0<choixAccuse && choixAccuse<Instance.getNombreJoueurs()+1 && Instance.getJoueur(choixAccuse-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(choixAccuse-1)!=Instance.getEnTour() && Instance.getJoueur(choixAccuse-1).isAccusable()==true) {
 						Instance.setAccused(Instance.getJoueur(choixAccuse-1));
 						prochainJoueur = Instance.getJoueur(choixAccuse-1).estAccuse();

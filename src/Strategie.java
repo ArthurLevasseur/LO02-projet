@@ -4,11 +4,11 @@ public abstract class Strategie {
 	public Strategie() {
 		
 	}
-	public void execute() {
-		
-	}
 	
-	public void changerStrategie() {
-		
-	}
+	abstract public int choisirActionTour();
+	
+	abstract public int seDefendre();
+	
+	abstract public int choisirAccuse();
+	
 }
