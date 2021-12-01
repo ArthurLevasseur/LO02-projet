@@ -21,4 +21,18 @@ public class Defausse {
 	        }
 	        return instance;
 	}
+
+	public ArrayList<CarteRumeur> getContenu() {
+		return contenu;
+	}
+
+	public CarteRumeur seFairePrendreCarteRumeur(int indexOfCarte) {
+		CarteRumeur cartePrise = this.contenu.get(indexOfCarte);
+		this.contenu.remove(indexOfCarte);
+		return cartePrise;
+	}
+	
+	public void setContenu(ArrayList<CarteRumeur> contenu) {
+		this.contenu = contenu;
+	}
 }

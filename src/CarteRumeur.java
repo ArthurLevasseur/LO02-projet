@@ -71,5 +71,13 @@ public class CarteRumeur {
 	public Joueur appliquerEffetWitch(Joueur accused) {
 		return this.effetWitch.executerEffet(numCarte);
 	}
+
+	public int getNumCarte() {
+		return numCarte;
+	}
+
+	public void setNumCarte(int numCarte) {
+		this.numCarte = numCarte;
+	}
 	
 }

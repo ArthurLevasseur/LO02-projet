@@ -26,12 +26,12 @@ public class Jeu {
 		this.gagnant = gagnantDuJeu;
 	}
 	
-	public Joueur selectionnerAdversaire(String Message) {
+	public Joueur selectionnerAdversaire(Joueur selecteur, String Message) {
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		System.out.println(Message);
 		Joueur selection = null;
 		for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
-			if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=this.enTour) {
+			if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=selecteur) {
 				//i += 1;
 				System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")");
 			}
@@ -246,5 +246,13 @@ public class Jeu {
 		}
 		System.out.println("A une prochaine !");
 		System.exit(1);
+	}
+
+	public Joueur[] getEnsembleJoueurs() {
+		return ensembleJoueurs;
+	}
+
+	public void setEnsembleJoueurs(Joueur[] ensembleJoueurs) {
+		this.ensembleJoueurs = ensembleJoueurs;
 	}
 }

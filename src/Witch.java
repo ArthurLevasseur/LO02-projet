@@ -78,15 +78,15 @@ public class Witch{
 		}
 
 		else if (numCarte == 7) {
-			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le prochain joueur.");
+			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
 			return choix;
 		}
 		else if (numCarte == 8) {
-			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le joueur à défausser.");
+			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le joueur à défausser.");
 			instanceDefausse.defausserUneCarte(choix.seFairePrendreCarteRumeur((int)(Math.random()*choix.carteEnMain.size())));
 		}
 		else if (numCarte == 9) {
-			Joueur choix = instanceJeu.selectionnerAdversaire("Choisissez le prochain joueur.");
+			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
 			choix.setMustAccuse(true);
 			instanceJeu.getAccused().setAccusable(false);
 			return choix;

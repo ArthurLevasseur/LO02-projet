@@ -29,9 +29,6 @@ public class Round {
 		}
 		
 		while (nombreIdenDevoilee < Instance.getNombreJoueurs()-1 && maxPoints<5) {
-			for (int i=0; i<Instance.getNombreJoueurs(); i++) {
-				Instance.getJoueur(i).setAccusable(true);
-			}
 			
 			
 			System.out.println("c'est au joueur " + Instance.getEnTour().pseudo + " de jouer son tour !");
@@ -123,8 +120,14 @@ public class Round {
 					}
 					
 					if (0<choixAccuse && choixAccuse<Instance.getNombreJoueurs()+1 && Instance.getJoueur(choixAccuse-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(choixAccuse-1)!=Instance.getEnTour() && Instance.getJoueur(choixAccuse-1).isAccusable()==true) {
+						for (int i=0 ; i<Instance.getNombreJoueurs() ; i++) {
+							if (Instance.getJoueur(i).isAccusable()==false) {
+								Instance.getJoueur(i).setAccusable(true);
+							}
+						}
 						Instance.setAccused(Instance.getJoueur(choixAccuse-1));
 						prochainJoueur = Instance.getJoueur(choixAccuse-1).estAccuse();
+						
 						return prochainJoueur;
 					}
 					else {

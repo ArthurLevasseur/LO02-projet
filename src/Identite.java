@@ -62,8 +62,4 @@ public class Identite {
 		
 		
 	}
-	
-	public void revelerIdentite() {
-		
-	}
 }
