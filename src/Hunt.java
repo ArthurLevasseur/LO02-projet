@@ -51,22 +51,60 @@ public class Hunt{
 		if (numCarte == 1) {
 			
 			// AJOUTER CONDITION
-			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous réveler l'identité ?");
-			if (choix.identiteAssociee.getIsWitch() == true) {
+			
+			//Joueur choix = null;
+			boolean visable = true;
+			/*do {
+				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous réveler l'identité ?");
+				for(CarteRumeur carte : choix.carteRevelees) {
+					if (carte.getNumCarte() == 5) {
+						System.out.println("Ce joueur a la carte Manche à balai révelée et ne peut pas être visé par cette carte.");
+						visable = false;
+					}
+				};
+			}while(!visable);*/
+			
+			Scanner saisieUtilisateur = new Scanner(System.in);
+			System.out.println("De quel joueur souhaitez vous réveler l'identité ?");
+			Joueur selection = null;
+			for (int i=1 ; i<instanceJeu.getNombreJoueurs()+1 ; i++) {
+				visable = true;
+				for(CarteRumeur carte : instanceJeu.getJoueur(i-1).carteRevelees) {
+					if (carte.getNumCarte() == 5) {
+						visable = false;
+					}
+				}
+				if (instanceJeu.getJoueur(i-1).identiteAssociee.getDevoilee() == false && instanceJeu.getJoueur(i-1)!=instanceJeu.getEnTour() && visable == true) {
+					//i += 1;
+					System.out.println("Joueur " + (i) + ") " + instanceJeu.getJoueur(i-1).pseudo + " (points : " + instanceJeu.getJoueur(i-1).getPoints() + ")");
+				}
+			}
+			
+			int choix = -1;
+			
+			while (choix<0 || choix>instanceJeu.getNombreJoueurs()) {
+				choix = saisieUtilisateur.nextInt();
+				if (0<choix && choix<instanceJeu.getNombreJoueurs()+1) {
+					selection = instanceJeu.getJoueur(choix-1);
+				}
+			}
+			
+			if (selection.identiteAssociee.getIsWitch() == true) {
 				System.out.println("Ce joueur est bien une Witch, vous remportez 2 points.");
 				instanceJeu.getEnTour().ajouterPoints(2);
-				choix.identiteAssociee.ReveleIdentite();
+				selection.identiteAssociee.ReveleIdentite();
 				return instanceJeu.getEnTour();
 			}
 			else {
 				System.out.println("Ce joueur est un villager, vous perdez 2 points.");
 				instanceJeu.getEnTour().ajouterPoints(-2);
-				choix.identiteAssociee.ReveleIdentite();
-				return choix;
+				selection.identiteAssociee.ReveleIdentite();
+				return selection;
 			}
 			
 			
 		}
+			
 		else if (numCarte == 2) {
 			// AJOUTER CONDITION
 			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur, son identité sera secrètement révelée.");

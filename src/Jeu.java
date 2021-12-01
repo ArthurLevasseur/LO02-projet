@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.*;
 
 public class Jeu {
 	
@@ -9,7 +10,8 @@ public class Jeu {
 	private static Jeu Instance;
 	private Joueur enTour;
 	private Joueur accused;
-	private CarteRumeur[] ensembleCartes;
+	//private CarteRumeur[] ensembleCartes;
+	private ArrayList<CarteRumeur> ensembleCartes = new ArrayList<CarteRumeur>();
 	private Joueur[] ensembleJoueurs;
 	private Defausse tasDefausse;
 	private Joueur gagnant;
@@ -100,9 +102,9 @@ public class Jeu {
 		
 		
 		System.out.println("Création des cartes rumeurs...");
-		this.ensembleCartes = new CarteRumeur[12];
 		for (int i = 0; i < 12; i++) {
-			this.ensembleCartes[i] = new CarteRumeur();
+			
+			this.ensembleCartes.add(new CarteRumeur());
 			//System.out.println(this.ensembleCartes[i]);
 		}
 		
@@ -119,7 +121,7 @@ public class Jeu {
 		CarteRumeur transition;
 		System.out.println("Mélange des cartes Rumeurs...");
 		
-		int carteEch1;
+		/*int carteEch1;
 		int carteEch2;
 		for (int i = 0; i < 100; i++) {
 			carteEch1 = (int) (Math.random() * ( 13 - 1 ));
@@ -129,33 +131,35 @@ public class Jeu {
 				this.ensembleCartes[carteEch1] = this.ensembleCartes[carteEch2];
 				this.ensembleCartes[carteEch2] = transition;
 			}
-		}
+		
+		}*/
+		//Collections.shuffle(this.ensembleCartes);
 		
 		System.out.println("Distribution des cartes Rumeurs...");
 		if (this.nombreDefausse == 2) {
-			tasDefausse.defausserUneCarte(ensembleCartes[0]);
-			tasDefausse.defausserUneCarte(ensembleCartes[1]);
+			tasDefausse.defausserUneCarte(this.ensembleCartes.get(0));
+			tasDefausse.defausserUneCarte(this.ensembleCartes.get(1));
 			for (int i = 0; i < 5 ; i++) {
-				this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*2+2]);
-				this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*2+3]);
+				this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2+2));
+				this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2+3));
 			}
 		}
 		else {
 			for (int i = 0; i < nombreJoueurs ; i++) {
 				if (nombreJoueurs == 3) {
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4]);
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+1]);
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+2]);
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*4+3]);
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4));
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4+1));
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4+2));
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4+3));
 				}
 				else if (nombreJoueurs == 4) {
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3]);
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3+1]);
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*3+2]);
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*3));
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*3+1));
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*3+2));
 				}
 				else { //=6
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*2]);
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes[i*2+1]);
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2));
+					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2+1));
 				}
 			}
 		}

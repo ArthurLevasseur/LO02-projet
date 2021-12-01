@@ -2,6 +2,8 @@ import java.util.*;
 
 public class StrategieSimple extends Strategie {
 	
+	
+	
 	public int choisirActionTour() {
 		System.out.println("Il choisit d'accuser un joueur.");
 		return 1;
