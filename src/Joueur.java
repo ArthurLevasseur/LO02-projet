@@ -104,7 +104,17 @@ public abstract class Joueur {
 	
 	public Joueur jouerCarteWitch() {
 		System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
-		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
+		
+		for(CarteRumeur card : this.carteEnMain) {
+			if (card.getNumCarte() == 3 && this.carteRevelees.isEmpty()) {
+				System.out.println("PAS JOUABLE : "+ card + "(aucune de vos cartes n'est dévoilée)\n");
+			}
+			
+			else {
+				System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card);
+			}
+		}
+		
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
 		Joueur next = this.carteEnMain.get(choix).appliquerEffetWitch(this);
@@ -116,10 +126,30 @@ public abstract class Joueur {
 	public Joueur jouerCarteHunt() {
 		Defausse defausse = Defausse.getInstance();
 		System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
-		this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
+		//this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
+		
+		for(CarteRumeur card : this.carteEnMain) {
+			if ((card.getNumCarte()==1 || card.getNumCarte()==2) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) {
+				System.out.println("PAS JOUABLE : "+ card + "(Vous n'êtes pas dévoilé en tant que villageois)\n");
+			}
+			
+			else if (card.getNumCarte() == 3 && this.carteRevelees.isEmpty()) {
+				System.out.println("PAS JOUABLE : "+ card + "(aucune de vos cartes n'est dévoilée)\n");
+			}
+			
+			
+			else {
+				System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card);
+			}
+		}
+		
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
 		Joueur next = this.carteEnMain.get(choix).appliquerEffetHunt();
+		
+		
+		
+		
 		if (this.carteEnMain.get(choix).getNumCarte() == 11) {
 			defausse.getContenu().add(this.carteEnMain.get(choix));
 			this.carteEnMain.remove(choix);
