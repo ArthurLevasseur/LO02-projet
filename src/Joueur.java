@@ -76,7 +76,7 @@ public abstract class Joueur {
 		System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix=0;
-		while (choix!=1 && choix!=2) {
+		while (choix!=1) {
 
 			if (instanceJeu.getEnTour() instanceof JoueurPhysique) {
 				choix = saisieUtilisateur.nextInt();
@@ -84,14 +84,19 @@ public abstract class Joueur {
 			else {
 				choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().seDefendre();
 			}
+			if (choix==2) {
+				if (this.carteEnMain.isEmpty()) {
+					System.out.println("Vous ne pouvez pas jouer de carte rumeurs, votre main est vide !");
+				}
+				else {
+					return this.jouerCarteWitch();
+				}
+			}
 
-
-			if (choix==1) {
+			else if (choix==1) {
 				return this.revelerIdentite();
 			}
-			else if (choix==2) {
-				return this.jouerCarteWitch();
-			}
+			
 			else {
 				System.out.println("Choix invalide !");
 			}
@@ -117,6 +122,10 @@ public abstract class Joueur {
 		
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
+		while (choix<0 || choix > this.carteEnMain.size()-1 || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
+			System.out.println("Choix Incompatible !");	
+			choix = saisieUtilisateur.nextInt();
+		}
 		Joueur next = this.carteEnMain.get(choix).appliquerEffetWitch(this);
 		this.carteRevelees.add(this.carteEnMain.get(choix));
 		this.carteEnMain.remove(choix);
@@ -145,6 +154,10 @@ public abstract class Joueur {
 		
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		int choix = saisieUtilisateur.nextInt();
+		while (choix<0 || choix > this.carteEnMain.size()-1 || ((this.carteEnMain.get(choix).getNumCarte() == 2 || this.carteEnMain.get(choix).getNumCarte() == 1) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
+			System.out.println("Choix Incompatible !");	
+			choix = saisieUtilisateur.nextInt();
+		}
 		Joueur next = this.carteEnMain.get(choix).appliquerEffetHunt();
 		
 		

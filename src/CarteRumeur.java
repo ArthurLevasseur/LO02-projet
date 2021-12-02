@@ -79,5 +79,13 @@ public class CarteRumeur {
 	public void setNumCarte(int numCarte) {
 		this.numCarte = numCarte;
 	}
+
+	public String getNomCarte() {
+		return nomCarte;
+	}
+
+	public void setNomCarte(String nomCarte) {
+		this.nomCarte = nomCarte;
+	}
 	
 }

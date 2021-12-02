@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 public class Jeu {
@@ -14,7 +15,7 @@ public class Jeu {
 	private ArrayList<CarteRumeur> ensembleCartes = new ArrayList<CarteRumeur>();
 	private Joueur[] ensembleJoueurs;
 	private Defausse tasDefausse;
-	private Joueur gagnant;
+	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
 	
 	public int getNombreJoueurs() {
 		return this.nombreJoueurs;
@@ -24,8 +25,30 @@ public class Jeu {
 		return this.ensembleJoueurs[i];
 	}
 	
-	public void setGagnant(Joueur gagnantDuJeu) {
-		this.gagnant = gagnantDuJeu;
+	public void setGagnants(Joueur gagnantDuJeu) {
+		this.gagnants.add(gagnantDuJeu);
+	}
+	
+	public void retirerCartes() {
+		for (int i=0;i<this.ensembleJoueurs.length;i++) {
+			this.getJoueur(i).carteEnMain = new ArrayList<CarteRumeur>();
+			this.getJoueur(i).carteRevelees = new ArrayList<CarteRumeur>();
+		}
+		this.tasDefausse.contenu = new ArrayList<CarteRumeur>();
+		/*
+		for (int i=0;i<this.ensembleJoueurs.length;i++) {
+			Iterator<CarteRumeur> it1 = this.getJoueur(i).carteEnMain.iterator();
+			while (it1.hasNext()) {
+				this.getJoueur(i).carteEnMain.remove(it1);
+			}
+			Iterator<CarteRumeur> it2 = this.getJoueur(i).carteRevelees.iterator();
+			while (it2.hasNext()) {
+				this.getJoueur(i).carteRevelees.remove(it2);
+			}
+			this.getJoueur(i).carteRevelees=null;
+		}
+		this.tasDefausse.contenu = null;
+		*/
 	}
 	
 	public Joueur selectionnerAdversaire(Joueur selecteur, String Message) {
@@ -175,17 +198,20 @@ public class Jeu {
 	
 	public void orgaRounds() {
 		int maxPoints = 0;
+		//le tout premier joueur est choisi aléatoirement
 		int premierJoueur = (int) (Math.random() * Instance.nombreJoueurs);
 		while (maxPoints < 5) {
 			
-
+			//Les cartes des mains des joueurs, leurs cartes révélées ainsi que la défausse sont réinitialisées
+			this.retirerCartes();
 			
 			this.distributionCartesRumeurs();
 		
+			//Création d'un round (contenant le déroulement du round aussi)
 			Round roundEnCours = new Round(Instance, Instance.getJoueur(premierJoueur));
 			
 			
-			
+			//Analyse si un joueur a atteint les 5 points à l'aide de maxPoints à la fin d'un round
 			for (int i=0; i<this.nombreJoueurs; i++ ) {
 				if (this.ensembleJoueurs[i].getPoints() > maxPoints) {
 					maxPoints = this.ensembleJoueurs[i].getPoints();
@@ -193,8 +219,10 @@ public class Jeu {
 			}
 			
 		}
-		System.out.println("Bravo " + Instance.gagnant.pseudo + ", vous avez gagné la partie !");
-
+		//Affichage du/des gagnant(s) de la partie.
+		System.out.print("Bravo ");
+		Instance.gagnants.forEach(Joueur -> System.out.print(Joueur.pseudo +", "));
+		System.out.println("vous avez gagné la partie !");
 		
 			
 		
@@ -224,12 +252,11 @@ public class Jeu {
     }
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		System.out.println("Bienvenu dans Witch Hunt !");
 		int choix = 0;
 		while (choix != 2) {
-			//initialisation du nombre de joueurs physiques
 			System.out.println("Que voulez vous faire (entrez l'indice de vos choix) : \n1) Lancer une nouvelle partie \n2) Quitter le programme");
 			choix = saisieUtilisateur.nextInt();
 			if (choix == 1) {
@@ -238,6 +265,30 @@ public class Jeu {
 				
 				Instance.orgaRounds();
 				
+				if (Instance.gagnants.size()>1) {
+					System.out.print(". ");
+					TimeUnit.SECONDS.sleep(2);
+					System.out.print(". ");
+					TimeUnit.SECONDS.sleep(2);
+					System.out.println(". ");
+					TimeUnit.SECONDS.sleep(2);
+					System.out.println("Mais il ne peut avoir qu'un gagnant");
+					System.out.println("Les " + Instance.gagnants.size() + " joueurs sortent un couteau et se départagent dans un duel jusqu'à la mort !");
+					TimeUnit.SECONDS.sleep(2);
+					while (Instance.gagnants.size()>1) {
+						System.out.print(". ");
+						TimeUnit.SECONDS.sleep(2);
+						System.out.print(". ");
+						TimeUnit.SECONDS.sleep(2);
+						System.out.println(". ");
+						TimeUnit.SECONDS.sleep(2);
+						int i = (int) (Math.random() * Instance.gagnants.size());
+						System.out.println("Le joueur " + Instance.gagnants.get(i).pseudo + " tombe au combat !");
+						Instance.gagnants.remove(i);
+					}
+					System.out.println("Le gagnant final de ce jeu est donc le joueur : " + Instance.gagnants.get(0).pseudo);
+					
+				}
 			}
 			else if (choix == 2) {
 				break;
