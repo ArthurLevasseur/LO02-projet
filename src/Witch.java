@@ -53,32 +53,32 @@ public class Witch{
 			return instanceJeu.getAccused();
 		}
 		else if (numCarte == 2) {
-			instanceJeu.getAccused().carteEnMain.forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().carteEnMain.indexOf(card) + " pour défausser " + card));
+			instanceJeu.getAccused().getCarteEnMain().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteEnMain().indexOf(card) + " pour défausser " + card));
 			Scanner saisieUtilisateur = new Scanner(System.in);
 			int choix = saisieUtilisateur.nextInt();
-			while (choix<0 || choix>instanceJeu.getAccused().carteEnMain.size() || instanceJeu.getAccused().carteEnMain.get(choix).numCarte == 2) {
-				if (instanceJeu.getAccused().carteEnMain.get(choix).numCarte == 2) {System.out.println("Vous ne pouvez pas défausser cette carte même !");}
+			while (choix<0 || choix>instanceJeu.getAccused().getCarteEnMain().size() || instanceJeu.getAccused().getCarteEnMain().get(choix).numCarte == 2) {
+				if (instanceJeu.getAccused().getCarteEnMain().get(choix).numCarte == 2) {System.out.println("Vous ne pouvez pas défausser cette carte même !");}
 				else {System.out.println("Choix invalide !");
 				}
 				choix = saisieUtilisateur.nextInt();
 			}
-			CarteRumeur carteADefausser = instanceJeu.getAccused().carteEnMain.get(choix);
+			CarteRumeur carteADefausser = instanceJeu.getAccused().getCarteEnMain().get(choix);
 			instanceDefausse.defausserUneCarte(carteADefausser);
 			return instanceJeu.getAccused();
 		}
 		else if (numCarte == 3) {
-			instanceJeu.getAccused().carteRevelees.forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().carteRevelees.indexOf(card) + " pour prendre " + card));
+			instanceJeu.getAccused().getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteRevelees().indexOf(card) + " pour prendre " + card));
 			Scanner saisieUtilisateur = new Scanner(System.in);
 			int choix = saisieUtilisateur.nextInt();
-			CarteRumeur carteARecuperer = instanceJeu.getAccused().carteRevelees.get(choix);
+			CarteRumeur carteARecuperer = instanceJeu.getAccused().getCarteRevelees().get(choix);
 			instanceJeu.getAccused().prendreCarteRumeur(carteARecuperer);
 			return instanceJeu.getAccused();
 		}
 		else if (numCarte == 4) {
-			instanceJeu.getEnTour().carteEnMain.forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().carteEnMain.indexOf(card) + " pour prendre " + card));
+			instanceJeu.getEnTour().getCarteEnMain().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().getCarteEnMain().indexOf(card) + " pour prendre " + card));
 			Scanner saisieUtilisateur = new Scanner(System.in);
 			int choix = saisieUtilisateur.nextInt();
-			CarteRumeur carteARecuperer = instanceJeu.getEnTour().carteEnMain.get(choix);
+			CarteRumeur carteARecuperer = instanceJeu.getEnTour().getCarteEnMain().get(choix);
 			instanceJeu.getAccused().prendreCarteRumeur(carteARecuperer);
 			return instanceJeu.getAccused();
 		}
@@ -89,7 +89,8 @@ public class Witch{
 		}
 		else if (numCarte == 8) {
 			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le joueur à défausser.");
-			instanceDefausse.defausserUneCarte(choix.seFairePrendreCarteRumeur((int)(Math.random()*choix.carteEnMain.size())));
+			instanceDefausse.defausserUneCarte(choix.seFairePrendreCarteRumeur((int)(Math.random()*choix.getCarteEnMain().size())));
+			return instanceJeu.getAccused();
 		}
 		else if (numCarte == 9) {
 			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");

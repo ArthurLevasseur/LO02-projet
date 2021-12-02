@@ -6,12 +6,12 @@ public abstract class Joueur {
 	private int points = 0;
 	private int id;
 	//public CarteRumeur[] carteRevelees = new CarteRumeur[4];
-	public ArrayList<CarteRumeur> carteRevelees = new ArrayList<CarteRumeur>();
+	private ArrayList<CarteRumeur> carteRevelees = new ArrayList<CarteRumeur>();
 	//public CarteRumeur[] carteEnMain = new CarteRumeur[4];
-	public ArrayList<CarteRumeur> carteEnMain = new ArrayList<CarteRumeur>();
+	private ArrayList<CarteRumeur> carteEnMain = new ArrayList<CarteRumeur>();
 	private boolean accusable=true;
 	private int nbCartesEnMain = 0;
-	public Identite identiteAssociee;
+	private Identite identiteAssociee;
 	protected String pseudo;
 	private boolean mustAccuse = false;
 	
@@ -183,8 +183,7 @@ public abstract class Joueur {
 			return instanceJeu.getEnTour();
 		}
 		else {
-			System.out.println("C'était un Villager! Dommage joueur " + instanceJeu.getEnTour().pseudo + ", " + this.pseudo + ", vous gagnez un point et prenez le prochain tour !");
-			this.points +=1;
+			System.out.println("C'était un Villager! Dommage joueur " + instanceJeu.getEnTour().pseudo + ", " + this.pseudo + ", vous prenez le prochain tour !");
 			return this;
 		}
 	}
@@ -225,7 +224,6 @@ public abstract class Joueur {
 		if (choix == 1) {
 			if (this.identiteAssociee.getIsWitch() == false){
 				instanceJeu.getEnTour().points -= 1;
-				this.points -= 1;
 			}
 			return this.revelerIdentite();
 		}
@@ -234,7 +232,7 @@ public abstract class Joueur {
 			System.out.println("Quelle carte voulez vous défausser ?");
 			this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour défausser " + card));
 			choix = saisieUtilisateur.nextInt();
-			while (choix<0 || choix>this.carteEnMain.size()){
+			while (choix<0 || choix>this.carteEnMain.size() || this.carteEnMain.get(choix).getNumCarte() == 7){
 				System.out.println("Choix invalide !");
 				choix = saisieUtilisateur.nextInt();
 			}
@@ -247,5 +245,29 @@ public abstract class Joueur {
 
 	public void setPoints(int points) {
 		this.points = points;
+	}
+
+	public Identite getIdentiteAssociee() {
+		return identiteAssociee;
+	}
+
+	public void setIdentiteAssociee(Identite identiteAssociee) {
+		this.identiteAssociee = identiteAssociee;
+	}
+
+	public ArrayList<CarteRumeur> getCarteRevelees() {
+		return carteRevelees;
+	}
+
+	public void createCarteRevelees() {
+		this.carteRevelees = new ArrayList<CarteRumeur>();
+	}
+
+	public ArrayList<CarteRumeur> getCarteEnMain() {
+		return carteEnMain;
+	}
+
+	public void createCarteEnMain() {
+		this.carteEnMain = new ArrayList<CarteRumeur>();
 	}
 }

@@ -31,24 +31,10 @@ public class Jeu {
 	
 	public void retirerCartes() {
 		for (int i=0;i<this.ensembleJoueurs.length;i++) {
-			this.getJoueur(i).carteEnMain = new ArrayList<CarteRumeur>();
-			this.getJoueur(i).carteRevelees = new ArrayList<CarteRumeur>();
+			this.getJoueur(i).createCarteEnMain();
+			this.getJoueur(i).createCarteRevelees();
 		}
 		this.tasDefausse.contenu = new ArrayList<CarteRumeur>();
-		/*
-		for (int i=0;i<this.ensembleJoueurs.length;i++) {
-			Iterator<CarteRumeur> it1 = this.getJoueur(i).carteEnMain.iterator();
-			while (it1.hasNext()) {
-				this.getJoueur(i).carteEnMain.remove(it1);
-			}
-			Iterator<CarteRumeur> it2 = this.getJoueur(i).carteRevelees.iterator();
-			while (it2.hasNext()) {
-				this.getJoueur(i).carteRevelees.remove(it2);
-			}
-			this.getJoueur(i).carteRevelees=null;
-		}
-		this.tasDefausse.contenu = null;
-		*/
 	}
 	
 	public Joueur selectionnerAdversaire(Joueur selecteur, String Message) {
@@ -56,19 +42,30 @@ public class Jeu {
 		System.out.println(Message);
 		Joueur selection = null;
 		for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
-			if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=selecteur) {
-				//i += 1;
-				System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+			if (((Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(i-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(i-1)!=selecteur) {
+
+				if (!(Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee())) {
+					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + "     status : EN ROUND     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+				}
+				else if (Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() && Instance.getJoueur(i-1).getIdentiteAssociee().getIsWitch() == true) {
+					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + "     status : HORS ROUND     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+				}
+				else if (Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() && Instance.getJoueur(i-1).getIdentiteAssociee().getIsWitch() == false) {
+					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + "     status : VILLAGEOIS PASSIF     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+				}
 			}
 		}
 		
 		
 		int choix = -1;
 		
-		while (choix<0 || choix>Instance.getNombreJoueurs()) {
+		while (choix<0 || choix>Instance.getNombreJoueurs() || !(((Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(choix-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(choix-1)!=selecteur)) {
 			choix = saisieUtilisateur.nextInt();
-			if (0<choix && choix<Instance.getNombreJoueurs()+1) {
+			if (0<choix && choix<Instance.getNombreJoueurs()+1 && ((Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(choix-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(choix-1)!=selecteur) {
 				selection = this.ensembleJoueurs[choix-1];
+			}
+			else {
+				System.out.println("Choix invalide !");
 			}
 		}
 		

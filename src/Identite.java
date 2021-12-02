@@ -58,6 +58,9 @@ public class Identite {
 				this.isWitch = true;
 				this.devoilee = false;
 			}
+			else {
+				System.out.println("Choix invalide ! veuillez choisir entre 1 et 2.");
+			}
 		}
 		
 		

@@ -8,7 +8,7 @@ public class Round {
 	
 	public Round(Jeu Instance, Joueur premierJoueur) {
 		for (int i = 0; i < Instance.getNombreJoueurs(); i++) {
-			Instance.getJoueur(i).identiteAssociee.choisirIdentite(Instance.getJoueur(i),Instance.getJoueur(i).isIA());
+			Instance.getJoueur(i).getIdentiteAssociee().choisirIdentite(Instance.getJoueur(i),Instance.getJoueur(i).isIA());
 		}
 		//GagnantRound permet de déterminer le premier joueur du round suivant, sauf pour le premier round.
 		if (gagnantRound != null) {
@@ -35,7 +35,7 @@ public class Round {
 			//Vérification du nombre d'identité révélées pour savoir si c'est la fin d'un round
 			nombreIdenDevoilee = 0;
 			for (int i=0; i<Instance.getNombreJoueurs(); i++) {
-				if (Instance.getJoueur(i).identiteAssociee.getDevoilee() == true) {
+				if (Instance.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
 					nombreIdenDevoilee += 1;
 				}
 
@@ -45,7 +45,7 @@ public class Round {
 		
 		//Détermination du gagnant d'un round
 		for (int i=0; i<Instance.getNombreJoueurs(); i++) {
-			if (Instance.getJoueur(i).identiteAssociee.getDevoilee() == false) {
+			if (Instance.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) {
 				gagnantRound = Instance.getJoueur(i);
 			}	
 		}
@@ -69,14 +69,14 @@ public class Round {
 		//Affichage des infos générales du joueur en tour
 		Joueur prochainJoueur;
 		System.out.println("\n---------------Votre identité----------------\n");
-		if (Instance.getEnTour().identiteAssociee.getIsWitch()) {System.out.println("Vous êtes une Witch.\n");} else {System.out.println("Vous êtes un Villager.\n");};
+		if (Instance.getEnTour().getIdentiteAssociee().getIsWitch()) {System.out.println("Vous êtes une Witch.\n");} else {System.out.println("Vous êtes un Villager.\n");};
 		
 		System.out.println("-----------------Votre main------------------\n");
-		for (int i=0; i<Instance.getEnTour().carteEnMain.size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().carteEnMain.get(i).getNomCarte() +"\n");};
-		if (Instance.getEnTour().carteEnMain.isEmpty()) {System.out.println("Aucunes cartes\n");}
+		for (int i=0; i<Instance.getEnTour().getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().getCarteEnMain().get(i).getNomCarte() +"\n");};
+		if (Instance.getEnTour().getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
 		System.out.println("-------------Vos cartes révélées-------------\n");
-		for (int i=0; i<Instance.getEnTour().carteRevelees.size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().carteRevelees.get(i).getNomCarte() +"\n");};
-		if (Instance.getEnTour().carteRevelees.isEmpty()) {System.out.println("Aucunes cartes\n");}
+		for (int i=0; i<Instance.getEnTour().getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().getCarteEnMain().get(i).getNomCarte() +"\n");};
+		if (Instance.getEnTour().getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
 		
 		//Création de la boucle de choix du joueur
 		int choix = 0;
@@ -114,7 +114,7 @@ public class Round {
 
 				//Affichage des joueurs ciblables.
 				for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
-					if (Instance.getJoueur(i-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(i-1)!=Instance.getEnTour() && Instance.getJoueur(i-1).isAccusable()==true) {
+					if (Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && Instance.getJoueur(i-1)!=Instance.getEnTour() && Instance.getJoueur(i-1).isAccusable()==true) {
 						compteur += 1;
 						System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")");
 					}
@@ -130,7 +130,7 @@ public class Round {
 					System.out.println("Vous ne pouvez accuser personne.");
 					
 					//Dans le cas où ne joueur, en plus n'aurait pas de cartes en main.
-					if (!Instance.getEnTour().carteEnMain.isEmpty()) {
+					if (!Instance.getEnTour().getCarteEnMain().isEmpty()) {
 						System.out.println("Vous devez donc utiliser un effet Hunt.");
 						choix = 2;
 					}
@@ -145,7 +145,7 @@ public class Round {
 					
 					
 					//Création de la boucle de choix d'accusation du joueur
-					while (0>choixAccuse || choixAccuse>Instance.getNombreJoueurs()+1 || Instance.getJoueur(choixAccuse-1).identiteAssociee.getDevoilee() == true || Instance.getJoueur(choixAccuse-1)==Instance.getEnTour() || Instance.getJoueur(choixAccuse-1).isAccusable()==false) {
+					while (0>choixAccuse || choixAccuse>Instance.getNombreJoueurs()+1 || Instance.getJoueur(choixAccuse-1).getIdentiteAssociee().getDevoilee() == true || Instance.getJoueur(choixAccuse-1)==Instance.getEnTour() || Instance.getJoueur(choixAccuse-1).isAccusable()==false) {
 						
 						//Pour les joueurs physiques
 						if (Instance.getEnTour() instanceof JoueurPhysique) {
@@ -157,7 +157,7 @@ public class Round {
 						}
 						
 						//Si le choix correspond à un joueur ciblable
-						if (0<choixAccuse && choixAccuse<Instance.getNombreJoueurs()+1 && Instance.getJoueur(choixAccuse-1).identiteAssociee.getDevoilee() == false && Instance.getJoueur(choixAccuse-1)!=Instance.getEnTour() && Instance.getJoueur(choixAccuse-1).isAccusable()==true) {
+						if (0<choixAccuse && choixAccuse<Instance.getNombreJoueurs()+1 && Instance.getJoueur(choixAccuse-1).getIdentiteAssociee().getDevoilee() == false && Instance.getJoueur(choixAccuse-1)!=Instance.getEnTour() && Instance.getJoueur(choixAccuse-1).isAccusable()==true) {
 							//Réinitialisation de la variable accusable (si ce n'est pas encore fait) 
 							for (int i=0 ; i<Instance.getNombreJoueurs() ; i++) {
 								if (Instance.getJoueur(i).isAccusable()==false) {
@@ -184,7 +184,7 @@ public class Round {
 			}
 			
 			else if (choix == 2) {
-				if (Instance.getEnTour().carteEnMain.isEmpty()) {
+				if (Instance.getEnTour().getCarteEnMain().isEmpty()) {
 					//La boucle while va se réeffectuer avec choix =1, donc une accusation
 					System.out.println("Vous n'avez plus de cartes rumeurs !");
 					choix = 1;
@@ -198,7 +198,6 @@ public class Round {
 			}
 			else {
 				System.out.println("Choix invalide !");
-				choix = saisieUtilisateur.nextInt();
 			}
 		}
 		return null;
