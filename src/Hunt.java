@@ -3,48 +3,64 @@ import java.util.Scanner;
 public class Hunt{
 
 	private String effet;
+	private Effet effetAssocie;
 	
 	public Hunt(int numCarte) {
 		if (numCarte == 1) {
 			this.effet = "Vous révélez l'identité d'un autre joueur.\n	- Si c'est une sorcière, vous gagnez 2 points et prenez le prochain tour.\n	- Si c'est un villageois, vous perdez 2 points et il prend le prochain tour.";
+			this.effetAssocie = new EffetH1();
 		}
 		else if (numCarte == 2) {
 			this.effet = "Vous choisissez le prochain joueur.\nAvant son tour, vous regardez secrètement l'identité du joueur";
+			this.effetAssocie = new EffetH2();
 		}
 		else if (numCarte == 3) {
 			this.effet = "Vous reprenez une de vos cartes rumeurs déjà révélées dans votre main.\nVous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetH3();
 		}
 		else if (numCarte == 4) {
 			this.effet = "Vous choisissez le prochain joueur.\nAvant son tour, vous prenez une carte rumeur de sa main et l'ajoutez dans la votre.";
+			this.effetAssocie = new EffetH4();
 		}
 		else if (numCarte == 5) {
 			this.effet = "Vous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetH5();
 		}
 		else if (numCarte == 6) {
 			this.effet = "Vous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetH5();
 		}
 		else if (numCarte == 7) {
 			this.effet = "Vous choisissez un joueur, il doit révéler son identité ou défausser une de ses cartes en main.\n	- Si c'est une sorcière, vous gagnez 1 points et prenez le prochain tour.\n	- Si c'est un villageois, vous perdez 1 points et il prend le prochain tour.\n	- S'il décide de défausser une carte, il prend le prochain tour.";
+			this.effetAssocie = new EffetH7();
 		}
 		else if (numCarte == 8) {
 			this.effet = "Vous révélez votre identité.\n	- Si vous êtes une sorcière, le joueur à votre gauche prend le prochain tour.\n	- Si vous êtes un villageois, vous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetH8();
 		}
 		else if (numCarte == 9) {
 			this.effet = "Vous choisissez le prochain joueur.\nDurant son tour, le joueur ciblé devra accuser un joueur autre que vous, si possible.";
+			this.effetAssocie = new EffetH9();
 		}
 		else if (numCarte == 10) {
 			this.effet = "Vous révélez votre identité.\n	- Si vous êtes une sorcière, le joueur à votre gauche prend le prochain tour.\n	- Si vous êtes un villageois, vous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetH10();
 		}
 		else if (numCarte == 11) {
 			this.effet = "Vous ajoutez une des cartes défaussées à votre main, et vous vous défaussez de cette carte.\nVous prenez le prochain tour";
+			this.effetAssocie = new EffetH11();
 		}
 		else if (numCarte == 12) {
 			this.effet = "Prenez une carte rumeur révélée de n'importe quel joueur dans votre main.\nVous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetH12();
 		}
 	}
 	
 	public Joueur executerEffet(int numCarte) {
-		System.out.println("Effet appliqué == " + effet); // à retirer par la suite
+		
+		return this.effetAssocie.executionEffet();
+		
+		/*System.out.println("Effet appliqué == " + effet); // à retirer par la suite
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		
@@ -53,17 +69,10 @@ public class Hunt{
 			// AJOUTER CONDITION
 			
 			//Joueur choix = null;
-			boolean visable = true;
-			/*do {
-				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous réveler l'identité ?");
-				for(CarteRumeur carte : choix.carteRevelees) {
-					if (carte.getNumCarte() == 5) {
-						System.out.println("Ce joueur a la carte Manche à balai révelée et ne peut pas être visé par cette carte.");
-						visable = false;
-					}
-				};
-			}while(!visable);*/
 			
+			
+			
+			boolean visable = true;
 			Scanner saisieUtilisateur = new Scanner(System.in);
 			System.out.println("De quel joueur souhaitez vous réveler l'identité ?");
 			Joueur selection = null;
@@ -269,7 +278,7 @@ public class Hunt{
 			return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
 		}
 		
-		return null;
+		return null;*/
 	}
 	
 	public String toString() {

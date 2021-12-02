@@ -3,49 +3,62 @@ import java.util.Scanner;
 public class Witch{
 
 	private String effet;
+	private Effet effetAssocie;
 	
 	public Witch(int numCarte) {
 		if (numCarte == 1) {
 			this.effet = "Vous prenez le prochain tour.";
+			this.effetAssocie = new EffetW1();
 		}
 		else if (numCarte == 2) {
 			this.effet = "Vous défaussez une carte de votre main.\nVous prenez le prochain tour.";
+			this.effetAssocie = new EffetW2();
 		}
 		else if (numCarte == 3) {
 			this.effet = "Vous reprenez une de vos propres cartes rumeurs déjà révélées dans votre main.\nVous prenez le prochain tour.";
+			this.effetAssocie = new EffetW3();
 		}
 		else if (numCarte == 4) {
 			this.effet = "Vous prenez une carte de la main du joueur qui vous a accusé.\nVous prenez le prochain tour.";
+			this.effetAssocie = new EffetW4();
 		}
 		else if (numCarte == 5) {
 			this.effet = "Vous prenez le prochain tour.";
+			this.effetAssocie = new EffetW1();
 		}
 		else if (numCarte == 6) {
 			this.effet = "Vous prenez le prochain tour.";
+			this.effetAssocie = new EffetW1();
 		}
 		else if (numCarte == 7) {
 			this.effet = "Vous choisissez le prochain joueur.";
+			this.effetAssocie = new EffetW7();
 		}
 		else if (numCarte == 8) {
 			this.effet = "Le joueur qui vous a accusé défausse une carte aléatoire de sa main.\nVous prenez le prochain tour.";
+			this.effetAssocie = new EffetW8();
 		}
 		else if (numCarte == 9) {
 			this.effet = "Vous choisissez le prochain joueur.\nDurant son tour, le joueur ciblé devra accuser un joueur autre que vous, si possible.";
+			this.effetAssocie = new EffetW9();
 		}
 		else if (numCarte == 10) {
 			this.effet = "Vous prenez le prochain tour.";
+			this.effetAssocie = new EffetW1();
 		}
 		else if (numCarte == 11) {
 			this.effet = "Vous prenez le prochain tour.";
+			this.effetAssocie = new EffetW1();
 		}
 		else if (numCarte == 12) {
 			this.effet = "Vous prenez le prochain tour.";
+			this.effetAssocie = new EffetW1();
 		}
 	}
 	
 	public Joueur executerEffet(int numCarte) {
-
-		System.out.println("Effet appliqué == " + effet); // à retirer par la suite
+		return this.effetAssocie.executionEffet();
+		/*System.out.println("Effet appliqué == " + effet); // à retirer par la suite
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		
@@ -100,7 +113,7 @@ public class Witch{
 			
 		}
 		
-		return null;
+		return null;*/
 	}
 	
 	public String toString() {
