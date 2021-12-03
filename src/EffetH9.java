@@ -7,10 +7,18 @@ public class EffetH9 extends Effet {
 		boolean visable = true;
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		
-		Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
-		choix.setMustAccuse(true);
-		instanceJeu.getEnTour().setAccusable(false);
-		return choix;	
-		
+		if (instanceJeu.getEnTour().isIA()) {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit le prochain joueur.");
+			Joueur choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+			choix.setMustAccuse(true);
+			instanceJeu.getEnTour().setAccusable(false);
+			return choix;
+		}
+		else {
+			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+			choix.setMustAccuse(true);
+			instanceJeu.getEnTour().setAccusable(false);
+			return choix;
+		}
 	}
 }

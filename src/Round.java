@@ -67,16 +67,20 @@ public class Round {
 	public Joueur jouerTour(Jeu Instance) {
 
 		//Affichage des infos générales du joueur en tour
-		Joueur prochainJoueur;
-		System.out.println("\n---------------Votre identité----------------\n");
-		if (Instance.getEnTour().getIdentiteAssociee().getIsWitch()) {System.out.println("Vous êtes une Witch.\n");} else {System.out.println("Vous êtes un Villager.\n");};
 		
+		
+		Joueur prochainJoueur;
+		
+		System.out.println("\n---------------Votre identité----------------\n");
+		if (Instance.getEnTour().getIdentiteAssociee().getIsWitch()) {System.out.print("Vous êtes une Witch ");} else {System.out.print("Vous êtes un Villager ");};
+		if (Instance.getEnTour().getIdentiteAssociee().getDevoilee()) {System.out.println("devoilé.\n");} else {System.out.println("encore en round.\n");};
 		System.out.println("-----------------Votre main------------------\n");
 		for (int i=0; i<Instance.getEnTour().getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().getCarteEnMain().get(i).getNomCarte() +"\n");};
 		if (Instance.getEnTour().getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
 		System.out.println("-------------Vos cartes révélées-------------\n");
-		for (int i=0; i<Instance.getEnTour().getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().getCarteEnMain().get(i).getNomCarte() +"\n");};
+		for (int i=0; i<Instance.getEnTour().getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +Instance.getEnTour().getCarteRevelees().get(i).getNomCarte() +"\n");};
 		if (Instance.getEnTour().getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
+		
 		
 		//Création de la boucle de choix du joueur
 		int choix = 0;
@@ -102,7 +106,7 @@ public class Round {
 					choix = ((JoueurVirtuel) Instance.getEnTour()).getStrategieActuelle().choisirActionTour();
 				}
 				
-			}
+			};
 			
 			//réinitialisation de l'effet de "Mauvais oeil".
 			Instance.getEnTour().setMustAccuse(false);
@@ -153,7 +157,7 @@ public class Round {
 						}
 							//Pour les IAs
 						else {
-							choixAccuse = ((JoueurVirtuel) Instance.getEnTour()).getStrategieActuelle().choisirAccuse();
+							choixAccuse = ((JoueurVirtuel) Instance.getEnTour()).getStrategieActuelle().choisirAccuse() + 1;
 						}
 						
 						//Si le choix correspond à un joueur ciblable
@@ -181,18 +185,24 @@ public class Round {
 					}
 				}
 				
-			}
+			};
 			
-			else if (choix == 2) {
-				if (Instance.getEnTour().getCarteEnMain().isEmpty()) {
-					//La boucle while va se réeffectuer avec choix =1, donc une accusation
-					System.out.println("Vous n'avez plus de cartes rumeurs !");
-					choix = 1;
-					
+			if (choix == 2) {
+				boolean peutJouerCarte = false;
+
+				for (int i=0; i<Instance.getEnTour().getCarteEnMain().size(); i++) {
+					if (((Instance.getEnTour().getCarteEnMain().get(i).getNumCarte() != 1 && Instance.getEnTour().getCarteEnMain().get(i).getNumCarte() != 2) || ((Instance.getEnTour().getCarteEnMain().get(i).getNumCarte() == 1 || Instance.getEnTour().getCarteEnMain().get(i).getNumCarte() == 2)) && Instance.getEnTour().getIdentiteAssociee().getDevoilee() == true) && (Instance.getEnTour().getCarteEnMain().get(i).getNumCarte() != 3 || (Instance.getEnTour().getCarteEnMain().get(i).getNumCarte() == 3 && !(Instance.getEnTour().getCarteRevelees().isEmpty())))) {
+						peutJouerCarte = true;
+					}
 				}
-				else {
+				if (peutJouerCarte == true) {
 					//Appelle de la méthode de jeu d'une carte rumeur, renvoie le prochain joueur (ce qui dépend des choix du joueur en tour)
 					return Instance.getEnTour().jouerCarteHunt();
+				}
+				else {
+					//La boucle while va se réeffectuer avec choix =1, donc une accusation
+					choix = 1;
+					System.out.println("Vous ne pouvez pas jouer de cartes hunts !");
 				}
 				
 			}

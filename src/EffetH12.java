@@ -6,23 +6,48 @@ public class EffetH12 extends Effet {
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
 		Scanner saisieUtilisateur = new Scanner(System.in);
+		Joueur choix;
 
-		Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous voler une carte rumeur révélée ?");
-		if (instanceJeu.getEnTour().getCarteRevelees() == null) {
-			System.out.println("Son tas de cartes rumeurs révélées est vide, dommage !");
+		if (instanceJeu.getEnTour().isIA()) {
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
 		}
 		else {
-			System.out.println("Voici ses cartes rumeurs révélées, choisissez la carte que vous voulez reprendre :");
-			choix.getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+choix.getCarteRevelees().indexOf(card) + " pour jouer " + card));
-			int choixCarte = saisieUtilisateur.nextInt();
-			while (choixCarte<0 || choixCarte>choix.getCarteRevelees().size()) {
-				System.out.println("Choix invalide !");
-				choixCarte = saisieUtilisateur.nextInt();
-			}
-			instanceJeu.getEnTour().prendreCarteRumeur(choix.getCarteRevelees().get(choixCarte));
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous voler une carte rumeur révélée ?");
 		}
 		
-		return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+		if (choix.getCarteRevelees().isEmpty()) {
+			System.out.println("Son tas de cartes rumeurs révélées est vide, dommage !");
+			if (instanceJeu.getEnTour().isIA() == false) {
+				return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+			}
+			else {
+				int choixJoueur = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur();
+				return instanceJeu.getJoueur(choixJoueur);
+			}
+			
+		}
+		else {
+			if (instanceJeu.getEnTour().isIA() == false) {
+				System.out.println("Voici ses cartes rumeurs révélées, choisissez la carte que vous voulez reprendre :");
+				choix.getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+choix.getCarteRevelees().indexOf(card) + " pour jouer " + card));
+				int choixCarte = saisieUtilisateur.nextInt();
+				while (choixCarte<0 || choixCarte>choix.getCarteRevelees().size()) {
+					System.out.println("Choix invalide !");
+					choixCarte = saisieUtilisateur.nextInt();
+				}
+				instanceJeu.getEnTour().prendreCarteRumeur(choix.getCarteRevelees().get(choixCarte));
+				
+				return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+			}
+			else {
+				int choixCarte = (int) (Math.random() * choix.getCarteRevelees().size());
+				instanceJeu.getEnTour().prendreCarteRumeur(choix.getCarteRevelees().get(choixCarte));
+				return instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+			}
+			
+		}
+		
+		
 
 	}
 }

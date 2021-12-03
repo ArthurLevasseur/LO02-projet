@@ -7,32 +7,70 @@ public class EffetH7 extends Effet {
 		boolean visable = true;
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		
-		System.out.println("De quel joueur souhaitez vous réveler l'identité ?");
-		Joueur selection = null;
-		for (int i=1 ; i<instanceJeu.getNombreJoueurs()+1 ; i++) {
-			visable = true;
-			for(CarteRumeur carte : instanceJeu.getJoueur(i-1).getCarteRevelees()) {
-				if (carte.getNumCarte() == 6) {
-					visable = false;
+		if (instanceJeu.getEnTour().isIA()) {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " Choisit un joueur à cibler avec la carte \"Un bûcher\"");
+			Joueur selection = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse());
+			int condition = -1;
+			while (condition<0) {
+				visable = true;
+				for(CarteRumeur carte : selection.getCarteRevelees()) {
+					if (carte.getNumCarte() == 6) {
+						visable = false;
+					}
+				}
+				if (visable == true) {
+					condition = 1;
+					
+				}
+				else {
+					selection = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse());
+					int compteur = 0;
+					int idAutreJoueur=-1;
+					for (int i=0; i<instanceJeu.getEnsembleJoueurs().length; i++) {
+						if ((instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) && instanceJeu.getJoueur(i) != instanceJeu.getEnTour() && instanceJeu.getJoueur(i).isAccusable()==true){
+							compteur += 1;
+							idAutreJoueur = i;
+						}
+					}
+					if (compteur == 1) {
+						System.out.println("Aucun joueur n'est ciblable.");
+						return instanceJeu.getJoueur(idAutreJoueur);
+					}
 				}
 			}
-			if (instanceJeu.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(i-1)!=instanceJeu.getEnTour() && visable == true) {
-				//i += 1;
-				System.out.println("Joueur " + (i) + ") " + instanceJeu.getJoueur(i-1).pseudo + " (points : " + instanceJeu.getJoueur(i-1).getPoints() + ")");
-			}
+			return selection.accusedBucher();
+			
 		}
-		
-		int choix = -1;
-		
-		while (choix<0 || choix>instanceJeu.getNombreJoueurs() || (instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == true) || instanceJeu.getJoueur(choix) == instanceJeu.getEnTour()) {
-			choix = saisieUtilisateur.nextInt();
-			if (0<choix && choix<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(choix) != instanceJeu.getEnTour()) {
-				selection = instanceJeu.getJoueur(choix-1);
+		else {
+			System.out.println("De quel joueur souhaitez vous réveler l'identité ?");
+			Joueur selection = null;
+			for (int i=1 ; i<instanceJeu.getNombreJoueurs()+1 ; i++) {
+				visable = true;
+				for(CarteRumeur carte : instanceJeu.getJoueur(i-1).getCarteRevelees()) {
+					if (carte.getNumCarte() == 6) {
+						visable = false;
+					}
+				}
+				if (instanceJeu.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(i-1)!=instanceJeu.getEnTour() && visable == true) {
+					//i += 1;
+					System.out.println("Joueur " + (i) + ") " + instanceJeu.getJoueur(i-1).pseudo + " (points : " + instanceJeu.getJoueur(i-1).getPoints() + ")");
+				}
 			}
+			
+			int choix = -1;
+			
+			while (choix<0 || choix>instanceJeu.getNombreJoueurs() || (instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == true) || instanceJeu.getJoueur(choix) == instanceJeu.getEnTour()) {
+				choix = saisieUtilisateur.nextInt();
+				if (0<choix && choix<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(choix) != instanceJeu.getEnTour()) {
+					selection = instanceJeu.getJoueur(choix-1);
+				}
+				else {
+					System.out.println("Choix invalide !");
+				}
+			}
+			
+			
+			return selection.accusedBucher();
 		}
-		
-		
-		return selection.accusedBucher();
-		
 	}
 }

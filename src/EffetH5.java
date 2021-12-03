@@ -7,8 +7,13 @@ public class EffetH5 extends Effet {
 		boolean visable = true;
 		Scanner saisieUtilisateur = new Scanner(System.in);
 		
-		Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
-		return choix;
-		
+		if (instanceJeu.getEnTour().isIA()) {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + "choisit le prochain joueur.");
+			return instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+		}
+		else {
+			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+			return choix;
+		}
 	}
 }

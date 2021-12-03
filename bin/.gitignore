@@ -1,5 +1,10 @@
-/EffetH1.class
+/CarteRumeur.class
+/Defausse.class
 /Effet.class
+/EffetH1.class
+/EffetH10.class
+/EffetH11.class
+/EffetH12.class
 /EffetH2.class
 /EffetH3.class
 /EffetH4.class
@@ -7,9 +12,6 @@
 /EffetH7.class
 /EffetH8.class
 /EffetH9.class
-/EffetH10.class
-/EffetH11.class
-/EffetH12.class
 /EffetW1.class
 /EffetW2.class
 /EffetW3.class
@@ -17,3 +19,14 @@
 /EffetW7.class
 /EffetW8.class
 /EffetW9.class
+/Hunt.class
+/Identite.class
+/Jeu.class
+/Joueur.class
+/JoueurPhysique.class
+/JoueurVirtuel.class
+/Round.class
+/Strategie.class
+/StrategieSimple.class
+/Witch.class
+/test.class

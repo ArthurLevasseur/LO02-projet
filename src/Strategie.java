@@ -11,4 +11,8 @@ public abstract class Strategie {
 	
 	abstract public int choisirAccuse();
 	
+	abstract public int choisirProchainJoueur();
+	
+	abstract public int choisirProchainJoueurWitch();
+	
 }

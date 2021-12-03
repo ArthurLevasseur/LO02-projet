@@ -153,7 +153,7 @@ public class Jeu {
 			}
 		
 		}*/
-		//Collections.shuffle(this.ensembleCartes);
+		Collections.shuffle(this.ensembleCartes);
 		
 		System.out.println("Distribution des cartes Rumeurs...");
 		if (this.nombreDefausse == 2) {
@@ -284,8 +284,9 @@ public class Jeu {
 						Instance.gagnants.remove(i);
 					}
 					System.out.println("Le gagnant final de ce jeu est donc le joueur : " + Instance.gagnants.get(0).pseudo);
-					
+					System.out.println("Bravo à lui et à une prochaine !");
 				}
+				System.exit(1);
 			}
 			else if (choix == 2) {
 				break;
