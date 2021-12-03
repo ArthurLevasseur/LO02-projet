@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetH12 extends Effet {
+	
+	public EffetH12() {
+		super();
+		this.explication = "Prenez une carte rumeur révélée de n'importe quel joueur dans votre main.\nVous choisissez le prochain joueur.";
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

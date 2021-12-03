@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetH3 extends Effet {
+	
+	public EffetH3() {
+		super();
+		this.explication = "Vous reprenez une de vos cartes rumeurs déjà révélées dans votre main.\nVous choisissez le prochain joueur.";
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

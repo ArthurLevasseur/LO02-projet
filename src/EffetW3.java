@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetW3 extends Effet {
+	
+	public EffetW3() {
+		super();
+		this.explication = "Vous reprenez une de vos propres cartes rumeurs déjà révélées dans votre main.\nVous prenez le prochain tour.";
+	}
+	
 
 	public Joueur executionEffet() {
 

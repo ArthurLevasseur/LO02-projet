@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetW2 extends Effet {
+	
+	public EffetW2() {
+		super();
+		this.explication = "Vous défaussez une carte de votre main.\nVous prenez le prochain tour.";
+	}
+
 
 	public Joueur executionEffet() {
 
@@ -20,6 +26,7 @@ public class EffetW2 extends Effet {
 				}
 			}
 		}
+		
 		else {
 			
 			Scanner saisieUtilisateur = new Scanner(System.in);

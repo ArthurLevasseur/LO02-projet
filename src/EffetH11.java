@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetH11 extends Effet {
+	
+	public EffetH11() {
+		super();
+		this.explication = "Vous ajoutez une des cartes défaussées à votre main, et vous vous défaussez de cette carte.\nVous prenez le prochain tour";
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

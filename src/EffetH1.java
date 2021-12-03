@@ -2,6 +2,12 @@ import java.util.Scanner;
 
 public class EffetH1 extends Effet {
 	
+	
+	public EffetH1() {
+		super();
+		this.explication = "Vous révélez l'identité d'un autre joueur.\n	- Si c'est une sorcière, vous gagnez 2 points et prenez le prochain tour.\n	- Si c'est un villageois, vous perdez 2 points et il prend le prochain tour.";
+	}
+
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

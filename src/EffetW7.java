@@ -1,6 +1,11 @@
 import java.util.Scanner;
 
 public class EffetW7 extends Effet {
+	
+	public EffetW7() {
+		super();
+		this.explication = "Vous choisissez le prochain joueur.";
+	}
 
 	public Joueur executionEffet() {
 

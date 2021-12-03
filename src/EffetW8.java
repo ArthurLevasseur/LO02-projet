@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetW8 extends Effet {
+	
+	public EffetW8() {
+		super();
+		this.explication = "Le joueur qui vous a accusé défausse une carte aléatoire de sa main.\nVous prenez le prochain tour.";
+	}
+	
 
 	public Joueur executionEffet() {
 

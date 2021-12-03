@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetW4 extends Effet {
+	
+	public EffetW4() {
+		super();
+		this.explication = "Vous prenez une carte de la main du joueur qui vous a accusé.\nVous prenez le prochain tour.";
+	}
+	
 
 	public Joueur executionEffet() {
 

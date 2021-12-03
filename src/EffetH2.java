@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetH2 extends Effet {
+	
+	public EffetH2() {
+		super();
+		this.explication = "Vous choisissez le prochain joueur.\nAvant son tour, vous regardez secrètement l'identité du joueur";
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

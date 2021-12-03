@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EffetH8 extends Effet {
+	
+	public EffetH8() {
+		super();
+		this.explication = "Vous révélez votre identité.\n	- Si vous êtes une sorcière, le joueur à votre gauche prend le prochain tour.\n	- Si vous êtes un villageois, vous choisissez le prochain joueur.";
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

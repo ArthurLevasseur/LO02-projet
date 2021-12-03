@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
 public class EffetW9 extends Effet {
+	
+	public EffetW9() {
+		super();
+		this.explication = "Vous choisissez le prochain joueur.\nDurant son tour, le joueur ciblé devra accuser un joueur autre que vous, si possible.";
+	}
+	
 
 	public Joueur executionEffet() {
 
