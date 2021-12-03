@@ -5,7 +5,7 @@ public class EffetH10 extends Effet {
 	
 	public EffetH10() {
 		super();
-		this.explication = "Vous choisissez le prochain joueur.\nAvant son tour, vous regardez secrètement l'identité du joueur";
+		this.explication = "Révelez votre identité. Si vous êtes un villageois, vous choisissez qui joue. Si vous êtes une sorcière, le joueur à votre gauche joue.";
 	}
 	
 	public Joueur executionEffet() {
