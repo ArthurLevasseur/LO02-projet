@@ -94,7 +94,7 @@ public class Round {
 			}
 			//Choix du joueur
 			else {
-				System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)");
+				System.out.println("Que voulez vous faire?\n\n1) Accuser un autre joueur.\n2) Jouer une carte Rumeur (effet Hunt!)\n");
 				
 				//Pour un joueur physique
 				if (Instance.getEnTour() instanceof JoueurPhysique) {
@@ -113,14 +113,14 @@ public class Round {
 			
 			if (choix == 1) {
 				//Le joueur décide d'accuser.
-				System.out.println("Qui voulez vous accuser?");
+				System.out.println("Qui voulez vous accuser?\n");
 				int compteur = 0;
 
 				//Affichage des joueurs ciblables.
 				for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
 					if (Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && Instance.getJoueur(i-1)!=Instance.getEnTour() && Instance.getJoueur(i-1).isAccusable()==true) {
 						compteur += 1;
-						System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+						System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + " (points : " + Instance.getJoueur(i-1).getPoints() + ")\n");
 					}
 				}
 				//Dans le cas de 2 derniers joueurs en round et l'un d'eux n'est pas accusable

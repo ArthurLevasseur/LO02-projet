@@ -45,7 +45,7 @@ public class Identite {
 			int choix = 0;
 			Scanner saisieUtilisateur = new Scanner(System.in);
 			while (choix <= 0 || choix >= 3) {
-				System.out.println("Joueur " + this.joueurAssocie.pseudo + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.");
+				System.out.println("Joueur " + this.joueurAssocie.pseudo + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.\n");
 				choix = saisieUtilisateur.nextInt();
 			}
 			

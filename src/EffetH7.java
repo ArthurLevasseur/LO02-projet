@@ -65,9 +65,9 @@ public class EffetH7 extends Effet {
 			
 			int choix = -1;
 			
-			while (choix<0 || choix>instanceJeu.getNombreJoueurs() || (instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == true) || instanceJeu.getJoueur(choix) == instanceJeu.getEnTour()) {
+			while (choix<1 || choix>instanceJeu.getNombreJoueurs() || (instanceJeu.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true) || instanceJeu.getJoueur(choix-1) == instanceJeu.getEnTour()) {
 				choix = saisieUtilisateur.nextInt();
-				if (0<choix && choix<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(choix) != instanceJeu.getEnTour()) {
+				if (0<choix && choix<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(choix-1) != instanceJeu.getEnTour()) {
 					selection = instanceJeu.getJoueur(choix-1);
 				}
 				else {

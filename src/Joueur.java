@@ -169,7 +169,7 @@ public abstract class Joueur {
 			while (choix<0 || choix > this.carteEnMain.size()-1 || ((this.carteEnMain.get(choix).getNumCarte() == 2 || this.carteEnMain.get(choix).getNumCarte() == 1) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
 				choix = (int)(Math.random() * this.carteEnMain.size());
 			}
-			
+			System.out.println(this.pseudo + " a décidé de jouer la carte " + this.carteEnMain.get(choix).getNomCarte());
 		}
 		else {
 			System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
@@ -290,6 +290,10 @@ public abstract class Joueur {
 		else {
 			int choix;
 			System.out.println(this.pseudo + " choisit entre révéler son identité ou défausse une de ses cartes rumeurs.");
+			if (this.identiteAssociee.getIsWitch() == false) {
+				instanceJeu.getEnTour().points -= 1;
+				return this.revelerIdentite();
+			}
 			if (this.carteEnMain.isEmpty()) {
 				System.out.println(this.pseudo + " ne peut pas défausser une carte, il n'en avez plus en main ! Il doit donc révéler son identité.");
 				if (this.identiteAssociee.getIsWitch() == false){
@@ -298,8 +302,8 @@ public abstract class Joueur {
 				return this.revelerIdentite();
 			}
 			else {
-				choix = (int)(Math.random() * 2);
-				if (choix == 0) {
+				choix = (int)(Math.random() * 1.2);
+				if (choix == 1) {
 					System.out.println(this.pseudo + " décide de révéler son identité.");
 					if (this.identiteAssociee.getIsWitch() == false){
 						instanceJeu.getEnTour().points -= 1;

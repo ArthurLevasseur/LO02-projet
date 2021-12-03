@@ -101,10 +101,10 @@ public class Jeu {
 				nbIA = choix;
 			}
 		}
-		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + nbPhy + "\n	- Nombre de joueurs virtuels : " + nbIA);
+		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + nbPhy + "\n	- Nombre de joueurs virtuels : " + nbIA + "\n");
 		
 		
-		System.out.println("Création des joueurs...");
+		System.out.println("Création des joueurs...\n");
 		
 		this.nombreJoueurs = nbPhy + nbIA;
 		this.ensembleJoueurs = new Joueur[this.nombreJoueurs];
@@ -155,7 +155,7 @@ public class Jeu {
 		}*/
 		Collections.shuffle(this.ensembleCartes);
 		
-		System.out.println("Distribution des cartes Rumeurs...");
+		System.out.println("Distribution des cartes Rumeurs...\n");
 		if (this.nombreDefausse == 2) {
 			tasDefausse.defausserUneCarte(this.ensembleCartes.get(0));
 			tasDefausse.defausserUneCarte(this.ensembleCartes.get(1));
