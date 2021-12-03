@@ -15,7 +15,7 @@ public class EffetW7 extends Effet {
 		
 		if (instanceJeu.getAccused().isIA()) {
 			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit le prochain joueur.");
-			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueurWitch());
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueurWitch());
 		}
 		else {
 			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
