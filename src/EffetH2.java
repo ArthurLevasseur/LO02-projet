@@ -11,7 +11,7 @@ public class EffetH2 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		
 		if (instanceJeu.getEnTour().isIA() == false) {
 			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur, son identité sera secrètement révelée.");

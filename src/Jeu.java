@@ -34,11 +34,11 @@ public class Jeu {
 			this.getJoueur(i).createCarteEnMain();
 			this.getJoueur(i).createCarteRevelees();
 		}
-		this.tasDefausse.contenu = new ArrayList<CarteRumeur>();
+		this.tasDefausse.resetContenu();
 	}
 	
 	public Joueur selectionnerAdversaire(Joueur selecteur, String Message) {
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt scan = SaisirInt.getInstance();
 		System.out.println(Message);
 		Joueur selection = null;
 		for (int i=1 ; i<Instance.getNombreJoueurs()+1 ; i++) {
@@ -60,7 +60,7 @@ public class Jeu {
 		int choix = -1;
 		
 		while (choix<0 || choix>Instance.getNombreJoueurs() || !(((Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(choix-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(choix-1)!=selecteur)) {
-			choix = saisieUtilisateur.nextInt();
+			choix = scan.nextInt();
 			if (0<choix && choix<Instance.getNombreJoueurs()+1 && ((Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(choix-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(choix-1)!=selecteur) {
 				selection = this.ensembleJoueurs[choix-1];
 			}
@@ -73,14 +73,14 @@ public class Jeu {
 	}
 	
 	private Jeu(){
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt scan = SaisirInt.getInstance();
 		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
 		int choix = 0;
 		int joueursPhysiques = 0;
 		int nbPhy = 0;
 		int nbIA = 0;
 		while (choix < 1 || choix > 6) {
-			choix = saisieUtilisateur.nextInt();
+			choix = scan.nextInt();
 			if (choix < 1 || choix > 6) {
 				System.out.println("Veuillez choisir entre 1 et 6 joueurs");
 			}
@@ -93,7 +93,7 @@ public class Jeu {
 		System.out.println("Combien de joueurs virtuels voulez vous dans votre partie ? (minimum 3 et maximum 6 joueurs physiques et virtuels en combinés)");
 		choix = -1;
 		while ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 0 || choix > 6)) {
-			choix = saisieUtilisateur.nextInt();
+			choix = scan.nextInt();
 			if ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 0 || choix > 6)) {
 				System.out.println("Choix invalide");
 			}
@@ -250,12 +250,12 @@ public class Jeu {
 	
 	
 	public static void main(String[] args) throws InterruptedException {
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt scan = SaisirInt.getInstance();
 		System.out.println("Bienvenu dans Witch Hunt !");
 		int choix = 0;
 		while (choix != 2) {
 			System.out.println("Que voulez vous faire (entrez l'indice de vos choix) : \n1) Lancer une nouvelle partie \n2) Quitter le programme");
-			choix = saisieUtilisateur.nextInt();
+			choix = scan.nextInt();
 			if (choix == 1) {
 				
 				Instance = Jeu.getInstance();

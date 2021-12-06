@@ -24,7 +24,7 @@ public class EffetW4 extends Effet {
 			}
 			else {
 				instanceJeu.getEnTour().getCarteEnMain().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().getCarteEnMain().indexOf(card) + " pour prendre " + card));
-				Scanner saisieUtilisateur = new Scanner(System.in);
+				SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 				choix = saisieUtilisateur.nextInt();
 			}
 			CarteRumeur carteARecuperer = instanceJeu.getEnTour().getCarteEnMain().get(choix);

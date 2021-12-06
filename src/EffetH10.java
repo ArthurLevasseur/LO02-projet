@@ -12,7 +12,7 @@ public class EffetH10 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		
 		instanceJeu.getEnTour().getIdentiteAssociee().ReveleIdentite();
 		if (instanceJeu.getEnTour().getIdentiteAssociee().getIsWitch() == true) {

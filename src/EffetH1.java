@@ -12,7 +12,7 @@ public class EffetH1 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		Joueur selection = null;
 		
 		if (instanceJeu.getEnTour().isIA() == false) {

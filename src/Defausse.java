@@ -4,7 +4,7 @@ public class Defausse {
 
 	static Defausse instance;
 	//public CarteRumeur[] contenu = new CarteRumeur[12];
-	ArrayList<CarteRumeur> contenu = new ArrayList<CarteRumeur>();
+	private ArrayList<CarteRumeur> contenu = new ArrayList<CarteRumeur>();
 	//private int nbCartes = 0;
 	
 	private Defausse() {
@@ -24,6 +24,10 @@ public class Defausse {
 
 	public ArrayList<CarteRumeur> getContenu() {
 		return contenu;
+	}
+	
+	public void resetContenu() {
+		this.contenu = new ArrayList<CarteRumeur>();
 	}
 
 	public CarteRumeur seFairePrendreCarteRumeur(int indexOfCarte) {

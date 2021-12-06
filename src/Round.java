@@ -84,7 +84,7 @@ public class Round {
 		
 		//Création de la boucle de choix du joueur
 		int choix = 0;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		while (choix !=2) {
 			
 			//Si le joueur est ciblé par la carte "Mauvais oeil", son choix est automatiquement d'accuser un autre joueur.

@@ -11,7 +11,7 @@ public class EffetH11 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 
 		if (instanceDefausse.getContenu() == null) {
 			System.out.println("Le tas de défausse est vide !");

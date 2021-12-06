@@ -29,7 +29,7 @@ public class EffetW2 extends Effet {
 		
 		else {
 			
-			Scanner saisieUtilisateur = new Scanner(System.in);
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 			choix = saisieUtilisateur.nextInt();
 			if (instanceJeu.getAccused().getCarteEnMain().size() == 1) {
 				System.out.println("Vous ne pouvez défausser que cette carte même car votre main est vide");

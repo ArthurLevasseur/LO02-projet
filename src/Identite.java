@@ -43,10 +43,23 @@ public class Identite {
 		
 		else {
 			int choix = 0;
-			Scanner saisieUtilisateur = new Scanner(System.in);
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+			System.out.println("\n---------------Votre identité----------------\n");
+			if (joueurAsso.getIdentiteAssociee().getIsWitch()) {System.out.print("Vous êtes une Witch ");} else {System.out.print("Vous êtes un Villager ");};
+			if (joueurAsso.getIdentiteAssociee().getDevoilee()) {System.out.println("devoilé.\n");} else {System.out.println("encore en round.\n");};
+			System.out.println("-----------------Votre main------------------\n");
+			for (int i=0; i<joueurAsso.getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +joueurAsso.getCarteEnMain().get(i).getNomCarte() +"\n");};
+			if (joueurAsso.getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
+			System.out.println("-------------Vos cartes révélées-------------\n");
+			for (int i=0; i<joueurAsso.getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +joueurAsso.getCarteRevelees().get(i).getNomCarte() +"\n");};
+			if (joueurAsso.getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
+			
 			while (choix <= 0 || choix >= 3) {
 				System.out.println("Joueur " + this.joueurAssocie.pseudo + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.\n");
 				choix = saisieUtilisateur.nextInt();
+				if (choix <=0 || choix >= 3) {
+					System.out.println("Choix invalide ! veuillez choisir entre 1 et 2.");
+				}
 			}
 			
 			if (choix == 1) {
@@ -57,9 +70,6 @@ public class Identite {
 			else if (choix == 2) {
 				this.isWitch = true;
 				this.devoilee = false;
-			}
-			else {
-				System.out.println("Choix invalide ! veuillez choisir entre 1 et 2.");
 			}
 		}
 		

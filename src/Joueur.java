@@ -75,7 +75,7 @@ public abstract class Joueur {
 
 		if (this.isIA() == false) {
 			System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
-			Scanner saisieUtilisateur = new Scanner(System.in);
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 			int choix=0;
 			while (choix!=1) {
 
@@ -134,6 +134,15 @@ public abstract class Joueur {
 			}
 		}
 		else {
+			System.out.println("\n---------------Votre identité----------------\n");
+			if (this.getIdentiteAssociee().getIsWitch()) {System.out.print("Vous êtes une Witch ");} else {System.out.print("Vous êtes un Villager ");};
+			if (this.getIdentiteAssociee().getDevoilee()) {System.out.println("devoilé.\n");} else {System.out.println("encore en round.\n");};
+			System.out.println("-----------------Votre main------------------\n");
+			for (int i=0; i<this.getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +this.getCarteEnMain().get(i).getNomCarte() +"\n");};
+			if (this.getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
+			System.out.println("-------------Vos cartes révélées-------------\n");
+			for (int i=0; i<this.getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +this.getCarteRevelees().get(i).getNomCarte() +"\n");};
+			if (this.getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
 			System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
 			
 			for(CarteRumeur card : this.carteEnMain) {
@@ -146,7 +155,7 @@ public abstract class Joueur {
 				}
 			}
 			
-			Scanner saisieUtilisateur = new Scanner(System.in);
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 			choix = saisieUtilisateur.nextInt();
 			while (choix<0 || choix > this.carteEnMain.size()-1 || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
 				System.out.println("Choix Incompatible !");	
@@ -190,7 +199,7 @@ public abstract class Joueur {
 				}
 			}
 			
-			Scanner saisieUtilisateur = new Scanner(System.in);
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 			choix = saisieUtilisateur.nextInt();
 			while (choix<0 || choix > this.carteEnMain.size()-1 || ((this.carteEnMain.get(choix).getNumCarte() == 2 || this.carteEnMain.get(choix).getNumCarte() == 1) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
 				System.out.println("Choix Incompatible !");	
@@ -254,7 +263,7 @@ public abstract class Joueur {
 		Jeu instanceJeu = Jeu.getInstance();
 		if (this.isIA() == false) {
 			System.out.println("Joueur " + this.getPseudo() + ", on vous a ciblé avec la carte \"Un bûcher\", voulez-vous :\n1) Révéler votre identité.\n2) Défausser une de vos cartes rumeurs." );
-			Scanner saisieUtilisateur = new Scanner(System.in);
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 			int choix = saisieUtilisateur.nextInt();
 			if (this.carteEnMain.isEmpty()) {
 				System.out.println("vous ne pouvez pas défausser une carte, vous n'en avez plus en main ! Vous devrez donc révéler votre identité.");

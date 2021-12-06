@@ -1,7 +1,7 @@
 
 abstract public class Effet {
 	
-	String explication;
+	protected String explication;
 
 	public abstract Joueur executionEffet();
 	

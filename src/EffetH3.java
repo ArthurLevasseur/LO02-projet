@@ -11,7 +11,7 @@ public class EffetH3 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		
 		if (instanceJeu.getEnTour().getCarteRevelees().isEmpty()) {
 			System.out.println("Votre tas de cartes rumeurs révélées est vide !");

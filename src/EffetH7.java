@@ -11,7 +11,7 @@ public class EffetH7 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Scanner saisieUtilisateur = new Scanner(System.in);
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		
 		if (instanceJeu.getEnTour().isIA()) {
 			System.out.println(instanceJeu.getEnTour().getPseudo() + " Choisit un joueur à cibler avec la carte \"Un bûcher\"");
