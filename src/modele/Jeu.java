@@ -2,9 +2,11 @@ package modele;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+import vue.*;
 
 public class Jeu {
 	
+	private static Vue vueActuelle;
 	private int nombreJoueurs;
 	private int nombrePhy;
 	private int nombreIA;
@@ -14,16 +16,24 @@ public class Jeu {
 	private Joueur accused;
 	//private CarteRumeur[] ensembleCartes;
 	private ArrayList<CarteRumeur> ensembleCartes = new ArrayList<CarteRumeur>();
-	private Joueur[] ensembleJoueurs;
+	private ArrayList<Joueur> ensembleJoueurs = new ArrayList<Joueur>();
 	private Defausse tasDefausse;
 	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
+	
+	public static Vue getVueActuelle() {
+		return Jeu.vueActuelle;
+	}
+	
+	public static void setVueActuelle(Vue vue) {
+		Jeu.vueActuelle = vue;
+	}
 	
 	public int getNombreJoueurs() {
 		return this.nombreJoueurs;
 	}
 	
 	public Joueur getJoueur(int i) {
-		return this.ensembleJoueurs[i];
+		return this.ensembleJoueurs.get(i);
 	}
 	
 	public void setGagnants(Joueur gagnantDuJeu) {
@@ -31,7 +41,7 @@ public class Jeu {
 	}
 	
 	public void retirerCartes() {
-		for (int i=0;i<this.ensembleJoueurs.length;i++) {
+		for (int i=0;i<this.ensembleJoueurs.size();i++) {
 			this.getJoueur(i).createCarteEnMain();
 			this.getJoueur(i).createCarteRevelees();
 		}
@@ -63,7 +73,7 @@ public class Jeu {
 		while (choix<0 || choix>Instance.getNombreJoueurs() || !(((Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(choix-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(choix-1)!=selecteur)) {
 			choix = scan.nextInt();
 			if (0<choix && choix<Instance.getNombreJoueurs()+1 && ((Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(choix-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(choix-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(choix-1)!=selecteur) {
-				selection = this.ensembleJoueurs[choix-1];
+				selection = this.ensembleJoueurs.get(choix-1);
 			}
 			else {
 				System.out.println("Choix invalide !");
@@ -73,52 +83,39 @@ public class Jeu {
 		return selection;
 	}
 	
-	private Jeu(){
-		SaisirInt scan = SaisirInt.getInstance();
-		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
-		int choix = 0;
-		int joueursPhysiques = 0;
-		int nbPhy = 0;
-		int nbIA = 0;
-		while (choix < 1 || choix > 6) {
-			choix = scan.nextInt();
-			if (choix < 1 || choix > 6) {
-				System.out.println("Veuillez choisir entre 1 et 6 joueurs");
-			}
-			else {
-				nbPhy = choix;
-			}
-		}
-		
-		//initialisation du nombre de joueurs virtuels
-		System.out.println("Combien de joueurs virtuels voulez vous dans votre partie ? (minimum 3 et maximum 6 joueurs physiques et virtuels en combinés)");
-		choix = -1;
-		while ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 0 || choix > 6)) {
-			choix = scan.nextInt();
-			if ((choix + nbPhy < 3 || choix + nbPhy > 6) || (choix < 0 || choix > 6)) {
-				System.out.println("Choix invalide");
-			}
-			else {
-				nbIA = choix;
-			}
-		}
-		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + nbPhy + "\n	- Nombre de joueurs virtuels : " + nbIA + "\n");
-		
+	
+	
+	public int getNombrePhy() {
+		return nombrePhy;
+	}
+
+	public void setNombrePhy(int nombrePhy) {
+		this.nombrePhy = nombrePhy;
+	}
+
+	public int getNombreIA() {
+		return nombreIA;
+	}
+
+	public void setNombreIA(int nombreIA) {
+		this.nombreIA = nombreIA;
+	}
+	
+	public void initGame() {
+		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + this.nombrePhy + "\n	- Nombre de joueurs virtuels : " + this.nombreIA + "\n");
 		
 		System.out.println("Création des joueurs...\n");
 		
-		this.nombreJoueurs = nbPhy + nbIA;
-		this.ensembleJoueurs = new Joueur[this.nombreJoueurs];
-		for (int i = 0; i < nbPhy; i++) {
-			this.ensembleJoueurs[i] = new JoueurPhysique();
+		this.nombreJoueurs = this.nombrePhy + this.nombreIA;
+		for (int i = 0; i < this.nombrePhy; i++) {
+			this.ensembleJoueurs.add(new JoueurPhysique());
 		}
-		for (int i = 0; i < nbIA; i++) {
-			this.ensembleJoueurs[i + nbPhy] = new JoueurVirtuel();
+		for (int i = 0; i < this.nombreIA; i++) {
+			this.ensembleJoueurs.add(new JoueurVirtuel());
 		}
 		
 		System.out.println("Création de la défausse...");
 		//this.nombreJoueurs = nbPhy; // à modifier, le nombre de joueurs = nombre de joueurs totaux
-		this.nombreIA = nbIA;
 		this.tasDefausse = Defausse.getInstance();
 		
 		
@@ -128,8 +125,12 @@ public class Jeu {
 			this.ensembleCartes.add(new CarteRumeur());
 			//System.out.println(this.ensembleCartes[i]);
 		}
+	}
+
+	private Jeu(){	
 		
 	}
+	
 	 /*TEST DU TABLEAU DE CARTES DU DEBUT
 	public void afficherCartes() {
 		for (int i = 0; i < 12; i++) {
@@ -161,26 +162,26 @@ public class Jeu {
 			tasDefausse.defausserUneCarte(this.ensembleCartes.get(0));
 			tasDefausse.defausserUneCarte(this.ensembleCartes.get(1));
 			for (int i = 0; i < 5 ; i++) {
-				this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2+2));
-				this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2+3));
+				this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*2+2));
+				this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*2+3));
 			}
 		}
 		else {
 			for (int i = 0; i < nombreJoueurs ; i++) {
 				if (nombreJoueurs == 3) {
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4));
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4+1));
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4+2));
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*4+3));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*4));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*4+1));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*4+2));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*4+3));
 				}
 				else if (nombreJoueurs == 4) {
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*3));
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*3+1));
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*3+2));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*3));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*3+1));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*3+2));
 				}
 				else { //=6
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2));
-					this.ensembleJoueurs[i].prendreCarteRumeur(this.ensembleCartes.get(i*2+1));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*2));
+					this.ensembleJoueurs.get(i).prendreCarteRumeur(this.ensembleCartes.get(i*2+1));
 				}
 			}
 		}
@@ -194,10 +195,47 @@ public class Jeu {
 		
 	}
 	
+	public void determinerGagnant() {
+		
+		int maxPoints = 0;
+		
+		// déterminer quel est le max de points
+		for (Joueur j : ensembleJoueurs) {
+			if (j.getPoints() > maxPoints) {
+				maxPoints = j.getPoints();
+			}	
+		}
+		
+		// déterminer les joueurs qui ont le max de points tout en étant supérieurs à 5 = le ou les gagnants
+		for (Joueur j : ensembleJoueurs) {
+			if (j.getPoints() == maxPoints && j.getPoints() >= 5) {
+				gagnants.add(j);
+			}
+		}
+		
+		if (Instance.gagnants.size()==1) {
+			System.out.print("Bravo ");
+			Instance.gagnants.forEach(joueur -> System.out.print(joueur.pseudo +", "));
+			System.out.println("vous avez gagné la partie !");
+		}
+		
+		if (Instance.gagnants.size()>1) {
+			try {
+				this.jouerTieBreaker();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 	public void orgaRounds() {
+		
+		Jeu instanceJeu = Jeu.getInstance();
 		int maxPoints = 0;
 		//le tout premier joueur est choisi aléatoirement
-		int premierJoueur = (int) (Math.random() * Instance.nombreJoueurs);
+		int premierJoueur = (int) (Math.random() * instanceJeu.nombreJoueurs);
 		while (maxPoints < 5) {
 			
 			//Les cartes des mains des joueurs, leurs cartes révélées ainsi que la défausse sont réinitialisées
@@ -206,24 +244,49 @@ public class Jeu {
 			this.distributionCartesRumeurs();
 		
 			//Création d'un round (contenant le déroulement du round aussi)
-			Round roundEnCours = new Round(Instance, Instance.getJoueur(premierJoueur));
+			Round roundEnCours = new Round(instanceJeu, instanceJeu.getJoueur(premierJoueur));
 			
-			
+			this.determinerGagnant();
 			//Analyse si un joueur a atteint les 5 points à l'aide de maxPoints à la fin d'un round
-			for (int i=0; i<this.nombreJoueurs; i++ ) {
-				if (this.ensembleJoueurs[i].getPoints() > maxPoints) {
-					maxPoints = this.ensembleJoueurs[i].getPoints();
+			/*for (int i=0; i<this.nombreJoueurs; i++ ) {
+				if (this.ensembleJoueurs.get(i).getPoints() > maxPoints) {
+					maxPoints = this.ensembleJoueurs.get(i).getPoints();
 				}
-			}
+			}*/
+			
 			
 		}
-		//Affichage du/des gagnant(s) de la partie.
-		System.out.print("Bravo ");
-		Instance.gagnants.forEach(Joueur -> System.out.print(Joueur.pseudo +", "));
-		System.out.println("vous avez gagné la partie !");
 		
 			
 		
+	}
+	
+	public void jouerTieBreaker() throws InterruptedException {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		System.out.print(". ");
+		TimeUnit.SECONDS.sleep(2);
+		System.out.print(". ");
+		TimeUnit.SECONDS.sleep(2);
+		System.out.println(". ");
+		TimeUnit.SECONDS.sleep(2);
+		System.out.println("Mais il ne peut avoir qu'un gagnant");
+		System.out.println("Les " + instanceJeu.gagnants.size() + " joueurs sortent un couteau et se départagent dans un duel jusqu'à la mort !");
+		TimeUnit.SECONDS.sleep(2);
+		while (instanceJeu.gagnants.size()>1) {
+			System.out.print(". ");
+			TimeUnit.SECONDS.sleep(2);
+			System.out.print(". ");
+			TimeUnit.SECONDS.sleep(2);
+			System.out.println(". ");
+			TimeUnit.SECONDS.sleep(2);
+			int i = (int) (Math.random() * instanceJeu.gagnants.size());
+			System.out.println("Le joueur " + instanceJeu.gagnants.get(i).pseudo + " tombe au combat !");
+			instanceJeu.gagnants.remove(i);
+		}
+		System.out.println("Le gagnant final de ce jeu est donc le joueur : " + instanceJeu.gagnants.get(0).pseudo);
+		System.out.println("Bravo à lui et à une prochaine !");
 	}
 	
 	public Joueur getEnTour() {
@@ -249,64 +312,31 @@ public class Jeu {
         return Instance;
     }
 	
-	
-	public static void main(String[] args) throws InterruptedException {
-		SaisirInt scan = SaisirInt.getInstance();
-		System.out.println("Bienvenu dans Witch Hunt !");
-		int choix = 0;
-		while (choix != 2) {
-			System.out.println("Que voulez vous faire (entrez l'indice de vos choix) : \n1) Lancer une nouvelle partie \n2) Quitter le programme");
-			choix = scan.nextInt();
-			if (choix == 1) {
-				
-				Instance = Jeu.getInstance();
-				
-				Instance.orgaRounds();
-				
-				if (Instance.gagnants.size()>1) {
-					System.out.print(". ");
-					TimeUnit.SECONDS.sleep(2);
-					System.out.print(". ");
-					TimeUnit.SECONDS.sleep(2);
-					System.out.println(". ");
-					TimeUnit.SECONDS.sleep(2);
-					System.out.println("Mais il ne peut avoir qu'un gagnant");
-					System.out.println("Les " + Instance.gagnants.size() + " joueurs sortent un couteau et se départagent dans un duel jusqu'à la mort !");
-					TimeUnit.SECONDS.sleep(2);
-					while (Instance.gagnants.size()>1) {
-						System.out.print(". ");
-						TimeUnit.SECONDS.sleep(2);
-						System.out.print(". ");
-						TimeUnit.SECONDS.sleep(2);
-						System.out.println(". ");
-						TimeUnit.SECONDS.sleep(2);
-						int i = (int) (Math.random() * Instance.gagnants.size());
-						System.out.println("Le joueur " + Instance.gagnants.get(i).pseudo + " tombe au combat !");
-						Instance.gagnants.remove(i);
-					}
-					System.out.println("Le gagnant final de ce jeu est donc le joueur : " + Instance.gagnants.get(0).pseudo);
-					System.out.println("Bravo à lui et à une prochaine !");
-				}
-				System.exit(1);
-			}
-			else if (choix == 2) {
-				break;
-			}
-			else {
-				System.out.println("veuillez choisir entre 1 et 2 !\n");
-			}
-			
-			
-		}
-		System.out.println("A une prochaine !");
-		System.exit(1);
-	}
 
-	public Joueur[] getEnsembleJoueurs() {
+	public ArrayList<Joueur> getEnsembleJoueurs() {
 		return ensembleJoueurs;
 	}
 
-	public void setEnsembleJoueurs(Joueur[] ensembleJoueurs) {
+	public void setEnsembleJoueurs(ArrayList<Joueur> ensembleJoueurs) {
 		this.ensembleJoueurs = ensembleJoueurs;
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		
+		Jeu.vueActuelle = new VueConsole();
+		
+		//démarrage du jeu
+		int choixDemarrer = Jeu.getVueActuelle().demarrerJeu();
+		if (choixDemarrer == 1) {
+			Jeu instanceJeu = Jeu.getInstance();
+			instanceJeu.nombrePhy = instanceJeu.getVueActuelle().demanderNombreJoueursPhysiques();
+			instanceJeu.nombreIA = instanceJeu.getVueActuelle().demanderNombreJoueursVirtuels();
+			instanceJeu.initGame();
+			instanceJeu.orgaRounds();
+		}
+		
+		System.exit(1);
 	}
 }

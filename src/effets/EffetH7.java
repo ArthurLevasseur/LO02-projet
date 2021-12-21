@@ -39,7 +39,7 @@ public class EffetH7 extends Effet {
 					selection = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse());
 					int compteur = 0;
 					int idAutreJoueur=-1;
-					for (int i=0; i<instanceJeu.getEnsembleJoueurs().length; i++) {
+					for (int i=0; i<instanceJeu.getEnsembleJoueurs().size(); i++) {
 						if ((instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) && instanceJeu.getJoueur(i) != instanceJeu.getEnTour() && instanceJeu.getJoueur(i).isAccusable()==true){
 							compteur += 1;
 							idAutreJoueur = i;

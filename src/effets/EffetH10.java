@@ -26,12 +26,12 @@ public class EffetH10 extends Effet {
 			System.out.println("Vous etiez une sorcière. Le prochain joueur sera celui à votre gauche.");
 			int i = 0;
 			ArrayList<Joueur> listeJoueurs = new ArrayList<>();
-			for (i=0; i<instanceJeu.getEnsembleJoueurs().length; i++) {
+			for (i=0; i<instanceJeu.getEnsembleJoueurs().size(); i++) {
 				if ((instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == true && instanceJeu.getJoueur(i).getIdentiteAssociee().getIsWitch() == false) || instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) {
 					listeJoueurs.add(instanceJeu.getJoueur(i));
 				}
 				if (instanceJeu.getJoueur(i) == instanceJeu.getEnTour()) {
-					if (i == instanceJeu.getEnsembleJoueurs().length-1) {
+					if (i == instanceJeu.getEnsembleJoueurs().size()-1) {
 						return instanceJeu.getJoueur(0);
 					}
 					else {return instanceJeu.getJoueur(i+1);}

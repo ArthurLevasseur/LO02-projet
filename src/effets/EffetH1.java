@@ -68,7 +68,7 @@ public class EffetH1 extends Effet {
 						visable = false;
 					}
 				}
-				if (0<=choix && choix<instanceJeu.getEnsembleJoueurs().length && instanceJeu.getJoueur(choix)!=instanceJeu.getEnTour() && visable == true) {
+				if (0<=choix && choix<instanceJeu.getEnsembleJoueurs().size() && instanceJeu.getJoueur(choix)!=instanceJeu.getEnTour() && visable == true) {
 					selection = instanceJeu.getJoueur(choix);
 					condition = 1;
 				}
