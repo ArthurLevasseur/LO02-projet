@@ -75,13 +75,13 @@ public class Jeu {
 	private Jeu(){
 		SaisirInt scan = SaisirInt.getInstance();
 		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
-		int choix = 0;
+		int choix = "Y";
 		int joueursPhysiques = 0;
 		int nbPhy = 0;
 		int nbIA = 0;
-		while (choix < 1 || choix > 6) {
+		while (choix < 0 || choix > 6) {
 			choix = scan.nextInt();
-			if (choix < 1 || choix > 6) {
+			if (choix < 0 || choix > 6) {
 				System.out.println("Veuillez choisir entre 1 et 6 joueurs");
 			}
 			else {
