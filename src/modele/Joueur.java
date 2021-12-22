@@ -2,6 +2,8 @@ package modele;
 import effets.*;
 import java.util.ArrayList;
 
+import controleur.Jeu;
+
 public abstract class Joueur {
 	
 	private int points = 0;
@@ -13,7 +15,7 @@ public abstract class Joueur {
 	private boolean accusable=true;
 	private int nbCartesEnMain = 0;
 	private Identite identiteAssociee;
-	protected String pseudo;
+	private String pseudo;
 	private boolean mustAccuse = false;
 	
 	public Joueur() {

@@ -10,7 +10,7 @@ public class JoueurPhysique extends Joueur {
 		Scanner saisiePseudo = new Scanner(System.in);
 		nbJoueurPhy += 1;
 		System.out.println("Ecrire le pseudo du joueur " + nbJoueurPhy);
-		this.pseudo = saisiePseudo.nextLine();
+		super.setPseudo(saisiePseudo.nextLine());
 	}
 	
 	

@@ -1,10 +1,10 @@
 package effets;
 import java.util.Scanner;
 
+import controleur.Jeu;
 import modele.CarteRumeur;
 import modele.Defausse;
 import modele.Effet;
-import modele.Jeu;
 import modele.Joueur;
 
 public class EffetW3 extends Effet {

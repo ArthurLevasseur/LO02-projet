@@ -1,7 +1,9 @@
-package modele;
+package controleur;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
+import modele.*;
 import vue.*;
 
 public class Jeu {
@@ -56,13 +58,13 @@ public class Jeu {
 			if (((Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == true && Instance.getJoueur(i-1).getIdentiteAssociee().getIsWitch() == false) || Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false) && Instance.getJoueur(i-1)!=selecteur) {
 
 				if (!(Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee())) {
-					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + "     status : EN ROUND     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).getPseudo() + "     status : EN ROUND     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
 				}
 				else if (Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() && Instance.getJoueur(i-1).getIdentiteAssociee().getIsWitch() == true) {
-					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + "     status : HORS ROUND     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).getPseudo() + "     status : HORS ROUND     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
 				}
 				else if (Instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() && Instance.getJoueur(i-1).getIdentiteAssociee().getIsWitch() == false) {
-					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).pseudo + "     status : VILLAGEOIS PASSIF     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
+					System.out.println("Joueur " + (i) + ") " + Instance.getJoueur(i-1).getPseudo() + "     status : VILLAGEOIS PASSIF     (points : " + Instance.getJoueur(i-1).getPoints() + ")");
 				}
 			}
 		}
@@ -102,9 +104,12 @@ public class Jeu {
 	}
 	
 	public void initGame() {
-		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + this.nombrePhy + "\n	- Nombre de joueurs virtuels : " + this.nombreIA + "\n");
 		
-		System.out.println("Création des joueurs...\n");
+		vueActuelle.initialisationDeLaPartie();
+		
+		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + this.nombrePhy + "\n	- Nombre de joueurs virtuels : " + this.nombreIA + "\n"); //à delete
+		
+		System.out.println("Création des joueurs...\n"); //à delete
 		
 		this.nombreJoueurs = this.nombrePhy + this.nombreIA;
 		for (int i = 0; i < this.nombrePhy; i++) {
@@ -114,12 +119,12 @@ public class Jeu {
 			this.ensembleJoueurs.add(new JoueurVirtuel());
 		}
 		
-		System.out.println("Création de la défausse...");
+		System.out.println("Création de la défausse..."); //à delete
 		//this.nombreJoueurs = nbPhy; // à modifier, le nombre de joueurs = nombre de joueurs totaux
 		this.tasDefausse = Defausse.getInstance();
 		
 		
-		System.out.println("Création des cartes rumeurs...");
+		System.out.println("Création des cartes rumeurs..."); //à delete
 		for (int i = 0; i < 12; i++) {
 			
 			this.ensembleCartes.add(new CarteRumeur());
@@ -215,7 +220,7 @@ public class Jeu {
 		
 		if (Instance.gagnants.size()==1) {
 			System.out.print("Bravo ");
-			Instance.gagnants.forEach(joueur -> System.out.print(joueur.pseudo +", "));
+			Instance.gagnants.forEach(joueur -> System.out.print(joueur.getPseudo() +", "));
 			System.out.println("vous avez gagné la partie !");
 		}
 		
@@ -244,7 +249,8 @@ public class Jeu {
 			this.distributionCartesRumeurs();
 		
 			//Création d'un round (contenant le déroulement du round aussi)
-			Round roundEnCours = new Round(instanceJeu, instanceJeu.getJoueur(premierJoueur));
+			Round roundEnCours = new Round();
+			roundEnCours.debutRound(instanceJeu.getJoueur(premierJoueur));
 			
 			this.determinerGagnant();
 			//Analyse si un joueur a atteint les 5 points à l'aide de maxPoints à la fin d'un round
@@ -282,10 +288,10 @@ public class Jeu {
 			System.out.println(". ");
 			TimeUnit.SECONDS.sleep(2);
 			int i = (int) (Math.random() * instanceJeu.gagnants.size());
-			System.out.println("Le joueur " + instanceJeu.gagnants.get(i).pseudo + " tombe au combat !");
+			System.out.println("Le joueur " + instanceJeu.gagnants.get(i).getPseudo() + " tombe au combat !");
 			instanceJeu.gagnants.remove(i);
 		}
-		System.out.println("Le gagnant final de ce jeu est donc le joueur : " + instanceJeu.gagnants.get(0).pseudo);
+		System.out.println("Le gagnant final de ce jeu est donc le joueur : " + instanceJeu.gagnants.get(0).getPseudo());
 		System.out.println("Bravo à lui et à une prochaine !");
 	}
 	

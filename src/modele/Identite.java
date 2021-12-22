@@ -55,7 +55,7 @@ public class Identite {
 			if (joueurAsso.getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
 			
 			while (choix <= 0 || choix >= 3) {
-				System.out.println("Joueur " + this.joueurAssocie.pseudo + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.\n");
+				System.out.println("Joueur " + this.joueurAssocie.getPseudo() + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.\n");
 				choix = saisieUtilisateur.nextInt();
 				if (choix <=0 || choix >= 3) {
 					System.out.println("Choix invalide ! veuillez choisir entre 1 et 2.");

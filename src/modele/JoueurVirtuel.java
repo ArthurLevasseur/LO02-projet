@@ -9,7 +9,7 @@ public class JoueurVirtuel extends Joueur {
 		nombreJoueursVirtuels += 1;
 		Strategie strategieTest = new StrategieSimple();
 		this.strategieActuelle = strategieTest;
-		this.pseudo = "bot" + nombreJoueursVirtuels;
+		super.setPseudo("bot" + nombreJoueursVirtuels);
 	}
 
 	public Strategie getStrategieActuelle() {

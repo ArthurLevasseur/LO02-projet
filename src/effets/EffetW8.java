@@ -1,7 +1,7 @@
 package effets;
+import controleur.Jeu;
 import modele.Defausse;
 import modele.Effet;
-import modele.Jeu;
 import modele.Joueur;
 import modele.JoueurVirtuel;
 

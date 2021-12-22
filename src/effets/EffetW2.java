@@ -1,8 +1,8 @@
 package effets;
+import controleur.Jeu;
 import modele.CarteRumeur;
 import modele.Defausse;
 import modele.Effet;
-import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
