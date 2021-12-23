@@ -2,8 +2,6 @@ package modele;
 	import java.util.ArrayList;
 import java.util.Collections;
 
-import controleur.Jeu;
-
 public class StrategieSimple extends Strategie {
 	
 	

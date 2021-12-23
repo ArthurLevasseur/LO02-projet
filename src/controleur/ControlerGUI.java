@@ -10,10 +10,10 @@ import modele.*;
 import vue.*;
 import controleur.*;
 
-public class Controler{
+public class ControlerGUI{
 
 	
-	public Controler(JButton demarrer, JButton quitter, JFrame frame) {
+	public ControlerGUI(JButton demarrer, JButton quitter, JFrame frame) {
 		
 		demarrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -2,8 +2,6 @@ package modele;
 import effets.*;
 import java.util.ArrayList;
 
-import controleur.Jeu;
-
 public abstract class Joueur {
 	
 	private int points = 0;

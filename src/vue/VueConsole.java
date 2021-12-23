@@ -1,11 +1,16 @@
 package vue;
 
-import controleur.Jeu;
 import modele.*;
+
+import java.util.Scanner;
+
+import controleur.*;
 
 public class VueConsole implements Vue {
 
-	public int demanderNombreJoueursPhysiques() {
+	private ControlerCLI controleur = new ControlerCLI();
+
+	public void demanderNombreJoueursPhysiques() {
 
 		SaisirInt scan = SaisirInt.getInstance();
 		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
@@ -15,37 +20,31 @@ public class VueConsole implements Vue {
 			if (choix < 0 || choix > 6) {
 				System.out.println("Veuillez choisir entre 1 et 6 joueurs");
 			} else {
-				return choix;
+				controleur.selectionnerNombreJoueursPhysiques(choix);
 			}
 		}
-		return 1;
 	}
 
-	public int demarrerJeu() {
+	public void demarrerJeu() {
 		SaisirInt scan = SaisirInt.getInstance();
 
 		System.out.println("Bienvenue dans Witch Hunt !");
 		int choix = 0;
 		while (choix != 2) {
-			System.out.println(
-					"Que voulez vous faire (entrez l'indice de vos choix) : \n1) Lancer une nouvelle partie \n2) Quitter le programme");
+			System.out.println("Que voulez vous faire (entrez l'indice de vos choix) : \n1) Lancer une nouvelle partie \n2) Quitter le programme");
 			choix = scan.nextInt();
 			if (choix == 1) {
-
-				return choix;
+				controleur.demarrerJeu();
 			} else if (choix == 2) {
-				/* break; */
-				return choix;
+				controleur.stopJeu();
 			} else {
 				System.out.println("veuillez choisir entre 1 et 2 !\n");
 			}
 
 		}
-
-		return 1;
 	}
 
-	public int demanderNombreJoueursVirtuels() {
+	public void demanderNombreJoueursVirtuels() {
 		Jeu instanceJeu = Jeu.getInstance();
 		int choix;
 		SaisirInt scan = SaisirInt.getInstance();
@@ -59,10 +58,9 @@ public class VueConsole implements Vue {
 					|| (choix < 0 || choix > 6)) {
 				System.out.println("Choix invalide");
 			} else {
-				return choix;
+				controleur.selectionnerNombreJoueursVirtuels(choix);
 			}
 		}
-		return 2;
 	}
 
 	public void initialisationDeLaPartie() {
@@ -73,9 +71,58 @@ public class VueConsole implements Vue {
 		System.out.println("Mélange des cartes...");
 	}
 
-	public int debutTour() {
+	public void determinerNomDuJoueur(Joueur j) {
+		Scanner saisiePseudo = new Scanner(System.in);
+		System.out.println("Ecrire le pseudo du joueur");
+		j.setPseudo(saisiePseudo.nextLine());
+	}
+
+	public void choisirIdentite(Joueur j) {
+
+		if (j instanceof JoueurVirtuel) {
+			int choix = (int)Math.random()*2;
+
+			if (choix == 0) {
+				j.getIdentiteAssociee().setWitch(false);
+			}
+
+			else if (choix == 1) {
+				j.getIdentiteAssociee().setWitch(true);
+			}
+
+			j.getIdentiteAssociee().setDevoilee(false);
+
+		}
+
+		else {
+			int choix = 0;
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+			System.out.println("\n---------------Votre identité----------------\n");
+			if (j.getIdentiteAssociee().getIsWitch()) {System.out.print("Vous êtes une Witch ");} else {System.out.print("Vous êtes un Villager ");};
+			if (j.getIdentiteAssociee().getDevoilee()) {System.out.println("devoilé.\n");} else {System.out.println("encore en round.\n");};
+			System.out.println("-----------------Votre main------------------\n");
+			for (int i=0; i<j.getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +j.getCarteEnMain().get(i).getNomCarte() +"\n");};
+			if (j.getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
+			System.out.println("-------------Vos cartes révélées-------------\n");
+			for (int i=0; i<j.getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +j.getCarteRevelees().get(i).getNomCarte() +"\n");};
+			if (j.getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
+
+			while (choix <= 0 || choix >= 3) {
+				System.out.println("Joueur " + j.getPseudo() + " : Choisissez votre identité.\n\n1) Villageois.\n2) Sorcière.\n");
+				choix = saisieUtilisateur.nextInt();
+				if (choix <=0 || choix >= 3) {
+					System.out.println("Choix invalide ! veuillez choisir entre 1 et 2.");
+				}
+			}
+
+			controleur.attribuerIdentite(j, choix);
+		}
+
+	}
+
+	public void debutTour() {
 		Jeu instanceJeu = Jeu.getInstance();
-		
+
 		System.out.println("\n---------------Votre identité----------------\n");
 		if (instanceJeu.getEnTour().getIdentiteAssociee().getIsWitch()) {
 			System.out.print("Vous êtes une Witch ");
@@ -134,16 +181,21 @@ public class VueConsole implements Vue {
 				}
 
 			}
-			;
-			
+
+			if (choix == 1) {
+				controleur.accuser();
+			}
+			else if (choix == 2) {
+				controleur.jouerHunt();
+			}
+
 
 		}
-		return choix;
 	}
-	
-	
-	public int choixAccuse() {
-		
+
+
+	public void choixAccuse() {
+
 		SaisirInt scan = SaisirInt.getInstance();
 		Jeu instanceJeu = Jeu.getInstance();
 		// Le joueur décide d'accuser.
@@ -178,23 +230,45 @@ public class VueConsole implements Vue {
 				System.out.println("Vous n'avez pas non plus de cartes dans votre main, par défaut, l'effet de la carte \"Mauvais Oeil\" s'estompe.");
 			}
 		}
-		
+
 		int choixAccuse=-1;
 		//Création de la boucle de choix d'accusation du joueur
 		while (0>choixAccuse || choixAccuse>instanceJeu.getNombreJoueurs()+1 || instanceJeu.getJoueur(choixAccuse-1).getIdentiteAssociee().getDevoilee() == true || instanceJeu.getJoueur(choixAccuse-1)==instanceJeu.getEnTour() || instanceJeu.getJoueur(choixAccuse-1).isAccusable()==false) {
-			
+
 			//Pour les joueurs physiques
 			if (instanceJeu.getEnTour() instanceof JoueurPhysique) {
-				return choixAccuse = scan.nextInt();
+				choixAccuse = scan.nextInt();
 			}
-				//Pour les IAs
+			//Pour les IAs
 			else {
-				return choixAccuse = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse() + 1;
+				choixAccuse = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse() + 1;
 			}
 
+		}
+
+		//En situation habituelle (si après les vérification, le choix reste d'accuser un joueur):
+
+			//Si le choix correspond à un joueur ciblable
+			if (0<choixAccuse && choixAccuse<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choixAccuse-1).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(choixAccuse-1)!=instanceJeu.getEnTour() && instanceJeu.getJoueur(choixAccuse-1).isAccusable()==true) {
+				//Réinitialisation de la variable accusable (si ce n'est pas encore fait) 
+				for (int i=0 ; i<instanceJeu.getNombreJoueurs() ; i++) {
+					if (instanceJeu.getJoueur(i).isAccusable()==false) {
+						instanceJeu.getJoueur(i).setAccusable(true); // à modif ici
+					}
+				}
+				
+				controleur.validerAccusation(choixAccuse);
+
+				
+			}
+			//Si le choix ne correspond pas à un joueur ciblable
+			else {
+				System.out.println("Choix invalide !");
+				choixAccuse = -1;
+				instanceJeu.getVueActuelle().choixAccuse();
+
+			}
+
+
 	}
-	
-	return 0;	
-	
-}
 }

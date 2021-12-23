@@ -17,13 +17,13 @@ import java.awt.event.ActionEvent;
 import modele.*;
 import vue.*;
 
-public class InterfaceDebut implements Vue{
+public class InterfaceDebut implements Vue {
 
 	private JFrame frame;
 	private JLabel lblBienvenu;
 	private JButton btnDemarrer;
 	private JButton btnQuitter;
-	private Controler controler;
+	private ControlerGUI controler;
 
 	/**
 	 * Launch the application.
@@ -53,9 +53,8 @@ public class InterfaceDebut implements Vue{
 	 */
 	public InterfaceDebut() {
 		initialize();
-		Controler c = new Controler(btnDemarrer, btnQuitter, frame);
+		ControlerGUI c = new ControlerGUI(btnDemarrer, btnQuitter, frame);
 		this.frame.setVisible(true);
-		
 		
 	}
 
@@ -101,7 +100,7 @@ public class InterfaceDebut implements Vue{
 		this.btnQuitter = btnQuitter;
 	}
 
-	public Controler getControler() {
+	public ControlerGUI getControler() {
 		return controler;
 	}
 }

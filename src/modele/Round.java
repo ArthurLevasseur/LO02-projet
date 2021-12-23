@@ -1,6 +1,5 @@
-package controleur;
+package modele;
 
-import modele.*;
 import vue.*;
 
 public class Round {
@@ -31,7 +30,7 @@ public class Round {
 		instanceJeu.setEnTour(premierJoueur);
 		
 		//Tour du premier joueur qui retourne le joueur du tour suivant dans la variable "enTour"
-		instanceJeu.setEnTour(this.jouerTour());
+		//instanceJeu.setEnTour(this.jouerTour());
 		int nombreIdenDevoilee = 0;
 		
 		//Boucle des tours des joueurs, s'arrête lorsqu'un joueur a 5 points, ou qu'il ne reste qu'un joueur en jeu.
@@ -75,46 +74,22 @@ public class Round {
 		Joueur prochainJoueur;
 		Jeu instanceJeu = Jeu.getInstance();
 		SaisirInt scan = SaisirInt.getInstance();
-		int choix = instanceJeu.getVueActuelle().debutTour();
+		instanceJeu.getVueActuelle().debutTour();
 		instanceJeu.getEnTour().setMustAccuse(false);
+		
+		
+		
+		
+		
 		int choixAccuse = 0;
+		int choix = 0;
 		
-		if (choix == 1) {
-			choixAccuse = instanceJeu.getVueActuelle().choixAccuse();
-		}
 		
-				
-		//En situation habituelle (si après les vérification, le choix reste d'accuser un joueur):
-		if (choix==1) {
-				
-			//Si le choix correspond à un joueur ciblable
-			if (0<choixAccuse && choixAccuse<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choixAccuse-1).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(choixAccuse-1)!=instanceJeu.getEnTour() && instanceJeu.getJoueur(choixAccuse-1).isAccusable()==true) {
-				//Réinitialisation de la variable accusable (si ce n'est pas encore fait) 
-				for (int i=0 ; i<instanceJeu.getNombreJoueurs() ; i++) {
-					if (instanceJeu.getJoueur(i).isAccusable()==false) {
-						instanceJeu.getJoueur(i).setAccusable(true);
-					}
-				}
-				
-				//On définit le joueur accusé dans le jeu
-				instanceJeu.setAccused(instanceJeu.getJoueur(choixAccuse-1));
-				
-				//On appelle la méthode d'un joueur accusé (elle retourne le prochain joueur, ce qui dépend des futurs choix de l'accusé)
-				prochainJoueur = instanceJeu.getJoueur(choixAccuse-1).estAccuse();
-				
-				return prochainJoueur;
-			}
-			//Si le choix ne correspond pas à un joueur ciblable
-			else {
-				System.out.println("Choix invalide !");
-				choixAccuse = -1;
-				choixAccuse = instanceJeu.getVueActuelle().choixAccuse();
-				
-			}
-}
+		
+		
 		
 	
-	if (choix == 2) {
+	    if (choix == 2) {
 		boolean peutJouerCarte = false;
 
 		for (int i=0; i<instanceJeu.getEnTour().getCarteEnMain().size(); i++) {
@@ -136,7 +111,7 @@ public class Round {
 	else {
 		System.out.println("Choix invalide !");
 	}
-		return null;
+		return instanceJeu.getEnTour();
 	}
 	
 	public void revelerIdentiteJoueur() {

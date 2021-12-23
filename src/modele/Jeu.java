@@ -1,4 +1,4 @@
-package controleur;
+package modele;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
-import modele.*;
 import vue.*;
 
 public class Jeu{
@@ -91,7 +90,7 @@ public class Jeu{
 	}
 	
 
-	public Jeu(){
+	private Jeu(){
 	}
 	
 	
@@ -115,9 +114,6 @@ public class Jeu{
 		
 		vueActuelle.initialisationDeLaPartie();
 		
-		System.out.println("La partie va commencer, configuration : \n	- Nombre de joueurs physiques : " + this.nombrePhy + "\n	- Nombre de joueurs virtuels : " + this.nombreIA + "\n"); //à delete
-		
-		System.out.println("Création des joueurs...\n"); //à delete
 		
 		this.nombreJoueurs = this.nombrePhy + this.nombreIA;
 		for (int i = 0; i < this.nombrePhy; i++) {
@@ -127,12 +123,10 @@ public class Jeu{
 			this.ensembleJoueurs.add(new JoueurVirtuel());
 		}
 		
-		System.out.println("Création de la défausse..."); //à delete
 		//this.nombreJoueurs = nbPhy; // à modifier, le nombre de joueurs = nombre de joueurs totaux
 		this.tasDefausse = Defausse.getInstance();
 		
 		
-		System.out.println("Création des cartes rumeurs..."); //à delete
 		for (int i = 0; i < 12; i++) {
 			
 			this.ensembleCartes.add(new CarteRumeur());
@@ -354,24 +348,8 @@ public class Jeu{
 		
 		
 		
-		
-		
-		
 		//démarrage du jeu par console
 		
-		/*
-		Jeu instanceJeu = new Jeu();
-		instanceJeu.vueActuelle = new VueConsole();
-		int choixDemarrer = instanceJeu.getVueActuelle().demarrerJeu();
 		
-		if (choixDemarrer == 1) {
-			instanceJeu.nombrePhy = instanceJeu.getVueActuelle().demanderNombreJoueursPhysiques();
-			instanceJeu.nombreIA = instanceJeu.getVueActuelle().demanderNombreJoueursVirtuels();
-			instanceJeu.initGame();
-			instanceJeu.orgaRounds();
-		}
-		
-		System.exit(1);
-		*/
 	}
 }
