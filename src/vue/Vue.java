@@ -1,5 +1,6 @@
 package vue;
 
+
 public interface Vue {
 
 	public int demarrerJeu();

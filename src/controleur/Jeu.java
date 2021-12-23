@@ -1,12 +1,17 @@
 package controleur;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
 import modele.*;
 import vue.*;
 
-public class Jeu {
+public class Jeu{
+	
 	
 	private static Vue vueActuelle;
 	private int nombreJoueurs;
@@ -85,24 +90,9 @@ public class Jeu {
 		return selection;
 	}
 	
-<<<<<<< HEAD:src/Jeu.java
-	private Jeu(){
-		SaisirInt scan = SaisirInt.getInstance();
-		System.out.println("Combien de joueurs physiques êtes-vous? (entre 1 et 6)");
-		int choix = "Y";
-		int joueursPhysiques = 0;
-		int nbPhy = 0;
-		int nbIA = 0;
-		while (choix < 0 || choix > 6) {
-			choix = scan.nextInt();
-			if (choix < 0 || choix > 6) {
-				System.out.println("Veuillez choisir entre 1 et 6 joueurs");
-			}
-			else {
-				nbPhy = choix;
-			}
-		}
-=======
+
+	public Jeu(){
+	}
 	
 	
 	public int getNombrePhy() {
@@ -122,7 +112,6 @@ public class Jeu {
 	}
 	
 	public void initGame() {
->>>>>>> 1104c247de497cb8d53ffbcb3c7677d32743c872:src/controleur/Jeu.java
 		
 		vueActuelle.initialisationDeLaPartie();
 		
@@ -149,10 +138,6 @@ public class Jeu {
 			this.ensembleCartes.add(new CarteRumeur());
 			//System.out.println(this.ensembleCartes[i]);
 		}
-	}
-
-	private Jeu(){	
-		
 	}
 	
 	 /*TEST DU TABLEAU DE CARTES DU DEBUT
@@ -349,13 +334,37 @@ public class Jeu {
 	
 	public static void main(String[] args) {
 		
+		/*
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Jeu instanceJeu = new Jeu();
+					InterfaceDebut window = new InterfaceDebut();
+					Jeu.setVueActuelle(window);
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
-		Jeu.vueActuelle = new VueConsole();
+		*/
 		
-		//démarrage du jeu
-		int choixDemarrer = Jeu.getVueActuelle().demarrerJeu();
+		
+		
+		
+		
+		
+		
+		//démarrage du jeu par console
+		
+		/*
+		Jeu instanceJeu = new Jeu();
+		instanceJeu.vueActuelle = new VueConsole();
+		int choixDemarrer = instanceJeu.getVueActuelle().demarrerJeu();
+		
 		if (choixDemarrer == 1) {
-			Jeu instanceJeu = Jeu.getInstance();
 			instanceJeu.nombrePhy = instanceJeu.getVueActuelle().demanderNombreJoueursPhysiques();
 			instanceJeu.nombreIA = instanceJeu.getVueActuelle().demanderNombreJoueursVirtuels();
 			instanceJeu.initGame();
@@ -363,5 +372,6 @@ public class Jeu {
 		}
 		
 		System.exit(1);
+		*/
 	}
 }
