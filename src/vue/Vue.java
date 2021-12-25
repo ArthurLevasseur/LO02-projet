@@ -13,5 +13,8 @@ public interface Vue {
 	public void choixAccuse();
 	public void repondreAccusation();
 	public void choisirIdentite(Joueur j);
+	public void demarrerRound();
+	public void choisirHunt();
+	public void accuser(int joueurCible);
 	
 }

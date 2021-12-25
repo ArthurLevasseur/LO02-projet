@@ -30,7 +30,7 @@ public class Round {
 		instanceJeu.setEnTour(premierJoueur);
 		
 		//Tour du premier joueur qui retourne le joueur du tour suivant dans la variable "enTour"
-		//instanceJeu.setEnTour(this.jouerTour());
+		instanceJeu.setEnTour(this.jouerTour());
 		int nombreIdenDevoilee = 0;
 		
 		//Boucle des tours des joueurs, s'arrête lorsqu'un joueur a 5 points, ou qu'il ne reste qu'un joueur en jeu.
@@ -74,6 +74,7 @@ public class Round {
 		Joueur prochainJoueur;
 		Jeu instanceJeu = Jeu.getInstance();
 		SaisirInt scan = SaisirInt.getInstance();
+		instanceJeu.setVueActuelle(new InterfaceChoixTour());
 		instanceJeu.getVueActuelle().debutTour();
 		instanceJeu.getEnTour().setMustAccuse(false);
 		
@@ -84,34 +85,35 @@ public class Round {
 		int choixAccuse = 0;
 		int choix = 0;
 		
-		
+
 		
 		
 		
 	
 	    if (choix == 2) {
-		boolean peutJouerCarte = false;
-
-		for (int i=0; i<instanceJeu.getEnTour().getCarteEnMain().size(); i++) {
-			if (((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 1 && instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 2) || ((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 1 || instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 2)) && instanceJeu.getEnTour().getIdentiteAssociee().getDevoilee() == true) && (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 3 || (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 3 && !(instanceJeu.getEnTour().getCarteRevelees().isEmpty())))) {
-				peutJouerCarte = true;
+			boolean peutJouerCarte = false;
+	
+			for (int i=0; i<instanceJeu.getEnTour().getCarteEnMain().size(); i++) {
+				if (((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 1 && instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 2) || ((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 1 || instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 2)) && instanceJeu.getEnTour().getIdentiteAssociee().getDevoilee() == true) && (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 3 || (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 3 && !(instanceJeu.getEnTour().getCarteRevelees().isEmpty())))) {
+					peutJouerCarte = true;
+				}
 			}
-		}
-		if (peutJouerCarte == true) {
-			//Appelle de la méthode de jeu d'une carte rumeur, renvoie le prochain joueur (ce qui dépend des choix du joueur en tour)
-			return instanceJeu.getEnTour().jouerCarteHunt();
-		}
-		else {
-			//La boucle while va se réeffectuer avec choix =1, donc une accusation
-			choix = 1;
-			System.out.println("Vous ne pouvez pas jouer de cartes hunts !");
-		}
+			if (peutJouerCarte == true) {
+				//Appelle de la méthode de jeu d'une carte rumeur, renvoie le prochain joueur (ce qui dépend des choix du joueur en tour)
+				return instanceJeu.getEnTour().jouerCarteHunt();
+			}
+			else {
+				//La boucle while va se réeffectuer avec choix =1, donc une accusation
+				choix = 1;
+				System.out.println("Vous ne pouvez pas jouer de cartes hunts !");
+			}
 		
-	}
-	else {
-		System.out.println("Choix invalide !");
-	}
+	    }
+	    else {
+	    	System.out.println("Choix invalide !");
+	    }
 		return instanceJeu.getEnTour();
+		
 	}
 	
 	public void revelerIdentiteJoueur() {

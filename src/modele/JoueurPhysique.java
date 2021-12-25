@@ -1,6 +1,8 @@
 package modele;
 import java.util.Scanner;
 
+import vue.*;
+
 public class JoueurPhysique extends Joueur {
 	
 

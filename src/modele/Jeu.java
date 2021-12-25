@@ -7,9 +7,10 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
+import controleur.*;
 import vue.*;
 
-public class Jeu{
+public class Jeu extends Observable{
 	
 	
 	private static Vue vueActuelle;
@@ -25,6 +26,7 @@ public class Jeu{
 	private ArrayList<Joueur> ensembleJoueurs = new ArrayList<Joueur>();
 	private Defausse tasDefausse;
 	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
+	private ControlerGUI controler;
 	
 	public static Vue getVueActuelle() {
 		return Jeu.vueActuelle;
@@ -90,7 +92,7 @@ public class Jeu{
 	}
 	
 
-	private Jeu(){
+	public Jeu(){
 	}
 	
 	
@@ -112,7 +114,7 @@ public class Jeu{
 	
 	public void initGame() {
 		
-		vueActuelle.initialisationDeLaPartie();
+		//vueActuelle.initialisationDeLaPartie();
 		
 		
 		this.nombreJoueurs = this.nombrePhy + this.nombreIA;
@@ -132,9 +134,21 @@ public class Jeu{
 			this.ensembleCartes.add(new CarteRumeur());
 			//System.out.println(this.ensembleCartes[i]);
 		}
+		
+		this.setPseudo();
 	}
 	
-	 /*TEST DU TABLEAU DE CARTES DU DEBUT
+	 private void setPseudo() {
+		if (this.nombrePhy != 0) {
+			InterfaceChoixPseudos interJ1 = new InterfaceChoixPseudos(this.getJoueur(0));
+		}
+		else {
+			this.orgaRounds();
+		}
+		
+	}
+
+	/*TEST DU TABLEAU DE CARTES DU DEBUT
 	public void afficherCartes() {
 		for (int i = 0; i < 12; i++) {
 			System.out.println(this.ensembleCartes[i]);
@@ -325,6 +339,11 @@ public class Jeu{
 		this.ensembleJoueurs = ensembleJoueurs;
 	}
 	
+	public void actualisationInterface() {
+		this.setChanged();
+		this.notifyObservers();
+	}
+	
 	
 	public static void main(String[] args) {
 		
@@ -351,5 +370,17 @@ public class Jeu{
 		//démarrage du jeu par console
 		
 		
+	}
+
+	public void setNombreJoueurs(int nombreJoueurs) {
+		this.nombreJoueurs = nombreJoueurs;
+	}
+
+	public ControlerGUI getControler() {
+		return controler;
+	}
+
+	public void setControler(ControlerGUI controler) {
+		this.controler = controler;
 	}
 }

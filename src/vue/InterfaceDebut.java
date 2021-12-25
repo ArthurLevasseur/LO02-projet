@@ -30,6 +30,7 @@ public class InterfaceDebut implements Vue {
 	 * @wbp.parser.entryPoint
 	 */
 	
+	/*
 	public static void main(String[] args) {
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -46,14 +47,15 @@ public class InterfaceDebut implements Vue {
 			}
 		});
 	}
-
+	*/
+	
 	/**
 	 * Create the application.
 	 * @wbp.parser.entryPoint
 	 */
 	public InterfaceDebut() {
 		initialize();
-		ControlerGUI c = new ControlerGUI(btnDemarrer, btnQuitter, frame);
+		Jeu.getInstance().getControler().setInputsDemarrer(btnDemarrer, btnQuitter, frame);
 		this.frame.setVisible(true);
 		
 	}
@@ -68,8 +70,8 @@ public class InterfaceDebut implements Vue {
 		frame.getContentPane().setLayout(null);
 		
 		lblBienvenu = new JLabel("Bienvenu dans Which Hunt !");
-		lblBienvenu.setBounds(0, 29, 1266, 49);
-		lblBienvenu.setFont(new Font("Viner Hand ITC", Font.BOLD, 30));
+		lblBienvenu.setBounds(0, 35, 1266, 49);
+		lblBienvenu.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
 		lblBienvenu.setHorizontalAlignment(SwingConstants.CENTER);
 		frame.getContentPane().add(lblBienvenu);
 		
@@ -102,5 +104,10 @@ public class InterfaceDebut implements Vue {
 
 	public ControlerGUI getControler() {
 		return controler;
+	}
+	
+	public void demarrerJeu() {
+		this.frame.setVisible(false);
+		InterfaceNbJoueurs suite = new InterfaceNbJoueurs();
 	}
 }
