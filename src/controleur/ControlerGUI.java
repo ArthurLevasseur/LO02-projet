@@ -98,12 +98,13 @@ public class ControlerGUI{
 		
 		Accuser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Jeu.getInstance().getVueActuelle().choixAccuse();
+				Jeu.getInstance().getVueActuelle().accuser();
 			}
 		});
 		
 		JouerCarte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// A FAIRE
 				Jeu.getInstance().getVueActuelle().choisirHunt();
 			}
 		});
@@ -113,9 +114,61 @@ public class ControlerGUI{
 	public void setInputAccusePlayer(JButton bouton, int JoueurCible) {
 		bouton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Jeu.getInstance().getVueActuelle().accuser(JoueurCible);
+				Jeu.getInstance().setAccused(Jeu.getInstance().getJoueur(JoueurCible));
+				Jeu.getInstance().getVueActuelle().repondreAccusation(JoueurCible);
 			}
 		});
+	}
+
+	public void setInputsAccused(JButton btnJouerCarte, JButton btnAccuser) {
+		btnJouerCarte.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//A FAIRE
+			}
+		});
+		
+		btnAccuser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().reveler();
+			}
+		});
+		
+	}
+
+	public void setInputsChoixIdentités(JButton btnWitch, JButton btnHunt, int joueur) {
+		btnWitch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().demarrerTour(joueur, true);
+				
+
+				
+			}
+		});
+		
+		btnHunt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().demarrerTour(joueur, false);
+			}
+		});
+		
+	}
+
+	public void setImputNextTurn(JButton btnTourSuivant) {
+		btnTourSuivant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().passerTourSuivant();
+			}
+		});
+		
+	}
+
+	public void setInputNextRound(JButton btnNextRound) {
+		btnNextRound.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().passerRoundSuivant();
+			}
+		});
+		
 	}
 	
 	

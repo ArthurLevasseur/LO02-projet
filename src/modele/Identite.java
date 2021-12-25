@@ -24,7 +24,7 @@ public class Identite {
 	}
 	
 	public void choisirIdentite(Joueur joueurAsso, boolean isIA) {
-		
+		this.isWitch = isIA;
 		
 		
 		

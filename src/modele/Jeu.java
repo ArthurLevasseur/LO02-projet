@@ -143,7 +143,7 @@ public class Jeu extends Observable{
 			InterfaceChoixPseudos interJ1 = new InterfaceChoixPseudos(this.getJoueur(0));
 		}
 		else {
-			this.orgaRounds();
+			this.initJeu();
 		}
 		
 	}
@@ -279,6 +279,32 @@ public class Jeu extends Observable{
 		
 	}
 	
+public void initJeu() {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		int maxPoints = 0;
+		//le tout premier joueur est choisi aléatoirement
+		
+
+		//Les cartes des mains des joueurs, leurs cartes révélées ainsi que la défausse sont réinitialisées
+		
+		
+		
+		//Création d'un round (contenant le déroulement du round aussi)
+		if (this.getNombrePhy()>0) {
+			
+			this.setVueActuelle(new InterfaceIdentite(0));
+		}
+		else {
+			int premierJoueur = (int) (Math.random() * instanceJeu.nombreJoueurs);
+			this.setEnTour(this.getJoueur(premierJoueur));
+			Round roundEnCours = new Round();
+			roundEnCours.initRound(instanceJeu.getJoueur(premierJoueur));
+		}
+			
+		
+	}
+	
 	public void jouerTieBreaker() throws InterruptedException {
 		
 		Jeu instanceJeu = Jeu.getInstance();
@@ -330,7 +356,22 @@ public class Jeu extends Observable{
         return Instance;
     }
 	
+	public boolean isRoundEnd() {
+		int nombreIdenDevoilee = 0;
+		for (int i=0; i<this.getNombreJoueurs(); i++) {
+			if (this.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
+				nombreIdenDevoilee += 1;
+			}
 
+		}
+		if (nombreIdenDevoilee == this.nombreJoueurs-1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public ArrayList<Joueur> getEnsembleJoueurs() {
 		return ensembleJoueurs;
 	}
@@ -382,5 +423,20 @@ public class Jeu extends Observable{
 
 	public void setControler(ControlerGUI controler) {
 		this.controler = controler;
+	}
+
+	public Joueur getGagnantRound() {
+		
+		for (int i=0; i<this.getNombreJoueurs(); i++) {
+			if (this.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
+				
+			}
+			else {
+				return this.getJoueur(i);
+			}
+
+		}
+		return null;
+		
 	}
 }

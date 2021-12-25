@@ -60,6 +60,70 @@ public class Round {
 			}	
 		}
 		gagnantRound.gagnerPoints();
+		
+		
+	}
+	
+public void initRound(Joueur premierJoueur) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		System.out.println("c'est au joueur " + premierJoueur.getPseudo() + " de commencer ce round !");
+		
+		for (int i=0;i<instanceJeu.getNombreJoueurs();i++) {
+			instanceJeu.getJoueur(i).getIdentiteAssociee().setDevoilee(false);
+		}
+		
+		/*
+		if (instanceJeu.getNombrePhy()>0){
+			Jeu.getInstance().setVueActuelle(new InterfaceIdentite(0));
+		}
+		*/
+		
+		//GagnantRound permet de déterminer le premier joueur du round suivant, sauf pour le premier round.
+		if (instanceJeu.getEnTour() != null) {
+			premierJoueur = instanceJeu.getEnTour();
+		}
+		
+		instanceJeu.retirerCartes();
+		
+		instanceJeu.distributionCartesRumeurs();
+		
+		instanceJeu.setEnTour(premierJoueur);
+		
+		//Tour du premier joueur qui retourne le joueur du tour suivant dans la variable "enTour"
+		instanceJeu.setEnTour(this.jouerTour());
+		int nombreIdenDevoilee = 0;
+		
+		//Boucle des tours des joueurs, s'arrête lorsqu'un joueur a 5 points, ou qu'il ne reste qu'un joueur en jeu.
+		while (nombreIdenDevoilee < instanceJeu.getNombreJoueurs()-1) {
+			
+			
+			System.out.println("c'est au joueur " + instanceJeu.getEnTour().getPseudo() + " de jouer son tour !");
+			
+			//Tour des joueurs qui retourne le joueur du tour suivant dans la variable "enTour"
+			instanceJeu.setEnTour(this.jouerTour());
+			
+			//Vérification du nombre d'identité révélées pour savoir si c'est la fin d'un round
+			nombreIdenDevoilee = 0;
+			for (int i=0; i<instanceJeu.getNombreJoueurs(); i++) {
+				if (instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
+					nombreIdenDevoilee += 1;
+				}
+
+			}
+
+		}
+		
+		//Détermination du gagnant d'un round
+		for (int i=0; i<instanceJeu.getNombreJoueurs(); i++) {
+			if (instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) {
+				gagnantRound = instanceJeu.getJoueur(i);
+			}	
+		}
+		gagnantRound.gagnerPoints();
+		
+		
 	}
 	
 	public void choisirProchainJoueur() {
