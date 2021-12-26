@@ -17,6 +17,7 @@ public class ControlerGUI{
 	public ControlerGUI() {
     }
 	
+	
 	public void setInputsDemarrer(JButton demarrer, JButton quitter, JFrame frame) {
 		
 		demarrer.addActionListener(new ActionListener() {
@@ -124,7 +125,7 @@ public class ControlerGUI{
 	public void setInputsAccused(JButton btnJouerCarte, JButton btnAccuser) {
 		btnJouerCarte.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//A FAIRE
+				Jeu.getInstance().getVueActuelle().choisirWitch();
 			}
 		});
 		
@@ -186,6 +187,38 @@ public class ControlerGUI{
 		btnCombat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Jeu.getInstance().getVueActuelle().fight(listeGagnants);
+			}
+		});
+	}
+
+
+	public void setInputCarteEffet(boolean isHunt, JButton picLabel, CarteRumeur card) {
+		picLabel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (isHunt) {
+					card.appliquerEffetHunt();
+				}
+				else {
+					card.appliquerEffetWitch(Jeu.getInstance().getAccused());
+				}
+			}
+		});
+		
+	}
+
+
+	public void setInputBackWitch(JButton btnAnnuler) {
+		btnAnnuler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().setBtnAnnulerWitch();
+			}
+		});
+	}
+	
+	public void setInputBackHunt(JButton btnAnnuler) {
+		btnAnnuler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().setBtnAnnulerHunt();
 			}
 		});
 	}

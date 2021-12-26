@@ -23,5 +23,8 @@ public interface Vue {
 	public void passerRoundSuivant();
 	public void leave();
 	public void fight(ArrayList<Joueur> listeGagnants);
+	public void choisirWitch();
+	public void setBtnAnnulerWitch();
+	public void setBtnAnnulerHunt();
 	
 }

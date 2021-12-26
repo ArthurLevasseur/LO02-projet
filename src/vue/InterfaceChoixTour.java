@@ -348,14 +348,22 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 		
 		
-		Jeu.getInstance().setVueActuelle(this);
-		Jeu.getInstance().addObserver(this);
-		this.frame.setVisible(true);
+		
+		
 		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixTour);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
 		Jeu.getInstance().getControler().setInputsTour(this.btnAccuser,this.btnJouerCarte);
 		
 		
+		
+		
+		
+		
+		
+		
+		Jeu.getInstance().setVueActuelle(this);
+		Jeu.getInstance().addObserver(this);
+		this.frame.setVisible(true);
 	}
 	
 	@Override
@@ -741,5 +749,218 @@ public class InterfaceChoixTour implements Observer, Vue {
 			Jeu.getInstance().getRound().jouerUnTour();
 		}
 		
+	}
+	
+	public void choisirHunt() {
+		
+		JLayeredPane layeredPaneCarteHunt = new JLayeredPane();
+		layeredPaneCarteHunt.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneCarteHunt);
+		
+		JPanel panelTitreCarteHunt = new JPanel();
+		panelTitreCarteHunt.setBounds(0, 35, 1266, 50);
+		layeredPaneCarteHunt.add(panelTitreCarteHunt);
+		
+		JLabel lblTitreCarteHunt = new JLabel("Quelle carte voulez-vous jouer ?");
+		lblTitreCarteHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreCarteHunt.add(lblTitreCarteHunt);
+		
+		Panel panelCartesHunt = new Panel();
+		panelCartesHunt.setBackground(SystemColor.menu);
+		panelCartesHunt.setBounds(21, 251, 1224, 294);
+		layeredPaneCarteHunt.add(panelCartesHunt);
+		
+		JPanel pnlTitreHunt = new JPanel();
+		pnlTitreHunt.setBackground(SystemColor.menu);
+		FlowLayout flowLayout = (FlowLayout) pnlTitreHunt.getLayout();
+		flowLayout.setHgap(500);
+		panelCartesHunt.add(pnlTitreHunt);
+		
+		JLabel pnlCartesHunt = new JLabel("Cartes en main :");
+		pnlCartesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreHunt.add(pnlCartesHunt);
+		
+		Jeu.getInstance().getEnTour().getCarteEnMain().forEach(card -> {		
+			try {
+				if (!(((card.getNumCarte()==1 || card.getNumCarte()==2) && (Jeu.getInstance().getEnTour().getIdentiteAssociee().getIsWitch() == true || Jeu.getInstance().getEnTour().getIdentiteAssociee().getDevoilee() == false)) || (card.getNumCarte() == 3 && Jeu.getInstance().getEnTour().getCarteRevelees().isEmpty()))) {
+					
+					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+					JButton picLabel = new JButton(new ImageIcon(myPicture));
+					picLabel.setBackground(new Color(255,255,255));
+					picLabel.setSize(250, 735);
+					panelCartesHunt.add(picLabel);
+					Jeu.getInstance().getControler().setInputCarteEffet(true,picLabel,card);
+					
+				}
+				
+				else {
+					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + "grey.png"));
+					JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+					picLabel.setSize(250, 735);
+					panelCartesHunt.add(picLabel);
+				}
+				
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		
+		
+		
+		Panel panelCartesReveleesHunt = new Panel();
+		panelCartesReveleesHunt.setBackground(SystemColor.menu);
+		panelCartesReveleesHunt.setBounds(21, 543, 1224, 302);
+		layeredPaneCarteHunt.add(panelCartesReveleesHunt);
+		
+		JPanel pnlTitreReveleesHunt = new JPanel();
+		pnlTitreReveleesHunt.setBackground(SystemColor.menu);
+		FlowLayout flowLayout2 = (FlowLayout) pnlTitreReveleesHunt.getLayout();
+		flowLayout2.setHgap(500);
+		panelCartesReveleesHunt.add(pnlTitreReveleesHunt);
+		
+		JLabel pnlReveleesHunt = new JLabel("Cartes révélées :");
+		pnlReveleesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreReveleesHunt.add(pnlReveleesHunt);
+			
+		Jeu.getInstance().getEnTour().getCarteRevelees().forEach(carte -> {		
+			try {
+				BufferedImage myPicture = ImageIO.read(new File("Carte" + carte.getNumCarte() + ".png"));
+				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+				picLabel.setSize(250, 735);
+				panelCartesReveleesHunt.add(picLabel);
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		JButton btnAnnuler = new JButton("<");
+		btnAnnuler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		btnAnnuler.setBackground(new Color(255,255,255));
+		btnAnnuler.setBounds(10, 10, 60, 60);
+		layeredPaneCarteHunt.add(btnAnnuler);
+		
+		Jeu.getInstance().getControler().setInputBackHunt(btnAnnuler);
+		
+		LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
+		layeredPaneCarteHunt.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		LayeredPaneChoixTour.setVisible(false);
+	}
+	
+public void choisirWitch() {
+		
+		JLayeredPane layeredPaneCarteWitch = new JLayeredPane();
+		layeredPaneCarteWitch.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneCarteWitch);
+		
+		JPanel panelTitreCarteWitch = new JPanel();
+		panelTitreCarteWitch.setBounds(0, 35, 1266, 50);
+		layeredPaneCarteWitch.add(panelTitreCarteWitch);
+		
+		JLabel lblTitreCarteWitch = new JLabel("Quelle carte voulez-vous jouer ?");
+		lblTitreCarteWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreCarteWitch.add(lblTitreCarteWitch);
+		
+		Panel panelCartesWitch = new Panel();
+		panelCartesWitch.setBackground(SystemColor.menu);
+		panelCartesWitch.setBounds(21, 251, 1224, 294);
+		layeredPaneCarteWitch.add(panelCartesWitch);
+		
+		JPanel pnlTitreWitch = new JPanel();
+		pnlTitreWitch.setBackground(SystemColor.menu);
+		FlowLayout flowLayout = (FlowLayout) pnlTitreWitch.getLayout();
+		flowLayout.setHgap(500);
+		panelCartesWitch.add(pnlTitreWitch);
+		
+		JLabel pnlCartesWitch = new JLabel("Cartes en main :");
+		pnlCartesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreWitch.add(pnlCartesWitch);
+		
+		Jeu.getInstance().getAccused().getCarteEnMain().forEach(card -> {		
+			try {
+				if (!(card.getNumCarte() == 3 && Jeu.getInstance().getAccused().getCarteRevelees().isEmpty())) {
+					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+					JButton picLabel = new JButton(new ImageIcon(myPicture));
+					picLabel.setBackground(new Color(255,255,255));
+					picLabel.setSize(250, 735);
+					panelCartesWitch.add(picLabel);
+					Jeu.getInstance().getControler().setInputCarteEffet(false,picLabel,card);
+					
+				}
+				
+				else {
+					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + "grey.png"));
+					JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+					picLabel.setSize(250, 735);
+					panelCartesWitch.add(picLabel);
+				}
+				
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		
+		
+		
+		Panel panelCartesReveleesWitch = new Panel();
+		panelCartesReveleesWitch.setBackground(SystemColor.menu);
+		panelCartesReveleesWitch.setBounds(21, 543, 1224, 302);
+		layeredPaneCarteWitch.add(panelCartesReveleesWitch);
+		
+		JPanel pnlTitreReveleesWitch = new JPanel();
+		pnlTitreReveleesWitch.setBackground(SystemColor.menu);
+		FlowLayout flowLayout2 = (FlowLayout) pnlTitreReveleesWitch.getLayout();
+		flowLayout2.setHgap(500);
+		panelCartesReveleesWitch.add(pnlTitreReveleesWitch);
+		
+		JLabel pnlReveleesWitch = new JLabel("Cartes révélées :");
+		pnlReveleesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreReveleesWitch.add(pnlReveleesWitch);
+			
+		Jeu.getInstance().getEnTour().getCarteRevelees().forEach(carte -> {		
+			try {
+				BufferedImage myPicture = ImageIO.read(new File("Carte" + carte.getNumCarte() + ".png"));
+				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+				picLabel.setSize(250, 735);
+				panelCartesReveleesWitch.add(picLabel);
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		JButton btnAnnuler = new JButton("<");
+		btnAnnuler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		btnAnnuler.setBackground(new Color(255,255,255));
+		btnAnnuler.setBounds(10, 10, 60, 60);
+		layeredPaneCarteWitch.add(btnAnnuler);
+		
+		Jeu.getInstance().getControler().setInputBackWitch(btnAnnuler);
+		
+		LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
+		layeredPaneCarteWitch.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		LayeredPaneChoixTour.setVisible(false);
+	}
+
+	public void setBtnAnnulerWitch() {
+		LayeredPaneChoixTour.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixTour);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void setBtnAnnulerHunt() {
+		LayeredPaneChoixTour.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixTour);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
 	}
 }
