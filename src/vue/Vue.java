@@ -1,5 +1,7 @@
 package vue;
 
+import java.util.ArrayList;
+
 import modele.Joueur;
 
 public interface Vue {
@@ -19,5 +21,7 @@ public interface Vue {
 	public void demarrerTour(int joueur, boolean b);
 	public void passerTourSuivant();
 	public void passerRoundSuivant();
+	public void leave();
+	public void fight(ArrayList<Joueur> listeGagnants);
 	
 }

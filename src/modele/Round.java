@@ -64,7 +64,7 @@ public class Round {
 		
 	}
 	
-public void initRound(Joueur premierJoueur) {
+	public void initRound(Joueur premierJoueur) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		
@@ -91,45 +91,19 @@ public void initRound(Joueur premierJoueur) {
 		
 		instanceJeu.setEnTour(premierJoueur);
 		
+		this.jouerUnTour();
 		//Tour du premier joueur qui retourne le joueur du tour suivant dans la variable "enTour"
-		instanceJeu.setEnTour(this.jouerTour());
-		int nombreIdenDevoilee = 0;
-		
-		//Boucle des tours des joueurs, s'arrête lorsqu'un joueur a 5 points, ou qu'il ne reste qu'un joueur en jeu.
-		while (nombreIdenDevoilee < instanceJeu.getNombreJoueurs()-1) {
-			
-			
-			System.out.println("c'est au joueur " + instanceJeu.getEnTour().getPseudo() + " de jouer son tour !");
-			
-			//Tour des joueurs qui retourne le joueur du tour suivant dans la variable "enTour"
-			instanceJeu.setEnTour(this.jouerTour());
-			
-			//Vérification du nombre d'identité révélées pour savoir si c'est la fin d'un round
-			nombreIdenDevoilee = 0;
-			for (int i=0; i<instanceJeu.getNombreJoueurs(); i++) {
-				if (instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
-					nombreIdenDevoilee += 1;
-				}
-
-			}
-
-		}
-		
-		//Détermination du gagnant d'un round
-		for (int i=0; i<instanceJeu.getNombreJoueurs(); i++) {
-			if (instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) {
-				gagnantRound = instanceJeu.getJoueur(i);
-			}	
-		}
-		gagnantRound.gagnerPoints();
-		
-		
 	}
 	
 	public void choisirProchainJoueur() {
 		
 	}
-	
+	public void jouerUnTour() {
+		Jeu instanceJeu = Jeu.getInstance();
+		SaisirInt scan = SaisirInt.getInstance();
+		instanceJeu.setVueActuelle(new InterfaceChoixTour());
+		instanceJeu.getVueActuelle().debutTour();
+	}
 	public Joueur jouerTour() {
 
 		//Affichage des infos générales du joueur en tour
@@ -186,5 +160,21 @@ public void initRound(Joueur premierJoueur) {
 	
 	public void distribuerIdentite() {
 		
+	}
+	
+	public boolean isRoundEnd() {
+		int nombreIdenDevoilee = 0;
+		for (int i=0; i<Jeu.getInstance().getNombreJoueurs(); i++) {
+			if (Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
+				nombreIdenDevoilee += 1;
+			}
+
+		}
+		if (nombreIdenDevoilee == Jeu.getInstance().getNombreJoueurs()-1) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

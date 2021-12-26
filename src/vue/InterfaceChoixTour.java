@@ -139,7 +139,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 				}
 				else {
 					infoJoueur[compteur][0] = player.getPseudo();
-					infoJoueur[compteur][1] = "WHICH";
+					infoJoueur[compteur][1] = "WITCH";
 					infoJoueur[compteur][2] = (player.getPoints() + "");
 				}
 			}
@@ -365,8 +365,6 @@ public class InterfaceChoixTour implements Observer, Vue {
 	
 	@Override
 	public void debutTour() {
-		this.btnAccuser.setVisible(false);
-		this.btnJouerCarte.setVisible(false);
 	}
 	@Override
 	public void accuser() {
@@ -678,7 +676,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 				}
 				else {
 					infoJoueur[compteur][0] = player.getPseudo();
-					infoJoueur[compteur][1] = "WHICH";
+					infoJoueur[compteur][1] = "WITCH";
 					infoJoueur[compteur][2] = (player.getPoints() + "");
 				}
 			}
@@ -727,15 +725,20 @@ public class InterfaceChoixTour implements Observer, Vue {
 	}
 	
 	public void passerTourSuivant() {
+		
 		this.frame.setVisible(false);
 		
 		
 		
-		if (Jeu.getInstance().isRoundEnd()) {
+		if (Jeu.getInstance().getRound().isRoundEnd()) {
+			
+			Jeu.getInstance().getGagnantRound().gagnerPoints();
+			
 			InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+			
 		}
 		else {
-			Jeu.getInstance().setVueActuelle(new InterfaceChoixTour());
+			Jeu.getInstance().getRound().jouerUnTour();
 		}
 		
 	}

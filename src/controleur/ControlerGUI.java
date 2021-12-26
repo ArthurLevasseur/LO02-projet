@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import modele.*;
@@ -169,6 +170,24 @@ public class ControlerGUI{
 			}
 		});
 		
+	}
+
+	public void setInputQuitter(JButton btnQuitter) {
+		btnQuitter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().leave();
+			}
+		});
+		
+	}
+
+	public void setInputFight(JButton btnCombat, ArrayList<Joueur> listeGagnants) {
+		
+		btnCombat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().fight(listeGagnants);
+			}
+		});
 	}
 	
 	

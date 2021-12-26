@@ -27,6 +27,8 @@ public class Jeu extends Observable{
 	private Defausse tasDefausse;
 	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
 	private ControlerGUI controler;
+	private Round round;
+	private int compteur;
 	
 	public static Vue getVueActuelle() {
 		return Jeu.vueActuelle;
@@ -211,6 +213,36 @@ public class Jeu extends Observable{
 		*/
 		
 	}
+	public void implementGagnant() {
+		
+		int maxPoints = 5;
+		
+		// déterminer quel est le max de points
+		for (Joueur j : ensembleJoueurs) {
+			if (j.getPoints() >= maxPoints) {
+				maxPoints = j.getPoints();
+			}	
+		}
+		
+		// déterminer les joueurs qui ont atteint au 5 points (si un joueur a 6 points et un autre 5, le gagnant sera celui à 6 points)
+		for (Joueur j : ensembleJoueurs) {
+			if (j.getPoints() == maxPoints) {
+				gagnants.add(j);
+			}
+		}
+		
+		
+	}
+	
+	public int getClassement(Joueur joueur) {
+		compteur = 1;
+		this.getEnsembleJoueurs().forEach(JoueurCompared -> {
+			if (JoueurCompared.getPoints() > joueur.getPoints()) {
+				compteur += 1;
+			}
+		});
+		return compteur;
+	}
 	
 	public void determinerGagnant() {
 		
@@ -262,6 +294,7 @@ public class Jeu extends Observable{
 		
 			//Création d'un round (contenant le déroulement du round aussi)
 			Round roundEnCours = new Round();
+			this.round = roundEnCours;
 			roundEnCours.debutRound(instanceJeu.getJoueur(premierJoueur));
 			
 			this.determinerGagnant();
@@ -279,7 +312,7 @@ public class Jeu extends Observable{
 		
 	}
 	
-public void initJeu() {
+	public void initJeu() {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		int maxPoints = 0;
@@ -299,6 +332,7 @@ public void initJeu() {
 			int premierJoueur = (int) (Math.random() * instanceJeu.nombreJoueurs);
 			this.setEnTour(this.getJoueur(premierJoueur));
 			Round roundEnCours = new Round();
+			this.round = roundEnCours;
 			roundEnCours.initRound(instanceJeu.getJoueur(premierJoueur));
 		}
 			
@@ -356,21 +390,7 @@ public void initJeu() {
         return Instance;
     }
 	
-	public boolean isRoundEnd() {
-		int nombreIdenDevoilee = 0;
-		for (int i=0; i<this.getNombreJoueurs(); i++) {
-			if (this.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
-				nombreIdenDevoilee += 1;
-			}
-
-		}
-		if (nombreIdenDevoilee == this.nombreJoueurs-1) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+	
 	
 	public ArrayList<Joueur> getEnsembleJoueurs() {
 		return ensembleJoueurs;
@@ -438,5 +458,17 @@ public void initJeu() {
 		}
 		return null;
 		
+	}
+
+	public Round getRound() {
+		return round;
+	}
+
+	public void setRound(Round round) {
+		this.round = round;
+	}
+
+	public ArrayList<Joueur> getGagnants() {
+		return gagnants;
 	}
 }

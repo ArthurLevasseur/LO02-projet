@@ -85,22 +85,34 @@ public class InterfaceFinRound implements Vue{
 		btnNextRound.setBounds(476, 356, 323, 80);
 		frame.getContentPane().add(btnNextRound);
 		
-		gagnant.gagnerPoints();
+		
 		Jeu.getInstance().getControler().setInputNextRound(btnNextRound);
 		this.frame.setVisible(true);
 		
+		Jeu.getInstance().setEnTour(gagnant);
 	}
 	
 	public void passerRoundSuivant() {
+		
+		Jeu.getInstance().implementGagnant();
+		
 		this.frame.setVisible(false);
-		if (Jeu.getInstance().getNombreJoueurs() > 0) {
-			InterfaceIdentite choixID = new InterfaceIdentite(0);
+		
+		if (Jeu.getInstance().getGagnants().size() > 0) {
+			InterfaceFinJeu finJeu = new InterfaceFinJeu(Jeu.getInstance().getGagnants());
 		}
 		else {
-			int premierJoueur = (int) (Math.random() * Jeu.getInstance().getNombreJoueurs());
-			Round roundEnCours = new Round();
-			roundEnCours.initRound(Jeu.getInstance().getJoueur(premierJoueur));
+			if (Jeu.getInstance().getNombrePhy() > 0) {
+				InterfaceIdentite choixID = new InterfaceIdentite(0);
+			}
+			else {
+				Round roundEnCours = new Round();
+				Jeu.getInstance().setRound(roundEnCours);
+				roundEnCours.initRound(Jeu.getInstance().getEnTour());
+			}
 		}
+		
+		
 		
 	}
 

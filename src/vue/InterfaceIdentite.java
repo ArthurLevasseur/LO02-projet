@@ -104,10 +104,16 @@ public class InterfaceIdentite implements Vue{
 			Jeu.getInstance().setVueActuelle(new InterfaceIdentite(joueur+1));
 		}
 		else {
-			int premierJoueur = (int) (Math.random() * Jeu.getInstance().getNombreJoueurs());
-			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(premierJoueur));
-			Round roundEnCours = new Round();
-			roundEnCours.initRound(Jeu.getInstance().getJoueur(premierJoueur));
+			if (Jeu.getInstance().getRound() == null) {
+				int premierJoueur = (int) (Math.random() * Jeu.getInstance().getNombreJoueurs());
+				Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(premierJoueur));
+				Round roundEnCours = new Round();
+				Jeu.getInstance().setRound(roundEnCours);
+				roundEnCours.initRound(Jeu.getInstance().getJoueur(premierJoueur));
+			}
+			else {
+				Jeu.getInstance().getRound().initRound(Jeu.getInstance().getEnTour());
+			}
 		}
 	}
 	
