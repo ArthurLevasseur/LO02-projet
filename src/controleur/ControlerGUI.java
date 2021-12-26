@@ -222,6 +222,15 @@ public class ControlerGUI{
 			}
 		});
 	}
+
+
+	public void setInputBackAccuse(JButton btnAnnuler) {
+		btnAnnuler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().setBtnAnnulerAccuse();
+			}
+		});
+	}
 	
 	
 }

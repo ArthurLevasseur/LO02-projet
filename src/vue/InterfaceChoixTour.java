@@ -387,18 +387,24 @@ public class InterfaceChoixTour implements Observer, Vue {
 		LayeredPaneAccuser.setBackground(UIManager.getColor("Button.background"));
 		LayeredPaneEnsemble.add(LayeredPaneAccuser);
 		
-		panelChoixAccuse = new JPanel();
+		JButton btnAnnuler = new JButton("<");
+		btnAnnuler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		btnAnnuler.setBackground(new Color(255,255,255));
+		btnAnnuler.setBounds(10, 10, 60, 60);
+		LayeredPaneAccuser.add(btnAnnuler);
+		
+		JPanel panelChoixAccuse = new JPanel();
 		panelChoixAccuse.setBackground(UIManager.getColor("Button.background"));
 		panelChoixAccuse.setBounds(0, 0, 1280, 1080);
 		LayeredPaneAccuser.add(panelChoixAccuse);
 		
-		pnlTitreAccuse = new JPanel();
+		JPanel pnlTitreAccuse = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreAccuse.getLayout();
 		flowLayout_2.setHgap(400);
 		pnlTitreAccuse.setBackground(new Color(0, 0, 0, 0));
 		panelChoixAccuse.add(pnlTitreAccuse);
 		
-		lblQuiVoulezvousAccuser = new JLabel("Qui voulez-vous accuser ?");
+		JLabel lblQuiVoulezvousAccuser = new JLabel("Qui voulez-vous accuser ?");
 		lblQuiVoulezvousAccuser.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
 		pnlTitreAccuse.add(lblQuiVoulezvousAccuser);
 		
@@ -430,19 +436,23 @@ public class InterfaceChoixTour implements Observer, Vue {
 			compteur++;
 			
 		});
+		
+		
+		
+		Jeu.getInstance().getControler().setInputBackAccuse(btnAnnuler);
+		
 		LayeredPaneEnsemble.moveToFront(LayeredPaneAccuser);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		LayeredPaneChoixTour.setVisible(false);
 		
 		
 	}
 	@Override
 	public void repondreAccusation(int joueur) {
 		
-		//METHODE QUI ACTUALISE LES VALEURS DU JEU
 		
 		
-		
-		LayeredPaneAccuser.setVisible(false);
+		LayeredPaneAccuser.removeAll();
 		
 		LayeredPaneChoixTour.removeAll();
 		
@@ -961,6 +971,15 @@ public void choisirWitch() {
 	public void setBtnAnnulerHunt() {
 		LayeredPaneChoixTour.setVisible(true);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixTour);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void setBtnAnnulerAccuse() {
+		LayeredPaneAccuser.removeAll();
+		LayeredPaneChoixTour.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixTour);
+		btnAccuser.setVisible(true);
+		btnJouerCarte.setVisible(true);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
 	}
 }

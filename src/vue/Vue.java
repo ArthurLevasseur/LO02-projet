@@ -26,5 +26,6 @@ public interface Vue {
 	public void choisirWitch();
 	public void setBtnAnnulerWitch();
 	public void setBtnAnnulerHunt();
+	public void setBtnAnnulerAccuse();
 	
 }
