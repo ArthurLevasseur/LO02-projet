@@ -114,44 +114,10 @@ public class Round {
 		SaisirInt scan = SaisirInt.getInstance();
 		
 		
-		
-		
 		instanceJeu.getEnTour().setMustAccuse(false);
 		instanceJeu.getInter().debutTour();
 		
 		
-		
-		
-		int choixAccuse = 0;
-		int choix = 0;
-		
-
-		
-		
-		
-	
-	    if (choix == 2) {
-			boolean peutJouerCarte = false;
-	
-			for (int i=0; i<instanceJeu.getEnTour().getCarteEnMain().size(); i++) {
-				if (((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 1 && instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 2) || ((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 1 || instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 2)) && instanceJeu.getEnTour().getIdentiteAssociee().getDevoilee() == true) && (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 3 || (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 3 && !(instanceJeu.getEnTour().getCarteRevelees().isEmpty())))) {
-					peutJouerCarte = true;
-				}
-			}
-			if (peutJouerCarte == true) {
-				//Appelle de la méthode de jeu d'une carte rumeur, renvoie le prochain joueur (ce qui dépend des choix du joueur en tour)
-				return instanceJeu.getEnTour().jouerCarteHunt();
-			}
-			else {
-				//La boucle while va se réeffectuer avec choix =1, donc une accusation
-				choix = 1;
-				System.out.println("Vous ne pouvez pas jouer de cartes hunts !");
-			}
-		
-	    }
-	    else {
-	    	System.out.println("Choix invalide !");
-	    }
 		return instanceJeu.getEnTour();
 		
 	}

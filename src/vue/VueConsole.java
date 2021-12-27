@@ -191,6 +191,7 @@ public class VueConsole implements Vue {
 
 
 		}
+		
 	}
 
 
@@ -270,5 +271,70 @@ public class VueConsole implements Vue {
 			}
 
 
+	}
+	
+	public void jouerHunt() {
+		Jeu instanceJeu = Jeu.getInstance();
+		boolean peutJouerCarte = false;
+		
+		for (int i=0; i<instanceJeu.getEnTour().getCarteEnMain().size(); i++) {
+			if (((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 1 && instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 2) || ((instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 1 || instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 2)) && instanceJeu.getEnTour().getIdentiteAssociee().getDevoilee() == true) && (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() != 3 || (instanceJeu.getEnTour().getCarteEnMain().get(i).getNumCarte() == 3 && !(instanceJeu.getEnTour().getCarteRevelees().isEmpty())))) {
+				peutJouerCarte = true;
+			}
+		}
+		if (peutJouerCarte == true) {
+			//Appelle de la méthode de jeu d'une carte rumeur, renvoie le prochain joueur (ce qui dépend des choix du joueur en tour)
+			//instanceJeu.setEnTour(instanceJeu.getEnTour().jouerCarteHunt());
+			instanceJeu.getEnTour().jouerCarteHunt();
+		}
+		else {
+			//La boucle while va se réeffectuer avec choix =1, donc une accusation
+			System.out.println("Vous ne pouvez pas jouer de cartes hunts !");
+			this.debutTour();
+		}
+	}
+	
+	public void choisirHunt(Joueur j) {
+		
+		int choix;
+		
+		if (j.isIA()) {
+			System.out.println(j.getPseudo() + " choisit sa carte à jouer");
+			choix = (int)(Math.random() * j.getCarteEnMain().size());
+			while (choix<0 || choix > j.getCarteEnMain().size()-1 || ((j.getCarteEnMain().get(choix).getNumCarte() == 2 || j.getCarteEnMain().get(choix).getNumCarte() == 1) && (j.getIdentiteAssociee().getIsWitch() == true || j.getIdentiteAssociee().getDevoilee() == false)) || (j.getCarteEnMain().get(choix).getNumCarte() == 3 && j.getCarteRevelees().isEmpty())) {
+				choix = (int)(Math.random() * j.getCarteEnMain().size());
+			}
+			System.out.println(j.getPseudo() + " a décidé de jouer la carte " + j.getCarteEnMain().get(choix).getNomCarte());
+		}
+		else {
+			System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
+			//this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
+			
+			for(CarteRumeur card : j.getCarteEnMain()) {
+				if ((card.getNumCarte()==1 || card.getNumCarte()==2) && (j.getIdentiteAssociee().getIsWitch() == true || j.getIdentiteAssociee().getDevoilee() == false)) {
+					System.out.println("PAS JOUABLE : "+ card + "(Vous n'êtes pas dévoilé en tant que villageois)\n");
+				}
+				
+				else if (card.getNumCarte() == 3 && j.getCarteRevelees().isEmpty()) {
+					System.out.println("PAS JOUABLE : "+ card + "(aucune de vos cartes n'est dévoilée)\n");
+				}
+				
+				
+				else {
+					System.out.println("TAPEZ "+j.getCarteEnMain().indexOf(card) + " pour jouer " + card);
+				}
+			}
+			
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+			choix = saisieUtilisateur.nextInt();
+			while (choix<0 || choix > j.getCarteEnMain().size()-1 || ((j.getCarteEnMain().get(choix).getNumCarte() == 2 || j.getCarteEnMain().get(choix).getNumCarte() == 1) && (j.getIdentiteAssociee().getIsWitch() == true || j.getIdentiteAssociee().getDevoilee() == false)) || (j.getCarteEnMain().get(choix).getNumCarte() == 3 && j.getCarteRevelees().isEmpty())) {
+				System.out.println("Choix Incompatible !");	
+				choix = saisieUtilisateur.nextInt();
+			}
+			
+		}
+		
+		controleur.choisirHunt(j, choix);
+		
 	}
 }

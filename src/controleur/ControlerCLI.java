@@ -76,6 +76,26 @@ public class ControlerCLI {
 	}
 	
 	public void jouerHunt() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().jouerHunt();
+	}
+	
+	public void choisirHunt(Joueur j, int choix) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		Joueur next = j.getCarteEnMain().get(choix).appliquerEffetHunt();
+		
+		if (j.getCarteEnMain().get(choix).getNumCarte() == 11) {
+			instanceJeu.getTasDefausse().getContenu().add(j.getCarteEnMain().get(choix));
+			j.getCarteEnMain().remove(choix);
+		}
+		else {
+			j.getCarteRevelees().add(j.getCarteEnMain().get(choix));
+			j.getCarteEnMain().remove(choix);
+		}
+		
+		instanceJeu.setEnTour(next);
 		
 	}
 	

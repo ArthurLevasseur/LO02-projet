@@ -2,6 +2,8 @@ package modele;
 import effets.*;
 import java.util.ArrayList;
 
+import controleur.ControleurInter;
+
 public abstract class Joueur {
 	
 	private int points = 0;
@@ -15,6 +17,7 @@ public abstract class Joueur {
 	private Identite identiteAssociee;
 	private String pseudo;
 	private boolean mustAccuse = false;
+	private ControleurInter inter = ControleurInter.getInstance();
 	
 	public Joueur() {
 		this.points = 0;
@@ -169,57 +172,13 @@ public abstract class Joueur {
 		return next;
 	}
 	
-	public Joueur jouerCarteHunt() {
+	public void jouerCarteHunt() {
 		Defausse defausse = Defausse.getInstance();
 		int choix;
 		
-		if (this.isIA()) {
-			System.out.println(this.pseudo + " choisit sa carte à jouer");
-			choix = (int)(Math.random() * this.carteEnMain.size());
-			while (choix<0 || choix > this.carteEnMain.size()-1 || ((this.carteEnMain.get(choix).getNumCarte() == 2 || this.carteEnMain.get(choix).getNumCarte() == 1) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
-				choix = (int)(Math.random() * this.carteEnMain.size());
-			}
-			System.out.println(this.pseudo + " a décidé de jouer la carte " + this.carteEnMain.get(choix).getNomCarte());
-		}
-		else {
-			System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
-			//this.carteEnMain.forEach(card -> System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card));
-			
-			for(CarteRumeur card : this.carteEnMain) {
-				if ((card.getNumCarte()==1 || card.getNumCarte()==2) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) {
-					System.out.println("PAS JOUABLE : "+ card + "(Vous n'êtes pas dévoilé en tant que villageois)\n");
-				}
-				
-				else if (card.getNumCarte() == 3 && this.carteRevelees.isEmpty()) {
-					System.out.println("PAS JOUABLE : "+ card + "(aucune de vos cartes n'est dévoilée)\n");
-				}
-				
-				
-				else {
-					System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card);
-				}
-			}
-			
-			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
-			choix = saisieUtilisateur.nextInt();
-			while (choix<0 || choix > this.carteEnMain.size()-1 || ((this.carteEnMain.get(choix).getNumCarte() == 2 || this.carteEnMain.get(choix).getNumCarte() == 1) && (this.identiteAssociee.getIsWitch() == true || this.identiteAssociee.getDevoilee() == false)) || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
-				System.out.println("Choix Incompatible !");	
-				choix = saisieUtilisateur.nextInt();
-			}
-			
-		}
+		inter.choixDeCarte();
 		
-		Joueur next = this.carteEnMain.get(choix).appliquerEffetHunt();
 		
-		if (this.carteEnMain.get(choix).getNumCarte() == 11) {
-			defausse.getContenu().add(this.carteEnMain.get(choix));
-			this.carteEnMain.remove(choix);
-		}
-		else {
-			this.carteRevelees.add(this.carteEnMain.get(choix));
-			this.carteEnMain.remove(choix);
-		}
-		return next;
 	}
 	
 	public Joueur revelerIdentite() {
@@ -359,4 +318,15 @@ public abstract class Joueur {
 	public void createCarteEnMain() {
 		this.carteEnMain = new ArrayList<CarteRumeur>();
 	}
+
+	public void setCarteRevelees(ArrayList<CarteRumeur> carteRevelees) {
+		this.carteRevelees = carteRevelees;
+	}
+
+	public void setCarteEnMain(ArrayList<CarteRumeur> carteEnMain) {
+		this.carteEnMain = carteEnMain;
+	}
+	
+	
+	
 }

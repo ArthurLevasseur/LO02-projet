@@ -44,6 +44,17 @@ public class ControleurInter {
 		}
 	}
 	
+	public void choixDeCarte() {
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		if (instanceJeu.getVueActuelle() instanceof VueConsole) {
+			instanceJeu.getVueActuelle().choisirHunt(instanceJeu.getEnTour());
+		}
+		else {
+			
+		}
+	}
+	
 	
 
 }

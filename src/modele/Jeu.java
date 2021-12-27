@@ -409,7 +409,7 @@ public class Jeu extends Observable{
 	}
 	
 	
-	public static void main(String[] args) {
+	//public static void main(String[] args) {
 		
 		/*
 		EventQueue.invokeLater(new Runnable() {
@@ -434,7 +434,7 @@ public class Jeu extends Observable{
 		//démarrage du jeu par console
 		
 		
-	}
+	//}
 
 	public void setNombreJoueurs(int nombreJoueurs) {
 		this.nombreJoueurs = nombreJoueurs;
@@ -450,6 +450,7 @@ public class Jeu extends Observable{
 	
 	public ControleurInter getInter() {
 		return inter;
+	}
 
 	public Joueur getGagnantRound() {
 		
@@ -477,4 +478,14 @@ public class Jeu extends Observable{
 	public ArrayList<Joueur> getGagnants() {
 		return gagnants;
 	}
+
+	public Defausse getTasDefausse() {
+		return tasDefausse;
+	}
+
+	public void setTasDefausse(Defausse tasDefausse) {
+		this.tasDefausse = tasDefausse;
+	}
+	
+	
 }
