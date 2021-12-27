@@ -28,6 +28,8 @@ public class Jeu extends Observable{
 	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
 	private ControlerGUI controler;
 	
+	private ControleurInter inter = ControleurInter.getInstance();
+	
 	public static Vue getVueActuelle() {
 		return Jeu.vueActuelle;
 	}
@@ -93,6 +95,7 @@ public class Jeu extends Observable{
 	
 
 	public Jeu(){
+		
 	}
 	
 	
@@ -135,10 +138,10 @@ public class Jeu extends Observable{
 			//System.out.println(this.ensembleCartes[i]);
 		}
 		
-		this.setPseudo();
+		this.inter.entrerPseudo();
 	}
 	
-	 private void setPseudo() {
+	 public void setPseudo() {
 		if (this.nombrePhy != 0) {
 			InterfaceChoixPseudos interJ1 = new InterfaceChoixPseudos(this.getJoueur(0));
 		}
@@ -382,5 +385,9 @@ public class Jeu extends Observable{
 
 	public void setControler(ControlerGUI controler) {
 		this.controler = controler;
+	}
+	
+	public ControleurInter getInter() {
+		return inter;
 	}
 }

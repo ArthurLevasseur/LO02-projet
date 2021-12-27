@@ -74,10 +74,12 @@ public class Round {
 		Joueur prochainJoueur;
 		Jeu instanceJeu = Jeu.getInstance();
 		SaisirInt scan = SaisirInt.getInstance();
-		instanceJeu.setVueActuelle(new InterfaceChoixTour());
-		instanceJeu.getVueActuelle().debutTour();
-		instanceJeu.getEnTour().setMustAccuse(false);
 		
+		
+		
+		
+		instanceJeu.getEnTour().setMustAccuse(false);
+		instanceJeu.getInter().debutTour();
 		
 		
 		

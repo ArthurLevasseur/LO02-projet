@@ -23,11 +23,18 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
-		//instanceJeu.setVueActuelle(new VueConsole());
 		
-		//instanceJeu.getVueActuelle().demarrerJeu();
 		
-		EventQueue.invokeLater(new Runnable() {
+		
+		instanceJeu.setVueActuelle(new VueConsole());
+		instanceJeu.getVueActuelle().demarrerJeu();
+		
+		
+		
+		
+		//////////////////////////
+		
+		/*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					ControlerGUI controler = new ControlerGUI();
@@ -39,7 +46,7 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-		});
+		})*/;
 
 	}
 
