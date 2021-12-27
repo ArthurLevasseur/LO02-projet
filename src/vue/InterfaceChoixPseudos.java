@@ -69,10 +69,6 @@ public class InterfaceChoixPseudos implements Vue {
 		frame.getContentPane().add(lblNewLabel);
 		
 		btnValider = new JButton("Valider");
-		btnValider.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnValider.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
 		btnValider.setBounds(456, 403, 323, 80);
 		frame.getContentPane().add(btnValider);
@@ -85,7 +81,7 @@ public class InterfaceChoixPseudos implements Vue {
 			InterfaceChoixPseudos JoueurSuivant = new InterfaceChoixPseudos(Jeu.getInstance().getJoueur(compteur));
 		}
 		else {
-			Jeu.getInstance().orgaRounds();
+			Jeu.getInstance().initJeu();
 		}
 	}
 }

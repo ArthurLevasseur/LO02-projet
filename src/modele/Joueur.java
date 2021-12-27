@@ -232,6 +232,7 @@ public abstract class Joueur {
 		}
 		else {
 			System.out.println("C'était un Villager! Dommage joueur " + instanceJeu.getEnTour().pseudo + ", " + this.pseudo + ", vous prenez le prochain tour !");
+			instanceJeu.setEnTour(this);
 			return this;
 		}
 	}

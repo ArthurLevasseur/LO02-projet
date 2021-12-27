@@ -27,6 +27,8 @@ public class Jeu extends Observable{
 	private Defausse tasDefausse;
 	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
 	private ControlerGUI controler;
+	private Round round;
+	private int compteur;
 	
 	private ControleurInter inter = ControleurInter.getInstance();
 	
@@ -146,7 +148,7 @@ public class Jeu extends Observable{
 			InterfaceChoixPseudos interJ1 = new InterfaceChoixPseudos(this.getJoueur(0));
 		}
 		else {
-			this.orgaRounds();
+			this.initJeu();
 		}
 		
 	}
@@ -214,6 +216,36 @@ public class Jeu extends Observable{
 		*/
 		
 	}
+	public void implementGagnant() {
+		
+		int maxPoints = 5;
+		
+		// déterminer quel est le max de points
+		for (Joueur j : ensembleJoueurs) {
+			if (j.getPoints() >= maxPoints) {
+				maxPoints = j.getPoints();
+			}	
+		}
+		
+		// déterminer les joueurs qui ont atteint au 5 points (si un joueur a 6 points et un autre 5, le gagnant sera celui à 6 points)
+		for (Joueur j : ensembleJoueurs) {
+			if (j.getPoints() == maxPoints) {
+				gagnants.add(j);
+			}
+		}
+		
+		
+	}
+	
+	public int getClassement(Joueur joueur) {
+		compteur = 1;
+		this.getEnsembleJoueurs().forEach(JoueurCompared -> {
+			if (JoueurCompared.getPoints() > joueur.getPoints()) {
+				compteur += 1;
+			}
+		});
+		return compteur;
+	}
 	
 	public void determinerGagnant() {
 		
@@ -265,6 +297,7 @@ public class Jeu extends Observable{
 		
 			//Création d'un round (contenant le déroulement du round aussi)
 			Round roundEnCours = new Round();
+			this.round = roundEnCours;
 			roundEnCours.debutRound(instanceJeu.getJoueur(premierJoueur));
 			
 			this.determinerGagnant();
@@ -278,6 +311,33 @@ public class Jeu extends Observable{
 			
 		}
 		
+			
+		
+	}
+	
+	public void initJeu() {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		int maxPoints = 0;
+		//le tout premier joueur est choisi aléatoirement
+		
+
+		//Les cartes des mains des joueurs, leurs cartes révélées ainsi que la défausse sont réinitialisées
+		
+		
+		
+		//Création d'un round (contenant le déroulement du round aussi)
+		if (this.getNombrePhy()>0) {
+			
+			this.setVueActuelle(new InterfaceIdentite(0));
+		}
+		else {
+			int premierJoueur = (int) (Math.random() * instanceJeu.nombreJoueurs);
+			this.setEnTour(this.getJoueur(premierJoueur));
+			Round roundEnCours = new Round();
+			this.round = roundEnCours;
+			roundEnCours.initRound(instanceJeu.getJoueur(premierJoueur));
+		}
 			
 		
 	}
@@ -333,7 +393,8 @@ public class Jeu extends Observable{
         return Instance;
     }
 	
-
+	
+	
 	public ArrayList<Joueur> getEnsembleJoueurs() {
 		return ensembleJoueurs;
 	}
@@ -389,5 +450,31 @@ public class Jeu extends Observable{
 	
 	public ControleurInter getInter() {
 		return inter;
+
+	public Joueur getGagnantRound() {
+		
+		for (int i=0; i<this.getNombreJoueurs(); i++) {
+			if (this.getJoueur(i).getIdentiteAssociee().getDevoilee() == true) {
+				
+			}
+			else {
+				return this.getJoueur(i);
+			}
+
+		}
+		return null;
+		
+	}
+
+	public Round getRound() {
+		return round;
+	}
+
+	public void setRound(Round round) {
+		this.round = round;
+	}
+
+	public ArrayList<Joueur> getGagnants() {
+		return gagnants;
 	}
 }

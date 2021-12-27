@@ -1,5 +1,7 @@
 package vue;
 
+import java.util.ArrayList;
+
 import modele.Joueur;
 
 public interface Vue {
@@ -10,11 +12,20 @@ public interface Vue {
 	public void determinerNomDuJoueur(Joueur j);
 	public void initialisationDeLaPartie();
 	public void debutTour();
-	public void choixAccuse();
-	public void repondreAccusation();
+	public void repondreAccusation(int joueurCible);
 	public void choisirIdentite(Joueur j);
 	public void demarrerRound();
 	public void choisirHunt();
-	public void accuser(int joueurCible);
+	public void accuser();
+	public void reveler();
+	public void demarrerTour(int joueur, boolean b);
+	public void passerTourSuivant();
+	public void passerRoundSuivant();
+	public void leave();
+	public void fight(ArrayList<Joueur> listeGagnants);
+	public void choisirWitch();
+	public void setBtnAnnulerWitch();
+	public void setBtnAnnulerHunt();
+	public void setBtnAnnulerAccuse();
 	
 }
