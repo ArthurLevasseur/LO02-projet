@@ -99,4 +99,23 @@ public class ControlerCLI {
 		
 	}
 	
+	public void jouerCarteWitch(Joueur j) {
+		j.jouerCarteWitch();
+	}
+	
+	public void revelerIdentite(Joueur j) {
+		j.revelerIdentite();
+	}
+	
+	public void choisirWitch(Joueur j, int choix) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		System.out.println("haha");
+		Joueur next = j.getCarteEnMain().get(choix).appliquerEffetWitch(j);
+		System.out.println("hoho");
+		j.getCarteRevelees().add(j.getCarteEnMain().get(choix));
+		j.getCarteEnMain().remove(choix);
+		instanceJeu.setEnTour(next);
+	}
+	
 }

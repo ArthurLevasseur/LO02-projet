@@ -337,4 +337,81 @@ public class VueConsole implements Vue {
 		controleur.choisirHunt(j, choix);
 		
 	}
+	
+	public void repondreAccusation(Joueur j) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		System.out.println("Joueur " + j.getPseudo() + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		int choix=0;
+		while (choix!=1 && choix!=2) {
+
+			choix = saisieUtilisateur.nextInt();
+			
+			if (choix==2) {
+				if (j.getCarteEnMain().isEmpty() || (j.getCarteEnMain().size()==1 && j.getCarteEnMain().get(0).getNumCarte() == 3 && j.getCarteRevelees().isEmpty())) {
+					System.out.println("Vous ne pouvez pas jouer de cartes rumeurs !");
+				}
+				else {
+					controleur.jouerCarteWitch(j);
+				}
+			}
+
+			else if (choix==1) {
+				controleur.revelerIdentite(j);
+			}
+			
+			else {
+				System.out.println("Choix invalide !");
+			}
+		}
+	}
+	
+	public void jouerWitch() {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		int choix = 0;
+		
+		if (instanceJeu.getAccused().isIA()) {
+			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit sa carte à jouer");
+			choix = (int)(Math.random() * instanceJeu.getAccused().getCarteEnMain().size());
+			while (choix<0 || choix > instanceJeu.getAccused().getCarteEnMain().size() || (instanceJeu.getAccused().getCarteEnMain().get(choix).getNumCarte() == 3 && instanceJeu.getAccused().getCarteRevelees().isEmpty())) {
+				choix = (int)(Math.random() * instanceJeu.getAccused().getCarteEnMain().size());
+			}
+		}
+		else {
+			System.out.println("\n---------------Votre identité----------------\n");
+			if (instanceJeu.getAccused().getIdentiteAssociee().getIsWitch()) {System.out.print("Vous êtes une Witch ");} else {System.out.print("Vous êtes un Villager ");};
+			if (instanceJeu.getAccused().getIdentiteAssociee().getDevoilee()) {System.out.println("devoilé.\n");} else {System.out.println("encore en round.\n");};
+			System.out.println("-----------------Votre main------------------\n");
+			for (int i=0; i<instanceJeu.getAccused().getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +instanceJeu.getAccused().getCarteEnMain().get(i).getNomCarte() +"\n");};
+			if (instanceJeu.getAccused().getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
+			System.out.println("-------------Vos cartes révélées-------------\n");
+			for (int i=0; i<instanceJeu.getAccused().getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +instanceJeu.getAccused().getCarteRevelees().get(i).getNomCarte() +"\n");};
+			if (instanceJeu.getAccused().getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
+			System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
+			
+			for(CarteRumeur card : instanceJeu.getAccused().getCarteEnMain()) {
+				if (card.getNumCarte() == 3 && instanceJeu.getAccused().getCarteRevelees().isEmpty()) {
+					System.out.println("PAS JOUABLE : "+ card + "(aucune de vos cartes n'est dévoilée)\n");
+				}
+				
+				else {
+					System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteEnMain().indexOf(card) + " pour jouer " + card);
+				}
+			}
+			
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+			choix = saisieUtilisateur.nextInt();
+			while (choix<0 || choix > instanceJeu.getAccused().getCarteEnMain().size()-1 || (instanceJeu.getAccused().getCarteEnMain().get(choix).getNumCarte() == 3 && instanceJeu.getAccused().getCarteRevelees().isEmpty())) {
+				System.out.println("Choix Incompatible !");	
+				choix = saisieUtilisateur.nextInt();
+			}
+		}
+		
+		controleur.choisirWitch(instanceJeu.getAccused(), choix);
+		
+	}
+	
 }

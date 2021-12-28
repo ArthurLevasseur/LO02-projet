@@ -44,7 +44,7 @@ public class ControleurInter {
 		}
 	}
 	
-	public void choixDeCarte() {
+	public void choixDeCarteHunt() {
 		Jeu instanceJeu = Jeu.getInstance();
 		
 		if (instanceJeu.getVueActuelle() instanceof VueConsole) {
@@ -55,6 +55,15 @@ public class ControleurInter {
 		}
 	}
 	
-	
+	public void choixDeCarteWitch() {
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		if (instanceJeu.getVueActuelle() instanceof VueConsole) {
+			instanceJeu.getVueActuelle().jouerWitch();
+		}
+		else {
+			
+		}
+	}
 
 }

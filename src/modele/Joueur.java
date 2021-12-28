@@ -78,32 +78,9 @@ public abstract class Joueur {
 		Jeu instanceJeu = Jeu.getInstance();
 
 		if (this.isIA() == false) {
-			System.out.println("Joueur " + this.pseudo + ", on vous accuse, que voulez vous faire?\n\n1) Révéler votre identité.\n2) Jouer une carte rumeur (effet witch?).");
-			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
-			int choix=0;
-			while (choix!=1) {
-
-				choix = saisieUtilisateur.nextInt();
-				
-				if (choix==2) {
-					if (this.carteEnMain.isEmpty() || (this.carteEnMain.size()==1 && this.carteEnMain.get(0).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
-						System.out.println("Vous ne pouvez pas jouer de cartes rumeurs !");
-					}
-					else {
-						return this.jouerCarteWitch();
-					}
-				}
-
-				else if (choix==1) {
-					return this.revelerIdentite();
-				}
-				
-				else {
-					System.out.println("Choix invalide !");
-				}
-			}
+			instanceJeu.getVueActuelle().repondreAccusation(this);
 		}
-		else {
+		/*else {
 			int choix;
 			if (this.carteEnMain.isEmpty() || (this.carteEnMain.size() == 1 && this.carteEnMain.get(0).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
 				choix = 1;
@@ -113,12 +90,12 @@ public abstract class Joueur {
 			}
 			
 			if (choix == 0) {
-				return this.jouerCarteWitch();
+				this.jouerCarteWitch();
 			}
 			else {
-				return this.revelerIdentite();
+				this.revelerIdentite();
 			}
-		}
+		}*/
 		
 
 
@@ -126,57 +103,15 @@ public abstract class Joueur {
 		return instanceJeu.getEnTour();
 	}
 	
-	public Joueur jouerCarteWitch() {
+	public void jouerCarteWitch() {
 		
-		int choix;
+		inter.choixDeCarteWitch();
 		
-		if (this.isIA()) {
-			System.out.println(this.pseudo + " choisit sa carte à jouer");
-			choix = (int)(Math.random() * this.carteEnMain.size());
-			while (choix<0 || choix > this.carteEnMain.size() || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
-				choix = (int)(Math.random() * this.carteEnMain.size());
-			}
-		}
-		else {
-			System.out.println("\n---------------Votre identité----------------\n");
-			if (this.getIdentiteAssociee().getIsWitch()) {System.out.print("Vous êtes une Witch ");} else {System.out.print("Vous êtes un Villager ");};
-			if (this.getIdentiteAssociee().getDevoilee()) {System.out.println("devoilé.\n");} else {System.out.println("encore en round.\n");};
-			System.out.println("-----------------Votre main------------------\n");
-			for (int i=0; i<this.getCarteEnMain().size(); i++) {System.out.println("Carte " + i + " : " +this.getCarteEnMain().get(i).getNomCarte() +"\n");};
-			if (this.getCarteEnMain().isEmpty()) {System.out.println("Aucunes cartes\n");}
-			System.out.println("-------------Vos cartes révélées-------------\n");
-			for (int i=0; i<this.getCarteRevelees().size(); i++) {System.out.println("Carte " + i + " : " +this.getCarteRevelees().get(i).getNomCarte() +"\n");};
-			if (this.getCarteRevelees().isEmpty()) {System.out.println("Aucunes cartes\n");}
-			System.out.println("Choisissez la carte que vous souhaitez jouer. \n");
-			
-			for(CarteRumeur card : this.carteEnMain) {
-				if (card.getNumCarte() == 3 && this.carteRevelees.isEmpty()) {
-					System.out.println("PAS JOUABLE : "+ card + "(aucune de vos cartes n'est dévoilée)\n");
-				}
-				
-				else {
-					System.out.println("TAPEZ "+this.carteEnMain.indexOf(card) + " pour jouer " + card);
-				}
-			}
-			
-			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
-			choix = saisieUtilisateur.nextInt();
-			while (choix<0 || choix > this.carteEnMain.size()-1 || (this.carteEnMain.get(choix).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
-				System.out.println("Choix Incompatible !");	
-				choix = saisieUtilisateur.nextInt();
-			}
-		}
-		Joueur next = this.carteEnMain.get(choix).appliquerEffetWitch(this);
-		this.carteRevelees.add(this.carteEnMain.get(choix));
-		this.carteEnMain.remove(choix);
-		return next;
 	}
 	
 	public void jouerCarteHunt() {
-		Defausse defausse = Defausse.getInstance();
-		int choix;
 		
-		inter.choixDeCarte();
+		inter.choixDeCarteHunt();
 		
 		
 	}
