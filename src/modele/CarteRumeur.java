@@ -66,8 +66,8 @@ public class CarteRumeur {
 		return str.toString();
 	}
 	
-	public Joueur appliquerEffetHunt() {
-		return this.effetHunt.executerEffet(numCarte);
+	public void appliquerEffetHunt() {
+		this.effetHunt.executerEffet(numCarte);
 	}
 	
 	public Joueur appliquerEffetWitch(Joueur accused) {
@@ -89,5 +89,16 @@ public class CarteRumeur {
 	public void setNomCarte(String nomCarte) {
 		this.nomCarte = nomCarte;
 	}
+
+	public Hunt getEffetHunt() {
+		return effetHunt;
+	}
+
+
+	public Witch getEffetWitch() {
+		return effetWitch;
+	}
+
+	
 	
 }

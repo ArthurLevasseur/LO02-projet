@@ -121,6 +121,7 @@ public class VueConsole implements Vue {
 	}
 
 	public void debutTour() {
+		
 		Jeu instanceJeu = Jeu.getInstance();
 
 		System.out.println("\n---------------Votre identité----------------\n");
@@ -412,6 +413,108 @@ public class VueConsole implements Vue {
 		
 		controleur.choisirWitch(instanceJeu.getAccused(), choix);
 		
+	}
+	
+	
+	
+	// EFFETS DES CARTES
+	
+	
+	public void revealPlayer(Effet effet) { //H1
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		Joueur selection = null;
+		
+		if (instanceJeu.getEnTour().isIA() == false) {
+			System.out.println("De quel joueur souhaitez vous réveler l'identité ?");
+			for (int i=1 ; i<instanceJeu.getNombreJoueurs()+1 ; i++) {
+				visable = true;
+				for(CarteRumeur carte : instanceJeu.getJoueur(i-1).getCarteRevelees()) {
+					if (carte.getNumCarte() == 5) {
+						visable = false;
+					}
+				}
+				if (instanceJeu.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && instanceJeu.getJoueur(i-1)!=instanceJeu.getEnTour() && visable == true) {
+					
+					System.out.println("Joueur " + (i) + ") " + instanceJeu.getJoueur(i-1).getPseudo() + " (points : " + instanceJeu.getJoueur(i-1).getPoints() + ")");
+				}
+			}
+			
+			int choix = -1;
+			
+			while (choix<0 || choix>instanceJeu.getNombreJoueurs() || instanceJeu.getJoueur(choix).getIdentiteAssociee().getDevoilee() == true || instanceJeu.getJoueur(choix)==instanceJeu.getEnTour()) {
+				choix = saisieUtilisateur.nextInt();
+				visable = true;
+				for(CarteRumeur carte : instanceJeu.getJoueur(choix-1).getCarteRevelees()) {
+					if (carte.getNumCarte() == 5) {
+						visable = false;
+					}
+				}
+				if (0<choix && choix<instanceJeu.getNombreJoueurs()+1 && instanceJeu.getJoueur(choix)!=instanceJeu.getEnTour() && visable == true) {
+					selection = instanceJeu.getJoueur(choix-1);
+				}
+				else {
+					System.out.println("Choix invalide !");
+					choix = -1;
+				}
+			}
+		}
+		
+		
+		else {
+			System.out.print(instanceJeu.getEnTour().getPseudo() + " choisit un joueur pour révéler son identité");
+			
+			int condition = -1;
+			while (condition < 0) {
+				int choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse();
+				visable = true;
+				for(CarteRumeur carte : instanceJeu.getJoueur(choix).getCarteRevelees()) {
+					if (carte.getNumCarte() == 5) {
+						visable = false;
+					}
+				}
+				if (0<=choix && choix<instanceJeu.getEnsembleJoueurs().size() && instanceJeu.getJoueur(choix)!=instanceJeu.getEnTour() && visable == true) {
+					selection = instanceJeu.getJoueur(choix);
+					condition = 1;
+				}
+				else {
+					condition = -1;
+				}
+			}
+		}
+		
+		effet.executionEffet(selection);
+	}
+	
+	
+	public void chooseAndSecretLook(Effet effet) {
+		
+		Joueur choix;
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		
+		if (instanceJeu.getEnTour().isIA() == false) {
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur, son identité sera secrètement révelée.");
+			while (choix.getIdentiteAssociee().getDevoilee() == true) {
+				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choix incorrecte ! Choisissez un joueur dont l'identité n'a pas encore été révélée");
+			}
+		}
+		else {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit un joueur, son identité lui sera secrètement révélée.");
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " a choisit le joueur " + choix.getPseudo());
+			while (choix.getIdentiteAssociee().getDevoilee() == true) {
+				choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+			}
+		}
+		
+		effet.executionEffet(choix);
 	}
 	
 }

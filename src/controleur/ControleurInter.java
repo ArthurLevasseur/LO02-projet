@@ -32,6 +32,21 @@ public class ControleurInter {
 		}
 	}
 	
+	public void choisirIdentite() {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		if (instanceJeu.getVueActuelle() instanceof VueConsole) {
+			for (Joueur j : instanceJeu.getEnsembleJoueurs()) {
+				instanceJeu.getVueActuelle().choisirIdentite(j);
+			}
+		}
+		else {
+			
+		}	
+		
+	}
+	
 	public void debutTour() {
 		Jeu instanceJeu = Jeu.getInstance();
 		

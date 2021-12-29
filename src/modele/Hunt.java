@@ -54,9 +54,9 @@ public class Hunt{
 		}
 	}
 	
-	public Joueur executerEffet(int numCarte) {
+	public void executerEffet(int numCarte) {
 		
-		return this.effetAssocie.executionEffet();
+		this.effetAssocie.appelVue();
 		
 		/*System.out.println("Effet appliqué == " + effet); // à retirer par la suite
 		Jeu instanceJeu = Jeu.getInstance();
@@ -284,4 +284,10 @@ public class Hunt{
 		str.append("effet Hunt! : " + this.effetAssocie.explication);
 		return str.toString();
 	}
+
+	public Effet getEffetAssocie() {
+		return effetAssocie;
+	}
+
+	
 }

@@ -2,7 +2,8 @@ package vue;
 
 import java.util.ArrayList;
 
-import modele.Joueur;
+import modele.*;
+import controleur.*;
 
 public interface Vue {
 
@@ -31,5 +32,8 @@ public interface Vue {
 	public void setBtnAnnulerWitch();
 	public void setBtnAnnulerHunt();
 	public void setBtnAnnulerAccuse();
+	
+	public void revealPlayer(Effet effet);
+	public void chooseAndSecretLook(Effet effet);
 	
 }

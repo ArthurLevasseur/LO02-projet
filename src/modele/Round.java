@@ -1,11 +1,14 @@
 package modele;
 
+import controleur.*;
 import vue.*;
 
 public class Round {
 	
 	private Joueur[] identitesRevelees = new Joueur[6];
 	private Joueur gagnantRound = null;
+	
+	private ControleurInter inter = ControleurInter.getInstance();
 	
 	public Round() {
 		
@@ -20,6 +23,13 @@ public class Round {
 		for (int i = 0; i < instanceJeu.getNombreJoueurs(); i++) {
 			instanceJeu.getJoueur(i).getIdentiteAssociee().choisirIdentite(instanceJeu.getJoueur(i),instanceJeu.getJoueur(i).isIA());
 		}
+		
+		inter.choisirIdentite();
+		
+		for (int i=0;i<instanceJeu.getNombreJoueurs();i++) {
+			instanceJeu.getJoueur(i).getIdentiteAssociee().setDevoilee(false);
+		}
+		
 		//GagnantRound permet de déterminer le premier joueur du round suivant, sauf pour le premier round.
 		if (gagnantRound != null) {
 			premierJoueur = gagnantRound;

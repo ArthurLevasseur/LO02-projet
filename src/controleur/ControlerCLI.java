@@ -19,9 +19,6 @@ public class ControlerCLI {
 			}
 		}
 		
-		for (Joueur j : instanceJeu.getEnsembleJoueurs()) {
-			instanceJeu.getVueActuelle().choisirIdentite(j);
-		}
 		
 		instanceJeu.orgaRounds();
 		
@@ -45,6 +42,13 @@ public class ControlerCLI {
 		Jeu instanceJeu = Jeu.getInstance();
 		
 		j.setPseudo(s);
+	}
+	
+	public void demanderIdentite() {
+		Jeu instanceJeu = Jeu.getInstance();
+		for (Joueur j : instanceJeu.getEnsembleJoueurs()) {
+			instanceJeu.getVueActuelle().choisirIdentite(j);
+		}
 	}
 	
 	public void attribuerIdentite(Joueur j, int identite) {
@@ -84,7 +88,7 @@ public class ControlerCLI {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		
-		Joueur next = j.getCarteEnMain().get(choix).appliquerEffetHunt();
+		j.getCarteEnMain().get(choix).appliquerEffetHunt();
 		
 		if (j.getCarteEnMain().get(choix).getNumCarte() == 11) {
 			instanceJeu.getTasDefausse().getContenu().add(j.getCarteEnMain().get(choix));
@@ -95,7 +99,7 @@ public class ControlerCLI {
 			j.getCarteEnMain().remove(choix);
 		}
 		
-		instanceJeu.setEnTour(next);
+		//instanceJeu.setEnTour(next);
 		
 	}
 	
