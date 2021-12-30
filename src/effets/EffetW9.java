@@ -12,6 +12,10 @@ public class EffetW9 extends Effet {
 		this.explication = "Vous choisissez le prochain joueur.\nDurant son tour, le joueur ciblé devra accuser un joueur autre que vous, si possible.";
 	}
 	
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().evilEye(this, false);
+	}
 
 	public Joueur executionEffet() {
 

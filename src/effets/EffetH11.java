@@ -12,6 +12,11 @@ public class EffetH11 extends Effet {
 		this.explication = "Vous ajoutez une des cartes défaussées à votre main, et vous vous défaussez de cette carte.\nVous prenez le prochain tour";
 	}
 	
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().blackCatHunt(this);
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

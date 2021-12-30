@@ -16,8 +16,8 @@ public class EffetH8 extends Effet {
 	}
 	
 	public void appelVue() {
-		// pas de vue à appeler
-		this.executionEffet();
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().chaudronHunt(this);
 	}
 	
 	public void executionEffet() {

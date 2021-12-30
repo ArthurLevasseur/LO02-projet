@@ -76,12 +76,12 @@ public class InterfaceDebut implements Vue {
 		frame.getContentPane().add(lblBienvenu);
 		
 		btnDemarrer = new JButton("Nouvelle Partie");
-		btnDemarrer.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnDemarrer.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
 		btnDemarrer.setBounds(457, 155, 323, 80);
 		frame.getContentPane().add(btnDemarrer);
 		
 		btnQuitter = new JButton("Quitter");
-		btnQuitter.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnQuitter.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
 		btnQuitter.setBounds(457, 304, 323, 80);
 		frame.getContentPane().add(btnQuitter);
 	}

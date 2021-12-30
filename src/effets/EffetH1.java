@@ -17,7 +17,7 @@ public class EffetH1 extends Effet {
 	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().revealPlayer(this);
+		instanceJeu.getVueActuelle().angryMobHunt(this);
 	}
 
 	public void executionEffet(Joueur selection) {

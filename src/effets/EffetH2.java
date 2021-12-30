@@ -15,7 +15,7 @@ public class EffetH2 extends Effet {
 	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().chooseAndSecretLook(this);
+		instanceJeu.getVueActuelle().theInquisitionHunt(this);
 	}
 	
 	public void executionEffet(Joueur selection) {

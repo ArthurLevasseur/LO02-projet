@@ -12,6 +12,11 @@ public class EffetW7 extends Effet {
 		this.explication = "Vous choisissez le prochain joueur.";
 	}
 
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().choisirProchainJoueurWitch(this);
+	}
+	
 	public Joueur executionEffet() {
 
 		Jeu instanceJeu = Jeu.getInstance();

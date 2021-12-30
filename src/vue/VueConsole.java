@@ -420,7 +420,7 @@ public class VueConsole implements Vue {
 	// EFFETS DES CARTES
 	
 	
-	public void revealPlayer(Effet effet) { //H1
+	public void angryMobHunt(Effet effet) { //H1
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
@@ -490,7 +490,7 @@ public class VueConsole implements Vue {
 	}
 	
 	
-	public void chooseAndSecretLook(Effet effet) {
+	public void theInquisitionHunt(Effet effet) {
 		
 		Joueur choix;
 		
@@ -552,7 +552,7 @@ public class VueConsole implements Vue {
 		
 	}
 	
-public void askOpponent(Effet effet) {
+public void choisirProchainJoueur(Effet effet) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		Joueur choix;
@@ -580,7 +580,7 @@ public void askOpponent(Effet effet) {
 		effet.executionEffet(choix);
 	}
 	
-	public void pickRandom(Effet effet) {
+	public void hookedNoseHunt(Effet effet) {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;

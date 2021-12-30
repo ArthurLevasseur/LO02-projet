@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.CardLayout;
 import javax.swing.JTextPane;
-import controleur.Jeu;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JDesktopPane;
@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,11 +74,17 @@ public class InterfaceChoixTour implements Observer, Vue {
 	private JLayeredPane LayeredPaneSuivi;
 	private JLayeredPane LayeredPaneAccuser;
 	private JLayeredPane LayeredPaneEnsemble;
+	private JLayeredPane LayeredPaneChoixNext;
+	private JLayeredPane layeredPaneCarteWitch;
+	private JLayeredPane layeredPaneCarteHunt;
+	private JLayeredPane LayeredPaneRecap;
+	private JLayeredPane LayeredPaneChoixDuckingStool;
 	
+	private boolean accusable;
 	private int compteur;
-	private JPanel panelChoixAccuse;
-	private JPanel pnlTitreAccuse;
-	private JLabel lblQuiVoulezvousAccuser;
+	private int compteurAccusable;
+	private int carteJouable;
+	
 	private JLayeredPane layeredPaneReveler;
 	private JPanel panelTitreReveler;
 	private JLabel lblTitreReveler;
@@ -88,7 +95,8 @@ public class InterfaceChoixTour implements Observer, Vue {
 	private JLabel lblTitreID;
 	private JPanel pnlContourID;
 	private JLabel lblWitch;
-	
+	private JLabel lblSecret;
+	private JPanel panelChoixNext;
 	
 	
 	/**
@@ -410,11 +418,14 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 
 		compteur = 0;
+		compteurAccusable = 0;
 		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
 			
 			
 			
 			if (Joueur.getIdentiteAssociee().getDevoilee() == false && Joueur.isAccusable() == true && Joueur != Jeu.getInstance().getEnTour()) {
+				
+				compteurAccusable++;
 				
 				JPanel pnlbouton = new JPanel();
 				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
@@ -437,6 +448,39 @@ public class InterfaceChoixTour implements Observer, Vue {
 			
 		});
 		
+		if (compteurAccusable == 0) {
+			carteJouable = 0;
+			Jeu.getInstance().getEnTour().getCarteEnMain().forEach(card -> {		
+				try {
+					if (!(((card.getNumCarte()==1 || card.getNumCarte()==2) && (Jeu.getInstance().getEnTour().getIdentiteAssociee().getIsWitch() == true || Jeu.getInstance().getEnTour().getIdentiteAssociee().getDevoilee() == false)) || (card.getNumCarte() == 3 && Jeu.getInstance().getEnTour().getCarteRevelees().isEmpty()))) {
+						carteJouable++;
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			if (carteJouable == 0) {
+				
+				Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+					if (Joueur.isAccusable() == false) {
+						JPanel pnlbouton = new JPanel();
+						FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+						flowLayout.setHgap(400);
+						pnlbouton.setBackground(new Color(0, 0, 0, 0));
+						
+						JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+						btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+						btnJoueur.setBounds(500, 159, 323, 80);
+						Jeu.getInstance().getControler().setInputAccusePlayer(btnJoueur, compteur);
+						
+						pnlbouton.add(btnJoueur);
+						
+						panelChoixAccuse.add(pnlbouton);
+					}
+				});
+			}
+		}
 		
 		
 		Jeu.getInstance().getControler().setInputBackAccuse(btnAnnuler);
@@ -645,12 +689,12 @@ public class InterfaceChoixTour implements Observer, Vue {
 			layeredPaneReveler.add(lblDescriptifReveler);
 		}
 		else {
-			lblTitreReveler = new JLabel("Joueur \"" + Jeu.getInstance().getAccused().getPseudo() + "\", vous prenez le prochain tour !");
+			lblTitreReveler = new JLabel("Joueur \"" + Jeu.getInstance().getAccused().getPseudo() + "\", vous étiez un Villager !");
 			lblTitreReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
 			lblTitreReveler.setHorizontalAlignment(SwingConstants.CENTER);
 			panelTitreReveler.add(lblTitreReveler);
 			
-			lblDescriptifReveler = new JLabel("Que voulez vous faire ?");
+			lblDescriptifReveler = new JLabel("Joueur \"" + Jeu.getInstance().getAccused().getPseudo() + "\", vous prenez le prochain tour !");
 			lblDescriptifReveler.setHorizontalAlignment(SwingConstants.CENTER);
 			lblDescriptifReveler.setForeground(SystemColor.controlDkShadow);
 			lblDescriptifReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
@@ -745,7 +789,9 @@ public class InterfaceChoixTour implements Observer, Vue {
 	public void passerTourSuivant() {
 		
 		this.frame.setVisible(false);
-		
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur ->{
+			Joueur.setAccusable(true);
+		});
 		
 		
 		if (Jeu.getInstance().getRound().isRoundEnd()) {
@@ -763,7 +809,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 	
 	public void choisirHunt() {
 		
-		JLayeredPane layeredPaneCarteHunt = new JLayeredPane();
+		layeredPaneCarteHunt = new JLayeredPane();
 		layeredPaneCarteHunt.setBounds(0, 0, 1280, 1080);
 		LayeredPaneEnsemble.add(layeredPaneCarteHunt);
 		
@@ -790,6 +836,8 @@ public class InterfaceChoixTour implements Observer, Vue {
 		pnlCartesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
 		pnlTitreHunt.add(pnlCartesHunt);
 		
+		compteur = 0;
+		
 		Jeu.getInstance().getEnTour().getCarteEnMain().forEach(card -> {		
 			try {
 				if (!(((card.getNumCarte()==1 || card.getNumCarte()==2) && (Jeu.getInstance().getEnTour().getIdentiteAssociee().getIsWitch() == true || Jeu.getInstance().getEnTour().getIdentiteAssociee().getDevoilee() == false)) || (card.getNumCarte() == 3 && Jeu.getInstance().getEnTour().getCarteRevelees().isEmpty()))) {
@@ -799,7 +847,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 					picLabel.setBackground(new Color(255,255,255));
 					picLabel.setSize(250, 735);
 					panelCartesHunt.add(picLabel);
-					Jeu.getInstance().getControler().setInputCarteEffet(true,picLabel,card);
+					Jeu.getInstance().getControler().setInputCarteEffet(true,picLabel,card,compteur);
 					
 				}
 				
@@ -809,6 +857,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 					picLabel.setSize(250, 735);
 					panelCartesHunt.add(picLabel);
 				}
+				compteur++;
 				
 			}
 			
@@ -862,9 +911,9 @@ public class InterfaceChoixTour implements Observer, Vue {
 		LayeredPaneChoixTour.setVisible(false);
 	}
 	
-public void choisirWitch() {
+	public void choisirWitch() {
 		
-		JLayeredPane layeredPaneCarteWitch = new JLayeredPane();
+		layeredPaneCarteWitch = new JLayeredPane();
 		layeredPaneCarteWitch.setBounds(0, 0, 1280, 1080);
 		LayeredPaneEnsemble.add(layeredPaneCarteWitch);
 		
@@ -891,6 +940,8 @@ public void choisirWitch() {
 		pnlCartesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
 		pnlTitreWitch.add(pnlCartesWitch);
 		
+		compteur = 0;
+		
 		Jeu.getInstance().getAccused().getCarteEnMain().forEach(card -> {		
 			try {
 				if (!(card.getNumCarte() == 3 && Jeu.getInstance().getAccused().getCarteRevelees().isEmpty())) {
@@ -899,7 +950,7 @@ public void choisirWitch() {
 					picLabel.setBackground(new Color(255,255,255));
 					picLabel.setSize(250, 735);
 					panelCartesWitch.add(picLabel);
-					Jeu.getInstance().getControler().setInputCarteEffet(false,picLabel,card);
+					Jeu.getInstance().getControler().setInputCarteEffet(false,picLabel,card,compteur);
 					
 				}
 				
@@ -909,6 +960,7 @@ public void choisirWitch() {
 					picLabel.setSize(250, 735);
 					panelCartesWitch.add(picLabel);
 				}
+				compteur++;
 				
 			}
 			
@@ -935,7 +987,7 @@ public void choisirWitch() {
 		pnlReveleesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
 		pnlTitreReveleesWitch.add(pnlReveleesWitch);
 			
-		Jeu.getInstance().getEnTour().getCarteRevelees().forEach(carte -> {		
+		Jeu.getInstance().getAccused().getCarteRevelees().forEach(carte -> {		
 			try {
 				BufferedImage myPicture = ImageIO.read(new File("Carte" + carte.getNumCarte() + ".png"));
 				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
@@ -981,5 +1033,1271 @@ public void choisirWitch() {
 		btnAccuser.setVisible(true);
 		btnJouerCarte.setVisible(true);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void prendreProchainTour(Effet effet) {
+		Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
+		this.passerTourSuivant();
+	}
+	
+	public void angryMobHunt(Effet effet) {
+			
+			this.btnAccuser.setVisible(false);
+			this.btnJouerCarte.setVisible(false);
+			
+			
+			LayeredPaneAccuser = new JLayeredPane();
+			LayeredPaneAccuser.setBounds(0, 0, 1280, 1080);
+			LayeredPaneAccuser.setBackground(UIManager.getColor("Button.background"));
+			LayeredPaneEnsemble.add(LayeredPaneAccuser);
+			
+			JButton btnAnnuler = new JButton("<");
+			btnAnnuler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			btnAnnuler.setBackground(new Color(255,255,255));
+			btnAnnuler.setBounds(10, 10, 60, 60);
+			LayeredPaneAccuser.add(btnAnnuler);
+			
+			JPanel panelChoixAccuse = new JPanel();
+			panelChoixAccuse.setBackground(UIManager.getColor("Button.background"));
+			panelChoixAccuse.setBounds(0, 0, 1280, 1080);
+			LayeredPaneAccuser.add(panelChoixAccuse);
+			
+			JPanel pnlTitreAccuse = new JPanel();
+			FlowLayout flowLayout_2 = (FlowLayout) pnlTitreAccuse.getLayout();
+			flowLayout_2.setHgap(400);
+			pnlTitreAccuse.setBackground(new Color(0, 0, 0, 0));
+			panelChoixAccuse.add(pnlTitreAccuse);
+			
+			JLabel lblQuiVoulezvousAccuser = new JLabel("Qui voulez-vous accuser ?");
+			lblQuiVoulezvousAccuser.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			pnlTitreAccuse.add(lblQuiVoulezvousAccuser);
+			
+
+			compteur = 0;
+			Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+				
+				accusable = true;
+				
+				Joueur.getCarteRevelees().forEach(Card -> {
+					if (Card.getNumCarte() == 5) {
+						accusable = false;
+					}
+				});
+				
+				if (Joueur.getIdentiteAssociee().getDevoilee() == false && Joueur.isAccusable() == true && Joueur != Jeu.getInstance().getEnTour() && accusable == true) {
+					
+					JPanel pnlbouton = new JPanel();
+					FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+					flowLayout.setHgap(400);
+					pnlbouton.setBackground(new Color(0, 0, 0, 0));
+					
+					JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+					btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+					btnJoueur.setBounds(500, 159, 323, 80);
+					Jeu.getInstance().getControler().setInputAccusePlayerHunt(btnJoueur, compteur);
+					
+					pnlbouton.add(btnJoueur);
+					
+					panelChoixAccuse.add(pnlbouton);
+					
+					
+				}
+				
+				compteur++;
+				
+			});
+	}
+	
+	public void revelerHunt(int Joueur) {
+		
+		Jeu.getInstance().getJoueur(Joueur).getIdentiteAssociee().ReveleIdentite();
+		
+		if (!(LayeredPaneChoixDuckingStool == null)) {
+			LayeredPaneChoixDuckingStool.removeAll();
+			LayeredPaneChoixDuckingStool.setVisible(false);
+		}
+		
+		layeredPaneReveler = new JLayeredPane();
+		layeredPaneReveler.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneReveler);
+		
+		LayeredPaneEnsemble.moveToBack(layeredPaneReveler);
+		
+		panelTitreReveler = new JPanel();
+		panelTitreReveler.setBounds(0, 35, 1266, 50);
+		layeredPaneReveler.add(panelTitreReveler);
+		
+		btnTourSuivant = new JButton("Passer à la suite");
+		btnTourSuivant.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnTourSuivant.setBounds(470, 600, 323, 80);
+		layeredPaneReveler.add(btnTourSuivant);
+		
+		
+		
+		if (Jeu.getInstance().getJoueur(Joueur).getIdentiteAssociee().getIsWitch() == true) {
+			lblTitreReveler = new JLabel("Joueur \"" + Jeu.getInstance().getJoueur(Joueur).getPseudo() + "\" était une witch, bravo !");
+			lblTitreReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			lblTitreReveler.setHorizontalAlignment(SwingConstants.CENTER);
+			panelTitreReveler.add(lblTitreReveler);
+			
+			lblDescriptifReveler = new JLabel("Vous gagnez 2 points et prenez le prochain tour !");
+			lblDescriptifReveler.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifReveler.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifReveler.setBounds(0, 300, 1266, 21);
+			layeredPaneReveler.add(lblDescriptifReveler);
+		}
+		else {
+			lblTitreReveler = new JLabel("Joueur \"" + Jeu.getInstance().getJoueur(Joueur).getPseudo() + "\" était un Villager, dommage !");
+			lblTitreReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			lblTitreReveler.setHorizontalAlignment(SwingConstants.CENTER);
+			panelTitreReveler.add(lblTitreReveler);
+			
+			lblDescriptifReveler = new JLabel("Vous perdez 2 points, \"" + Jeu.getInstance().getJoueur(Joueur).getPseudo() + "\" prend le prochain tour !");
+			lblDescriptifReveler.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifReveler.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifReveler.setBounds(0, 300, 1266, 21);
+			layeredPaneReveler.add(lblDescriptifReveler);
+		}
+		
+		this.updateSuivi();
+		LayeredPaneEnsemble.moveToFront(layeredPaneReveler);
+		LayeredPaneChoixTour.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		LayeredPaneAccuser.removeAll();
+		
+		if (!(Jeu.getInstance().getJoueur(Joueur).getIdentiteAssociee().getIsWitch())) {
+			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(Joueur));
+		}
+		
+		Jeu.getInstance().getControler().setImputNextTurn(btnTourSuivant);
+	}
+	
+	public void choisirProchainJoueur(Effet effet) {
+		
+		this.btnAccuser.setVisible(false);
+		this.btnJouerCarte.setVisible(false);
+		
+		
+		
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le prochain joueur ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+
+		compteur = 0;
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+			
+			
+			
+			if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getEnTour()) {
+				
+				JPanel pnlbouton = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+				flowLayout.setHgap(400);
+				pnlbouton.setBackground(new Color(0, 0, 0, 0));
+				
+				JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+				btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+				btnJoueur.setBounds(500, 159, 323, 80);
+				Jeu.getInstance().getControler().setInputNextPlayer(btnJoueur, compteur);
+				
+				pnlbouton.add(btnJoueur);
+				
+				panelChoixNext.add(pnlbouton);
+				
+				
+			}
+			
+			compteur++;
+			
+		});
+		
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	
+	public void theInquisitionHunt(Effet effet) {
+		
+		this.btnAccuser.setVisible(false);
+		this.btnJouerCarte.setVisible(false);
+		
+		
+		
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le prochain joueur ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+
+		compteur = 0;
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+			
+			
+			
+			if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getEnTour()) {
+				
+				JPanel pnlbouton = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+				flowLayout.setHgap(400);
+				pnlbouton.setBackground(new Color(0, 0, 0, 0));
+				
+				JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+				btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+				btnJoueur.setBounds(500, 159, 323, 80);
+				Jeu.getInstance().getControler().setInputNextPlayerSecretly(btnJoueur, compteur);
+				
+				pnlbouton.add(btnJoueur);
+				
+				panelChoixNext.add(pnlbouton);
+				
+				
+			}
+			
+			compteur++;
+			
+		});
+		
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void setTextSecret(String text) {
+		
+		panelChoixNext.removeAll();
+		
+		JButton btnNext = new JButton(text);
+		btnNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnNext.setBounds(500, 400, 323, 80);
+		Jeu.getInstance().getControler().setImputNextTurn(btnNext);
+		panelChoixNext.add(btnNext);
+		LayeredPaneChoixNext.moveToFront(btnNext);
+
+	}
+	
+	public void discard(Effet effet) {
+		
+		if (!(layeredPaneCarteWitch == null)) {
+			layeredPaneCarteWitch.removeAll();
+			layeredPaneCarteWitch.setVisible(false);
+		}
+		if (!(LayeredPaneChoixDuckingStool == null)) {
+			LayeredPaneChoixDuckingStool.removeAll();
+			LayeredPaneChoixDuckingStool.setVisible(false);
+		}
+		
+		layeredPaneCarteWitch = new JLayeredPane();
+		layeredPaneCarteWitch.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneCarteWitch);
+		
+		JPanel panelTitreCarteWitch = new JPanel();
+		panelTitreCarteWitch.setBounds(0, 35, 1266, 50);
+		layeredPaneCarteWitch.add(panelTitreCarteWitch);
+		
+		JLabel lblTitreCarteWitch = new JLabel("Quelle carte voulez-vous défausser ?");
+		lblTitreCarteWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreCarteWitch.add(lblTitreCarteWitch);
+		
+		Panel panelCartesWitch = new Panel();
+		panelCartesWitch.setBackground(SystemColor.menu);
+		panelCartesWitch.setBounds(21, 251, 1224, 294);
+		layeredPaneCarteWitch.add(panelCartesWitch);
+		
+		JPanel pnlTitreWitch = new JPanel();
+		pnlTitreWitch.setBackground(SystemColor.menu);
+		FlowLayout flowLayout = (FlowLayout) pnlTitreWitch.getLayout();
+		flowLayout.setHgap(500);
+		panelCartesWitch.add(pnlTitreWitch);
+		
+		JLabel pnlCartesWitch = new JLabel("Cartes en main :");
+		pnlCartesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreWitch.add(pnlCartesWitch);
+		
+		compteur = 0;
+		Jeu.getInstance().getAccused().getCarteEnMain().forEach(card -> {		
+			try {
+				if (card.getNumCarte() != 2) {
+					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+					JButton picLabel = new JButton(new ImageIcon(myPicture));
+					picLabel.setBackground(new Color(255,255,255));
+					picLabel.setSize(250, 735);
+					panelCartesWitch.add(picLabel);
+					Jeu.getInstance().getControler().setInputDiscardCarte(picLabel,compteur);
+					
+				}
+				
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			compteur += 1;
+		});
+		
+		if (Jeu.getInstance().getAccused().getCarteEnMain().isEmpty()) {
+			JButton btnJoueur = new JButton("Aucunes cartes en main");
+			btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+			btnJoueur.setBounds(500, 600, 323, 80);
+			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
+			Jeu.getInstance().getVueActuelle().passerTourSuivant();
+		}
+		
+		LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
+		layeredPaneCarteWitch.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		layeredPaneCarteWitch.setVisible(true);
+	}
+	
+	public void pointedHat(Effet effet, boolean isHunt) {
+		
+		if (isHunt) {
+			layeredPaneCarteHunt.removeAll();
+			layeredPaneCarteHunt.setVisible(false);
+			
+			layeredPaneCarteHunt = new JLayeredPane();
+			layeredPaneCarteHunt.setBounds(0, 0, 1280, 1080);
+			LayeredPaneEnsemble.add(layeredPaneCarteHunt);
+			
+			JPanel panelTitreCarteHunt = new JPanel();
+			panelTitreCarteHunt.setBounds(0, 35, 1266, 50);
+			layeredPaneCarteHunt.add(panelTitreCarteHunt);
+			
+			JLabel lblTitreCarteHunt = new JLabel("Quelle carte voulez-vous récupérer ?");
+			lblTitreCarteHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			panelTitreCarteHunt.add(lblTitreCarteHunt);
+			
+			Panel panelCartesHunt = new Panel();
+			panelCartesHunt.setBackground(SystemColor.menu);
+			panelCartesHunt.setBounds(21, 251, 1224, 294);
+			layeredPaneCarteHunt.add(panelCartesHunt);
+			
+			JPanel pnlTitreHunt = new JPanel();
+			pnlTitreHunt.setBackground(SystemColor.menu);
+			FlowLayout flowLayout = (FlowLayout) pnlTitreHunt.getLayout();
+			flowLayout.setHgap(500);
+			panelCartesHunt.add(pnlTitreHunt);
+			
+			JLabel pnlCartesHunt = new JLabel("Cartes révélées :");
+			pnlCartesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			pnlTitreHunt.add(pnlCartesHunt);
+			
+			compteur = 0;
+			Jeu.getInstance().getEnTour().getCarteRevelees().forEach(card -> {
+				if (card.getNumCarte() != 3) {
+					try {
+						BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+						JButton picLabel = new JButton(new ImageIcon(myPicture));
+						picLabel.setBackground(new Color(255,255,255));
+						picLabel.setSize(250, 735);
+						panelCartesHunt.add(picLabel);
+						Jeu.getInstance().getControler().setInputRecupererRevelee(true,picLabel,compteur);
+					}
+					
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				compteur += 1;
+			});
+			
+			LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
+			layeredPaneCarteHunt.setVisible(true);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+			layeredPaneCarteHunt.setVisible(true);
+		}
+		else {
+			layeredPaneCarteWitch.removeAll();
+			layeredPaneCarteWitch.setVisible(false);
+			
+			layeredPaneCarteWitch = new JLayeredPane();
+			layeredPaneCarteWitch.setBounds(0, 0, 1280, 1080);
+			LayeredPaneEnsemble.add(layeredPaneCarteWitch);
+			
+			JPanel panelTitreCarteWitch = new JPanel();
+			panelTitreCarteWitch.setBounds(0, 35, 1266, 50);
+			layeredPaneCarteWitch.add(panelTitreCarteWitch);
+			
+			JLabel lblTitreCarteWitch = new JLabel("Quelle carte voulez-vous récupérer ?");
+			lblTitreCarteWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			panelTitreCarteWitch.add(lblTitreCarteWitch);
+			
+			Panel panelCartesWitch = new Panel();
+			panelCartesWitch.setBackground(SystemColor.menu);
+			panelCartesWitch.setBounds(21, 251, 1224, 294);
+			layeredPaneCarteWitch.add(panelCartesWitch);
+			
+			JPanel pnlTitreWitch = new JPanel();
+			pnlTitreWitch.setBackground(SystemColor.menu);
+			FlowLayout flowLayout = (FlowLayout) pnlTitreWitch.getLayout();
+			flowLayout.setHgap(500);
+			panelCartesWitch.add(pnlTitreWitch);
+			
+			JLabel pnlCartesWitch = new JLabel("Cartes révélées :");
+			pnlCartesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			pnlTitreWitch.add(pnlCartesWitch);
+			
+			compteur = 0;
+			Jeu.getInstance().getAccused().getCarteRevelees().forEach(card -> {		
+				try {
+					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+					JButton picLabel = new JButton(new ImageIcon(myPicture));
+					picLabel.setBackground(new Color(255,255,255));
+					picLabel.setSize(250, 735);
+					panelCartesWitch.add(picLabel);
+					Jeu.getInstance().getControler().setInputRecupererRevelee(false,picLabel,compteur);	
+				}
+				
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				compteur += 1;
+			});
+			
+			LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
+			layeredPaneCarteWitch.setVisible(true);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+			layeredPaneCarteWitch.setVisible(true);
+		}
+		
+	}
+	
+	public void hookedNoseWitch(Effet effet) {
+		layeredPaneCarteWitch.removeAll();
+		layeredPaneCarteWitch.setVisible(false);
+		
+		layeredPaneCarteWitch = new JLayeredPane();
+		layeredPaneCarteWitch.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneCarteWitch);
+		
+		JPanel panelTitreCarteWitch = new JPanel();
+		panelTitreCarteWitch.setBounds(0, 35, 1266, 50);
+		layeredPaneCarteWitch.add(panelTitreCarteWitch);
+		
+		JLabel lblTitreCarteWitch = new JLabel("Quelle carte voulez-vous voler ?");
+		lblTitreCarteWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreCarteWitch.add(lblTitreCarteWitch);
+		
+		Panel panelCartesWitch = new Panel();
+		panelCartesWitch.setBackground(SystemColor.menu);
+		panelCartesWitch.setBounds(21, 251, 1224, 294);
+		layeredPaneCarteWitch.add(panelCartesWitch);
+		
+		JPanel pnlTitreWitch = new JPanel();
+		pnlTitreWitch.setBackground(SystemColor.menu);
+		FlowLayout flowLayout = (FlowLayout) pnlTitreWitch.getLayout();
+		flowLayout.setHgap(500);
+		panelCartesWitch.add(pnlTitreWitch);
+		
+		JLabel pnlCartesWitch = new JLabel("Cartes en sa main :");
+		pnlCartesWitch.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreWitch.add(pnlCartesWitch);
+		
+		compteur = 0;
+		Jeu.getInstance().getEnTour().getCarteEnMain().forEach(card -> {		
+			try {
+				BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+				JButton picLabel = new JButton(new ImageIcon(myPicture));
+				picLabel.setBackground(new Color(255,255,255));
+				picLabel.setSize(250, 735);
+				panelCartesWitch.add(picLabel);
+				Jeu.getInstance().getControler().setInputVolerCarte(picLabel,compteur);	
+			}
+			
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			compteur += 1;
+		});
+		
+		LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
+		layeredPaneCarteWitch.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		layeredPaneCarteWitch.setVisible(true);
+	}
+	
+	
+	
+	public void hookedNoseHunt(Effet effet) {
+		this.btnAccuser.setVisible(false);
+		this.btnJouerCarte.setVisible(false);
+		
+		
+		
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le prochain joueur ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+
+		compteur = 0;
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+			
+			
+			
+			if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getEnTour()) {
+				
+				JPanel pnlbouton = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+				flowLayout.setHgap(400);
+				pnlbouton.setBackground(new Color(0, 0, 0, 0));
+				
+				JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+				btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+				btnJoueur.setBounds(500, 159, 323, 80);
+				Jeu.getInstance().getControler().setInputNextPlayerVoler(btnJoueur, compteur);
+				
+				pnlbouton.add(btnJoueur);
+				
+				panelChoixNext.add(pnlbouton);
+				
+				
+			}
+			
+			compteur++;
+			
+		});
+		
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void afficherCarteVolee(CarteRumeur card) {
+		panelChoixNext.removeAll();
+		
+		JButton btnNext = new JButton("Vous lui avez volé la carte : " + card.getNomCarte());
+		btnNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnNext.setBounds(325, 400, 678, 80);
+		Jeu.getInstance().getControler().setImputNextTurn(btnNext);
+		panelChoixNext.add(btnNext);
+		LayeredPaneChoixNext.moveToFront(btnNext);
+	}
+	
+	public void choisirProchainJoueurWitch(Effet effet) {
+		this.btnAccuser.setVisible(false);
+		this.btnJouerCarte.setVisible(false);
+		
+		
+		
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le prochain joueur ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+
+		compteur = 0;
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+			
+			
+			
+			if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getAccused()) {
+				
+				JPanel pnlbouton = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+				flowLayout.setHgap(400);
+				pnlbouton.setBackground(new Color(0, 0, 0, 0));
+				
+				JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+				btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+				btnJoueur.setBounds(500, 159, 323, 80);
+				Jeu.getInstance().getControler().setInputNextPlayer(btnJoueur, compteur);
+				
+				pnlbouton.add(btnJoueur);
+				
+				panelChoixNext.add(pnlbouton);
+				
+				
+			}
+			
+			compteur++;
+			
+		});
+		
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteWitch.removeAll();
+		layeredPaneCarteWitch.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void chaudronHunt(Effet effet) {
+		if (!Jeu.getInstance().getEnTour().getIdentiteAssociee().getIsWitch()) {
+			Jeu.getInstance().getEnTour().revelerIdentite();
+			
+			
+			LayeredPaneChoixNext = new JLayeredPane();
+			LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+			LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+			LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+			
+			panelChoixNext = new JPanel();
+			panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+			panelChoixNext.setBounds(0, 0, 1280, 1080);
+			LayeredPaneChoixNext.add(panelChoixNext);
+			
+			JPanel pnlTitreNext = new JPanel();
+			FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+			flowLayout_2.setHgap(400);
+			pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+			panelChoixNext.add(pnlTitreNext);
+			
+			JLabel lblNext = new JLabel("Vous êtes Villager, choisissez le prochain joueur !");
+			lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			pnlTitreNext.add(lblNext);
+			
+
+			compteur = 0;
+			Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+				
+				
+				
+				if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getEnTour()) {
+					
+					JPanel pnlbouton = new JPanel();
+					FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+					flowLayout.setHgap(400);
+					pnlbouton.setBackground(new Color(0, 0, 0, 0));
+					
+					JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+					btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+					btnJoueur.setBounds(500, 159, 323, 80);
+					Jeu.getInstance().getControler().setInputNextPlayer(btnJoueur, compteur);
+					
+					pnlbouton.add(btnJoueur);
+					
+					panelChoixNext.add(pnlbouton);
+					
+					
+				}
+				
+				compteur++;
+				
+			});
+			
+			
+			
+			LayeredPaneChoixNext.setVisible(true);
+			LayeredPaneChoixTour.setVisible(false);
+			layeredPaneCarteHunt.removeAll();
+			layeredPaneCarteHunt.setVisible(false);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		}
+		else {
+			Jeu.getInstance().getEnTour().revelerIdentite();
+			
+			
+			layeredPaneReveler = new JLayeredPane();
+			layeredPaneReveler.setBounds(0, 0, 1280, 1080);
+			LayeredPaneEnsemble.add(layeredPaneReveler);
+			
+			LayeredPaneEnsemble.moveToBack(layeredPaneReveler);
+			
+			panelTitreReveler = new JPanel();
+			panelTitreReveler.setBounds(0, 35, 1266, 50);
+			layeredPaneReveler.add(panelTitreReveler);
+			
+			btnTourSuivant = new JButton("Passer à la suite");
+			btnTourSuivant.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+			btnTourSuivant.setBounds(470, 600, 323, 80);
+			layeredPaneReveler.add(btnTourSuivant);
+			
+			ArrayList<Joueur> listeJoueurs = new ArrayList<>();
+			for (int i=0; i<Jeu.getInstance().getEnsembleJoueurs().size(); i++) {
+				if (((Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getDevoilee() == true && Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getIsWitch() == false) || Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getDevoilee() == false) || Jeu.getInstance().getJoueur(i) == Jeu.getInstance().getEnTour()) {
+					listeJoueurs.add(Jeu.getInstance().getJoueur(i));
+				}
+			}
+			System.out.println(listeJoueurs.size());
+			for (int i=0; i<listeJoueurs.size(); i++) {
+				if (listeJoueurs.get(i) == Jeu.getInstance().getEnTour()) {
+					if (i == listeJoueurs.size()-1) {
+						Jeu.getInstance().setEnTour(listeJoueurs.get(0));
+						break;
+					}
+					else {
+						Jeu.getInstance().setEnTour(listeJoueurs.get(i+1));
+						break;
+					}
+				}
+			}
+			
+			lblTitreReveler = new JLabel("Joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\", vous étiez une Witch !");
+			lblTitreReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			lblTitreReveler.setForeground(new Color(0,0,0));
+			lblTitreReveler.setHorizontalAlignment(SwingConstants.CENTER);
+			lblTitreReveler.setBounds(0, 0, 1266, 21);
+			panelTitreReveler.add(lblTitreReveler);
+			
+			lblDescriptifReveler = new JLabel("Le joueur sur votre gauche (\"" + Jeu.getInstance().getEnTour().getPseudo() + "\") prend le prochain tour !");
+			lblDescriptifReveler.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifReveler.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifReveler.setBounds(0, 300, 1266, 21);
+			layeredPaneReveler.add(lblDescriptifReveler);
+			
+			
+			
+			
+
+			LayeredPaneEnsemble.moveToFront(layeredPaneReveler);
+			LayeredPaneChoixTour.setVisible(false);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+			layeredPaneCarteHunt.removeAll();
+			
+			Jeu.getInstance().getControler().setImputNextTurn(btnTourSuivant);
+		}
+	}
+	
+	public void chaudronWitch(Effet effet) {
+		
+		LayeredPaneAccuser.removeAll();
+		
+		int carteDefaussee = (int) (Math.random() * Jeu.getInstance().getEnTour().getCarteEnMain().size());
+		
+		LayeredPaneRecap = new JLayeredPane();
+		LayeredPaneRecap.setBounds(0, 0, 1280, 1080);
+		LayeredPaneRecap.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneRecap);
+		
+		JPanel panelRecap = new JPanel();
+		panelRecap.setBackground(UIManager.getColor("Button.background"));
+		panelRecap.setBounds(0, 150, 1280, 100);
+		LayeredPaneRecap.add(panelRecap);
+		
+		JLabel lblTitreRecap = new JLabel("Joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" défausse : " + Jeu.getInstance().getEnTour().getCarteEnMain().get(carteDefaussee).getNomCarte());
+		lblTitreRecap.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		lblTitreRecap.setForeground(new Color(0,0,0));
+		lblTitreRecap.setBounds(0, 150, 1266, 21);
+		lblTitreRecap.setHorizontalAlignment(SwingConstants.CENTER);
+		panelRecap.add(lblTitreRecap);
+		
+		
+		
+		JPanel pnlDescriptifRecap = new JPanel();
+		pnlDescriptifRecap.setBackground(UIManager.getColor("Button.background"));
+		pnlDescriptifRecap.setBounds(0, 350, 1280, 100);
+		LayeredPaneRecap.add(pnlDescriptifRecap);
+		
+		JLabel lblRecap = new JLabel("Vous prenez le prochain tour.");
+		lblRecap.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		lblRecap.setForeground(SystemColor.controlDkShadow);
+		lblRecap.setBounds(0, 350, 1266, 21);
+		lblRecap.setHorizontalAlignment(SwingConstants.CENTER);
+		pnlDescriptifRecap.add(lblRecap);
+		
+		JButton btnNext = new JButton("Prochain tour");
+		btnNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnNext.setBounds(470, 600, 323, 80);
+		LayeredPaneRecap.add(btnNext);
+		Jeu.getInstance().getControler().setImputNextTurn(btnNext);
+		
+		Jeu.getInstance().getEnTour().seFairePrendreCarteRumeur(carteDefaussee);
+		Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
+		
+		
+		
+		
+		LayeredPaneRecap.setVisible(true);
+		LayeredPaneAccuser.setVisible(false);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteWitch.removeAll();
+		layeredPaneCarteWitch.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneRecap);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		
+	}
+	
+	public void blackCatHunt(Effet effet) {
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		
+		layeredPaneCarteHunt = new JLayeredPane();
+		layeredPaneCarteHunt.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneCarteHunt);
+		
+		JPanel panelTitreCarteHunt = new JPanel();
+		panelTitreCarteHunt.setBounds(0, 35, 1266, 50);
+		layeredPaneCarteHunt.add(panelTitreCarteHunt);
+		
+		JLabel lblTitreCarteHunt = new JLabel("Quelle carte voulez-vous récupérer ?");
+		lblTitreCarteHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreCarteHunt.add(lblTitreCarteHunt);
+		
+		Panel panelCartesHunt = new Panel();
+		panelCartesHunt.setBackground(SystemColor.menu);
+		panelCartesHunt.setBounds(21, 251, 1224, 294);
+		layeredPaneCarteHunt.add(panelCartesHunt);
+		
+		JPanel pnlTitreHunt = new JPanel();
+		pnlTitreHunt.setBackground(SystemColor.menu);
+		FlowLayout flowLayout = (FlowLayout) pnlTitreHunt.getLayout();
+		flowLayout.setHgap(500);
+		panelCartesHunt.add(pnlTitreHunt);
+		
+		JLabel pnlCartesHunt = new JLabel("Cartes defaussées :");
+		pnlCartesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreHunt.add(pnlCartesHunt);
+		
+		compteur = 0;
+		Jeu.getInstance().getTasDefausse().getContenu().forEach(card -> {
+			try {
+				BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+				JButton picLabel = new JButton(new ImageIcon(myPicture));
+				picLabel.setBackground(new Color(255,255,255));
+				picLabel.setSize(250, 735);
+				panelCartesHunt.add(picLabel);
+				Jeu.getInstance().getControler().setInputRecupererDefausse(picLabel,compteur);
+			}
+				
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			compteur += 1;
+		});
+		
+		if (Jeu.getInstance().getTasDefausse().getContenu().isEmpty()) {
+			Jeu.getInstance().getTasDefausse().getContenu().add(Jeu.getInstance().getEnTour().getCarteRevelees().get(Jeu.getInstance().getEnTour().getCarteRevelees().size() - 1));
+			Jeu.getInstance().getEnTour().getCarteRevelees().remove(Jeu.getInstance().getEnTour().getCarteRevelees().size() - 1);
+			
+			this.passerTourSuivant();
+		}
+		
+		LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
+		layeredPaneCarteHunt.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		layeredPaneCarteHunt.setVisible(true);
+	}
+	
+	public void petNewtHunt(Effet effet) {
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le joueur à voler ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+
+		compteur = 0;
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+			
+			
+			
+			if (Joueur != Jeu.getInstance().getEnTour()) {
+				
+				JPanel pnlbouton = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+				flowLayout.setHgap(400);
+				pnlbouton.setBackground(new Color(0, 0, 0, 0));
+				
+				JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+				btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+				btnJoueur.setBounds(500, 159, 323, 80);
+				Jeu.getInstance().getControler().setInputNextPlayerChoixVoler(btnJoueur, compteur);
+				
+				pnlbouton.add(btnJoueur);
+				
+				panelChoixNext.add(pnlbouton);
+				
+				
+			}
+			
+			compteur++;
+			
+		});
+
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void petNewtChoixCarte(Joueur joueur) {
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		
+		layeredPaneCarteHunt = new JLayeredPane();
+		layeredPaneCarteHunt.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(layeredPaneCarteHunt);
+		
+		JPanel panelTitreCarteHunt = new JPanel();
+		panelTitreCarteHunt.setBounds(0, 35, 1266, 50);
+		layeredPaneCarteHunt.add(panelTitreCarteHunt);
+		
+		JLabel lblTitreCarteHunt = new JLabel("Quelle carte voulez-vous voler ?");
+		lblTitreCarteHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreCarteHunt.add(lblTitreCarteHunt);
+		
+		Panel panelCartesHunt = new Panel();
+		panelCartesHunt.setBackground(SystemColor.menu);
+		panelCartesHunt.setBounds(21, 251, 1224, 294);
+		layeredPaneCarteHunt.add(panelCartesHunt);
+		
+		JPanel pnlTitreHunt = new JPanel();
+		pnlTitreHunt.setBackground(SystemColor.menu);
+		FlowLayout flowLayout = (FlowLayout) pnlTitreHunt.getLayout();
+		flowLayout.setHgap(500);
+		panelCartesHunt.add(pnlTitreHunt);
+		
+		JLabel pnlCartesHunt = new JLabel("Cartes defaussées :");
+		pnlCartesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		pnlTitreHunt.add(pnlCartesHunt);
+		
+		compteur = 0;
+		joueur.getCarteRevelees().forEach(card -> {
+			try {
+				BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+				JButton picLabel = new JButton(new ImageIcon(myPicture));
+				picLabel.setBackground(new Color(255,255,255));
+				picLabel.setSize(250, 735);
+				panelCartesHunt.add(picLabel);
+				Jeu.getInstance().getControler().setInputVolerCarteJoueur(picLabel,compteur,joueur);
+			}
+				
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			compteur += 1;
+		});
+		
+		if (joueur.getCarteRevelees().isEmpty()) {
+			
+			this.choisirProchainJoueur();
+		}
+		
+		LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
+		layeredPaneCarteHunt.setVisible(true);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		layeredPaneCarteHunt.setVisible(true);
+	}
+	
+	public void duckingStoolHunt(Effet effet) {
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le joueur à cibler ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+
+		compteur = 0;
+		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+			
+			accusable = true;
+			
+			Joueur.getCarteRevelees().forEach(Card -> {
+				if (Card.getNumCarte() == 6) {
+					accusable = false;
+				}
+			});
+			
+			if (Joueur != Jeu.getInstance().getEnTour() && accusable == true && Joueur.getIdentiteAssociee().getDevoilee() == false) {
+				
+				JPanel pnlbouton = new JPanel();
+				FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+				flowLayout.setHgap(400);
+				pnlbouton.setBackground(new Color(0, 0, 0, 0));
+				
+				JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+				btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+				btnJoueur.setBounds(500, 159, 323, 80);
+				Jeu.getInstance().getControler().setInputDuckingStoolCible(btnJoueur, compteur);
+				
+				pnlbouton.add(btnJoueur);
+				
+				panelChoixNext.add(pnlbouton);
+				
+				
+			}
+			
+			compteur++;
+			
+		});
+
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		layeredPaneCarteHunt.removeAll();
+		layeredPaneCarteHunt.setVisible(false);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void duckingStoolChoixCible(int Joueur) {
+		LayeredPaneChoixNext.removeAll();
+		LayeredPaneChoixNext.setVisible(false);
+		
+		LayeredPaneChoixDuckingStool = new JLayeredPane();
+		LayeredPaneChoixDuckingStool.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneChoixDuckingStool.setBounds(0, 0, 1280, 1080);
+		LayeredPaneEnsemble.add(LayeredPaneChoixDuckingStool);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixDuckingStool);
+		
+		
+		JPanel panelTitreDuckingStool = new JPanel();
+		panelTitreDuckingStool.setBounds(0, 35, 1266, 50);
+		LayeredPaneChoixDuckingStool.add(panelTitreDuckingStool);
+		
+		JLabel lblTitreDuckingStool = new JLabel("Un joueur à joué \"Un bûcher\" sur vous !");
+		lblTitreDuckingStool.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		panelTitreDuckingStool.add(lblTitreDuckingStool);
+		
+		JPanel pnlDescDuckingStool = new JPanel();
+		pnlDescDuckingStool.setBackground(SystemColor.menu);
+		pnlDescDuckingStool.setBounds(0, 300, 1266, 50);
+		LayeredPaneChoixDuckingStool.add(pnlDescDuckingStool);
+		
+		JLabel lblDuckingStool = new JLabel("Joueur \"" + Jeu.getInstance().getJoueur(Joueur).getPseudo() + "\", que voulez-vous faire ?");
+		lblDuckingStool.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+		lblDuckingStool.setForeground(SystemColor.controlDkShadow);
+		pnlDescDuckingStool.add(lblDuckingStool);
+	
+		JButton btnReveal = new JButton("Reveler votre identité");
+		btnReveal.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnReveal.setBounds(260, 159, 323, 80);
+		LayeredPaneChoixDuckingStool.add(btnReveal);
+		
+		JButton btnDiscard = new JButton("Défausser une carte");
+		btnDiscard.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnDiscard.setBounds(675, 159, 323, 80);
+		LayeredPaneChoixDuckingStool.add(btnDiscard);
+		
+		Jeu.getInstance().getControler().setInputsChoixDuckingStool(btnReveal,btnDiscard,Joueur);
+		
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+		layeredPaneCarteHunt.setVisible(true);
+	}
+	
+	public void evilEye(Effet effet, boolean isHunt) {
+		this.btnAccuser.setVisible(false);
+		this.btnJouerCarte.setVisible(false);
+		
+		
+		
+		LayeredPaneChoixNext = new JLayeredPane();
+		LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneChoixNext);
+		
+		panelChoixNext = new JPanel();
+		panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+		panelChoixNext.setBounds(0, 0, 1280, 1080);
+		LayeredPaneChoixNext.add(panelChoixNext);
+		
+		JPanel pnlTitreNext = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) pnlTitreNext.getLayout();
+		flowLayout_2.setHgap(400);
+		pnlTitreNext.setBackground(new Color(0, 0, 0, 0));
+		panelChoixNext.add(pnlTitreNext);
+		
+		JLabel lblNext = new JLabel("Choisissez le prochain joueur ?");
+		lblNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		pnlTitreNext.add(lblNext);
+		
+		
+		compteur = 0;
+		
+		if (isHunt) {
+			Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+				
+				
+				
+				if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getEnTour()) {
+					
+					JPanel pnlbouton = new JPanel();
+					FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+					flowLayout.setHgap(400);
+					pnlbouton.setBackground(new Color(0, 0, 0, 0));
+					
+					JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+					btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+					btnJoueur.setBounds(500, 159, 323, 80);
+					Jeu.getInstance().getControler().setEvilEye(isHunt, btnJoueur, compteur);
+					
+					pnlbouton.add(btnJoueur);
+					
+					panelChoixNext.add(pnlbouton);
+					
+					
+				}
+				
+				compteur++;
+				
+			});
+		}
+		else {
+			Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur -> {	
+				
+				
+				
+				if (((Joueur.getIdentiteAssociee().getDevoilee() == true && Joueur.getIdentiteAssociee().getIsWitch() == false) || Joueur.getIdentiteAssociee().getDevoilee() == false) && Joueur != Jeu.getInstance().getAccused()) {
+					
+					JPanel pnlbouton = new JPanel();
+					FlowLayout flowLayout = (FlowLayout) pnlbouton.getLayout();
+					flowLayout.setHgap(400);
+					pnlbouton.setBackground(new Color(0, 0, 0, 0));
+					
+					JButton btnJoueur = new JButton("Joueur : " + Joueur.getPseudo() + " | Points : " + Joueur.getPoints());
+					btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+					btnJoueur.setBounds(500, 159, 323, 80);
+					Jeu.getInstance().getControler().setEvilEye(isHunt, btnJoueur, compteur);
+					
+					pnlbouton.add(btnJoueur);
+					
+					panelChoixNext.add(pnlbouton);
+					
+					
+				}
+				
+				compteur++;
+				
+			});
+		}
+		
+		
+		
+		
+		LayeredPaneChoixNext.setVisible(true);
+		LayeredPaneChoixTour.setVisible(false);
+		if (layeredPaneCarteWitch != null) {
+			layeredPaneCarteWitch.removeAll();
+			layeredPaneCarteWitch.setVisible(false);
+		}
+		if (layeredPaneCarteHunt != null) {
+			layeredPaneCarteHunt.removeAll();
+			layeredPaneCarteHunt.setVisible(false);
+		}
+		LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+	}
+	
+	public void passerTourSuivantAccusable() {
+		
+		
+		if (Jeu.getInstance().getRound().isRoundEnd()) {
+			
+			Jeu.getInstance().getGagnantRound().gagnerPoints();
+			
+			InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+			
+		}
+		else {
+			Jeu.getInstance().getRound().jouerUnTour();
+		}
+		
 	}
 }

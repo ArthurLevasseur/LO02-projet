@@ -15,8 +15,11 @@ public class EffetH3 extends Effet {
 	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
+		/*
 		instanceJeu.getVueActuelle().takeBackACard(this);
 		instanceJeu.getVueActuelle().askOpponent(this);
+		*/
+		Jeu.getInstance().getVueActuelle().pointedHat(this, true);
 	}
 	
 	/*public void eeeeeeeexecutionEffet() {

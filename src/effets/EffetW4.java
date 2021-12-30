@@ -13,7 +13,11 @@ public class EffetW4 extends Effet {
 		this.explication = "Vous prenez une carte de la main du joueur qui vous a accusé.\nVous prenez le prochain tour.";
 	}
 	
-
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().hookedNoseWitch(this);
+	}
+	
 	public Joueur executionEffet() {
 
 		int choix;

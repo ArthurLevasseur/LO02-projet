@@ -15,7 +15,7 @@ public class EffetH9 extends Effet {
 	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().askOpponent(this);
+		instanceJeu.getVueActuelle().evilEye(this, true);
 	}
 	
 	public void executionEffet(Joueur selection) {

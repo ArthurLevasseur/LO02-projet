@@ -16,7 +16,7 @@ public class EffetH4 extends Effet {
 	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().pickRandom(this);
+		instanceJeu.getVueActuelle().hookedNoseHunt(this);
 	}
 	
 	public void executionEffet(Joueur selection) {

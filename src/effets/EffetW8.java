@@ -12,7 +12,11 @@ public class EffetW8 extends Effet {
 		this.explication = "Le joueur qui vous a accusé défausse une carte aléatoire de sa main.\nVous prenez le prochain tour.";
 	}
 	
-
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().chaudronWitch(this);
+	}
+	
 	public Joueur executionEffet() {
 
 		Jeu instanceJeu = Jeu.getInstance();

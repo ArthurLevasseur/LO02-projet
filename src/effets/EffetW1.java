@@ -12,8 +12,8 @@ public class EffetW1 extends Effet {
 	}
 	
 	public void appelVue() {
-		// pas de vue à appeler
-		this.executionEffet();
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().prendreProchainTour(this);
 	}
 
 	public void executionEffet() {

@@ -15,7 +15,7 @@ public class EffetH5 extends Effet {
 	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().askOpponentSteal(this);
+		instanceJeu.getVueActuelle().choisirProchainJoueur(this);
 	}
 	
 	public void executionEffet(Joueur selection) {

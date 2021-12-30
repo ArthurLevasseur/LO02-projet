@@ -15,6 +15,11 @@ public class EffetH10 extends Effet {
 		this.explication = "Révelez votre identité. Si vous êtes un villageois, vous choisissez qui joue. Si vous êtes une sorcière, le joueur à votre gauche joue.";
 	}
 	
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().chaudronHunt(this);
+	}
+	
 	public Joueur executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

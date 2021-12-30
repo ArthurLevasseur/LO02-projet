@@ -1,6 +1,7 @@
 package controleur;
 
 import modele.Jeu;
+import modele.SaisirInt;
 import vue.*;
 
 import java.awt.EventQueue;
@@ -22,31 +23,35 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Jeu instanceJeu = Jeu.getInstance();
-		
-		
-		
-		instanceJeu.setVueActuelle(new VueConsole());
-		instanceJeu.getVueActuelle().demarrerJeu();
-		
-		
-		
-		
-		//////////////////////////
-		
-		/*EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ControlerGUI controler = new ControlerGUI();
-					instanceJeu.setControler(controler);
-					instanceJeu.setVueActuelle(new InterfaceDebut());
-					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
+		SaisirInt scan = SaisirInt.getInstance();
+		System.out.println("Voulez-vous lancer le jeu en :\n0) Console.\n1) Interface Graphique\n");
+		int choix = -1;
+		while (choix<0 || choix >1) {
+			System.out.println("Choisissez entre 0 et 1.\n");
+			choix = scan.nextInt();
+		}
+		if (choix == 0) {
+			Jeu instanceJeu = Jeu.getInstance();
+			
+			instanceJeu.setVueActuelle(new VueConsole());
+			instanceJeu.getVueActuelle().demarrerJeu();
+		}
+		else if (choix == 1) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						Jeu instanceJeu = Jeu.getInstance();
+						ControlerGUI controler = new ControlerGUI();
+						instanceJeu.setControler(controler);
+						instanceJeu.setVueActuelle(new InterfaceDebut());
+						
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});*/
+			});
+		}
 
 	}
 

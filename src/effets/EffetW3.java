@@ -14,6 +14,10 @@ public class EffetW3 extends Effet {
 		this.explication = "Vous reprenez une de vos propres cartes rumeurs déjà révélées dans votre main.\nVous prenez le prochain tour.";
 	}
 	
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().pointedHat(this, false);
+	}
 
 	public Joueur executionEffet() {
 
