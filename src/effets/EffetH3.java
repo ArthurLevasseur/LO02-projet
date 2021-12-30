@@ -13,7 +13,13 @@ public class EffetH3 extends Effet {
 		this.explication = "Vous reprenez une de vos cartes rumeurs déjà révélées dans votre main.\nVous choisissez le prochain joueur.";
 	}
 	
-	public Joueur executionEffet() {
+	public void appelVue() {
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getVueActuelle().takeBackACard(this);
+		instanceJeu.getVueActuelle().askOpponent(this);
+	}
+	
+	/*public void eeeeeeeexecutionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
@@ -52,5 +58,24 @@ public class EffetH3 extends Effet {
 		
 		
 		
+	}
+	*/
+	public void executionEffet(int choix) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.getEnTour().prendreCarteRumeur(instanceJeu.getEnTour().getCarteRevelees().get(choix));
+		
+	}
+	
+	public void executionEffet(Joueur selection) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		
+		if (instanceJeu.getEnTour().isIA()) {
+			instanceJeu.setEnTour(instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur()));
+		}
+		else {
+			instanceJeu.setEnTour(selection); // à mvciser
+		}
 	}
 }

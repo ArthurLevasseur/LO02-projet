@@ -114,12 +114,10 @@ public class ControlerCLI {
 	public void choisirWitch(Joueur j, int choix) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
-		System.out.println("haha");
-		Joueur next = j.getCarteEnMain().get(choix).appliquerEffetWitch(j);
-		System.out.println("hoho");
+		j.getCarteEnMain().get(choix).appliquerEffetWitch(j);
 		j.getCarteRevelees().add(j.getCarteEnMain().get(choix));
 		j.getCarteEnMain().remove(choix);
-		instanceJeu.setEnTour(next);
+		//instanceJeu.setEnTour(next);
 	}
 	
 }

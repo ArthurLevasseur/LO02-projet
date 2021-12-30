@@ -13,24 +13,16 @@ public class EffetH9 extends Effet {
 		this.explication = "Vous choisissez le prochain joueur.\nDurant son tour, le joueur ciblé devra accuser un joueur autre que vous, si possible.";
 	}
 	
-	public Joueur executionEffet() {
+	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		Defausse instanceDefausse = Defausse.getInstance();
-		boolean visable = true;
-		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		instanceJeu.getVueActuelle().askOpponent(this);
+	}
+	
+	public void executionEffet(Joueur selection) {
 		
-		if (instanceJeu.getEnTour().isIA()) {
-			System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit le prochain joueur.");
-			Joueur choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
-			choix.setMustAccuse(true);
-			instanceJeu.getEnTour().setAccusable(false);
-			return choix;
-		}
-		else {
-			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
-			choix.setMustAccuse(true);
-			instanceJeu.getEnTour().setAccusable(false);
-			return choix;
-		}
+		Jeu instanceJeu = Jeu.getInstance();
+		selection.setMustAccuse(true);
+		instanceJeu.getEnTour().setAccusable(false);
+		instanceJeu.setEnTour(selection);
 	}
 }

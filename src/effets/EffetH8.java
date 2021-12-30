@@ -15,10 +15,16 @@ public class EffetH8 extends Effet {
 		this.explication = "Vous révélez votre identité.\n	- Si vous êtes une sorcière, le joueur à votre gauche prend le prochain tour.\n	- Si vous êtes un villageois, vous choisissez le prochain joueur.";
 	}
 	
-	public Joueur executionEffet() {
+	public void appelVue() {
+		// pas de vue à appeler
+		this.executionEffet();
+	}
+	
+	public void executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
+		Joueur next = null;
 		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		
 		instanceJeu.getEnTour().getIdentiteAssociee().ReveleIdentite();
@@ -32,32 +38,32 @@ public class EffetH8 extends Effet {
 				}
 				if (instanceJeu.getJoueur(i) == instanceJeu.getEnTour()) {
 					if (i == instanceJeu.getEnsembleJoueurs().size()-1) {
-						return instanceJeu.getJoueur(0);
+						next = instanceJeu.getJoueur(0);
 					}
-					else {return instanceJeu.getJoueur(i+1);}
+					else {next = instanceJeu.getJoueur(i+1);}
 				}
 			}
 			for (i=0; i<listeJoueurs.size(); i++) {
 				if (listeJoueurs.get(i) == instanceJeu.getEnTour()) {
 					if (i == listeJoueurs.size()-1) {
-						return listeJoueurs.get(0);
+						next = listeJoueurs.get(0);
 					}
-					else {return listeJoueurs.get(i+1);}
+					else {next = listeJoueurs.get(i+1);}
 				}
 			}
 		}
 		else {
 			System.out.println("Vous etiez un villageois.");
 			if (instanceJeu.getEnTour().isIA() == false) {
-				return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+				next = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
 			}
 			else {
 				int choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse();
-				return instanceJeu.getJoueur(choix);
+				next = instanceJeu.getJoueur(choix);
 			}
 		}
 		
-		return null;
+		instanceJeu.setEnTour(next);
 
 		
 	}

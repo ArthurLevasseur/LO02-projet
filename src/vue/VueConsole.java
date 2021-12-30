@@ -517,4 +517,124 @@ public class VueConsole implements Vue {
 		effet.executionEffet(choix);
 	}
 	
+	public void takeBackACard(Effet effet) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		
+		if (instanceJeu.getEnTour().getCarteRevelees().isEmpty()) {
+			System.out.println("Votre tas de cartes rumeurs révélées est vide !");
+		}
+		else {
+			
+			
+			int choix = -1;
+			
+			if (instanceJeu.getEnTour().isIA() == false) {
+				System.out.println("Voici vos cartes rumeurs révélées, choisissez la carte que vous voulez reprendre :");
+				instanceJeu.getEnTour().getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().getCarteRevelees().indexOf(card) + " pour jouer " + card));
+				
+				choix = saisieUtilisateur.nextInt();
+				while (choix<0 || choix>instanceJeu.getEnTour().getCarteRevelees().size()) {
+					System.out.println("Choix invalide !");
+					choix = saisieUtilisateur.nextInt();
+				}
+			}
+			else {
+				choix = (int) (Math.random() * instanceJeu.getEnTour().getCarteRevelees().size());
+			}
+			
+			effet.executionEffet(choix);
+			
+		}
+		
+	}
+	
+public void askOpponent(Effet effet) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Joueur choix;
+		if (instanceJeu.getEnTour().isIA()) {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit un adversaire.");
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+		}
+		else {
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+		}
+		effet.executionEffet(choix);
+	}
+	
+	public void askOpponentSteal(Effet effet) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Joueur choix;
+		if (instanceJeu.getEnTour().isIA()) {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit un adversaire à qui voler une carte.");
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+		}
+		else {
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur. Vous prenez une carte de sa main.");
+		}
+		effet.executionEffet(choix);
+	}
+	
+	public void pickRandom(Effet effet) {
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		Joueur choix;
+		
+		if (instanceJeu.getEnTour().isIA()) {
+			System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit un adversaire à qui voller une carte.");
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+		}
+		else {
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur. Vous prenez une carte de sa main.");
+		}
+		
+		effet.executionEffet(choix);
+	}
+	
+	public void discard(Effet effet) {
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		int choix=0;
+		
+		if (instanceJeu.getAccused().isIA()) {
+			System.out.println(instanceJeu.getAccused().getPseudo() + " Choisit une carte à défausser");
+			if (instanceJeu.getAccused().getCarteEnMain().size() == 1) {
+				choix = (int)(Math.random()*instanceJeu.getAccused().getCarteEnMain().size());
+			}
+			else {
+				choix = (int)(Math.random()*instanceJeu.getAccused().getCarteEnMain().size());
+				while (instanceJeu.getAccused().getCarteEnMain().get(choix).getNumCarte() == 2) {
+					choix = (int)(Math.random()*instanceJeu.getAccused().getCarteEnMain().size());
+				}
+			}
+		}
+		
+		else {
+			
+			SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+			choix = saisieUtilisateur.nextInt();
+			if (instanceJeu.getAccused().getCarteEnMain().size() == 1) {
+				System.out.println("Vous ne pouvez défausser que cette carte même car votre main est vide");
+			}
+			else {
+				instanceJeu.getAccused().getCarteEnMain().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteEnMain().indexOf(card) + " pour défausser " + card));
+				while (choix<0 || choix>instanceJeu.getAccused().getCarteEnMain().size() || instanceJeu.getAccused().getCarteEnMain().get(choix).getNumCarte() == 2) {
+					if (instanceJeu.getAccused().getCarteEnMain().get(choix).getNumCarte() == 2) {System.out.println("Vous ne pouvez pas défausser cette carte même !");}
+					else {System.out.println("Choix invalide !");
+					}
+					choix = saisieUtilisateur.nextInt();
+				}
+			}
+		}
+		
+		effet.executionEffet(choix);
+	}
+	
 }

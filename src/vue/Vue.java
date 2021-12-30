@@ -35,5 +35,10 @@ public interface Vue {
 	
 	public void revealPlayer(Effet effet);
 	public void chooseAndSecretLook(Effet effet);
+	public void takeBackACard(Effet effet);
+	public void askOpponent(Effet effet);
+	public void askOpponentSteal(Effet effet);
+	public void pickRandom(Effet effet);
+	public void discard(Effet effet);
 	
 }

@@ -10,12 +10,17 @@ public class EffetW1 extends Effet {
 		super();
 		this.explication = "Vous prenez le prochain tour.";
 	}
+	
+	public void appelVue() {
+		// pas de vue à appeler
+		this.executionEffet();
+	}
 
-	public Joueur executionEffet() {
+	public void executionEffet() {
 
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 
-		return instanceJeu.getAccused();
+		instanceJeu.setEnTour(instanceJeu.getAccused());
 	}
 }

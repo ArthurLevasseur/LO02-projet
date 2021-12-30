@@ -50,8 +50,8 @@ public class Witch{
 		}
 	}
 	
-	public Joueur executerEffet(int numCarte) {
-		return this.effetAssocie.executionEffet();
+	public void executerEffet(int numCarte) {
+		this.effetAssocie.appelVue();
 		/*System.out.println("Effet appliqué == " + effet); // à retirer par la suite
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();

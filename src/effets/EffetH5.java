@@ -13,19 +13,30 @@ public class EffetH5 extends Effet {
 		this.explication = "Vous choisissez le prochain joueur.";
 	}
 	
-	public Joueur executionEffet() {
+	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		Defausse instanceDefausse = Defausse.getInstance();
-		boolean visable = true;
-		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		instanceJeu.getVueActuelle().askOpponentSteal(this);
+	}
+	
+	public void executionEffet(Joueur selection) {
 		
-		if (instanceJeu.getEnTour().isIA()) {
-			System.out.println(instanceJeu.getEnTour().getPseudo() + "choisit le prochain joueur.");
-			return instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
-		}
-		else {
-			Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
-			return choix;
-		}
+		Jeu instanceJeu = Jeu.getInstance();
+		instanceJeu.setEnTour(selection);
+		
 	}
 }
+
+
+/* Jeu instanceJeu = Jeu.getInstance();
+Defausse instanceDefausse = Defausse.getInstance();
+boolean visable = true;
+SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+
+if (instanceJeu.getEnTour().isIA()) {
+	System.out.println(instanceJeu.getEnTour().getPseudo() + "choisit le prochain joueur.");
+	return instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+}
+else {
+	Joueur choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+	return choix;
+}*/

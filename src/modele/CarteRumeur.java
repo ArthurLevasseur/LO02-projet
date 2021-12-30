@@ -67,11 +67,11 @@ public class CarteRumeur {
 	}
 	
 	public void appliquerEffetHunt() {
-		this.effetHunt.executerEffet(numCarte);
+		this.effetHunt.executerEffet(this.numCarte);
 	}
 	
-	public Joueur appliquerEffetWitch(Joueur accused) {
-		return this.effetWitch.executerEffet(numCarte);
+	public void appliquerEffetWitch(Joueur accused) {
+		this.effetWitch.executerEffet(this.numCarte);
 	}
 
 	public int getNumCarte() {

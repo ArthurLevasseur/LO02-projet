@@ -19,29 +19,29 @@ public class EffetH1 extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		instanceJeu.getVueActuelle().revealPlayer(this);
 	}
-	
-	public void executionEffet() {
-		
-	}
 
 	public void executionEffet(Joueur selection) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		
 		if (selection.getIdentiteAssociee().getIsWitch() == true) {
-			System.out.println("Ce joueur est bien une Witch, vous remportez 2 points.");
+			//System.out.println("Ce joueur est bien une Witch, vous remportez 2 points.");
 			instanceJeu.getEnTour().ajouterPoints(2);
 			selection.getIdentiteAssociee().ReveleIdentite();
 			instanceJeu.setEnTour(instanceJeu.getEnTour());
 		}
 		else {
-			System.out.println("Ce joueur est un villager, vous perdez 2 points.");
+			//System.out.println("Ce joueur est un villager, vous perdez 2 points.");
 			instanceJeu.getEnTour().ajouterPoints(-2);
 			selection.getIdentiteAssociee().ReveleIdentite();
 			instanceJeu.setEnTour(selection);
 		}
 		
 	
+	}
+	
+	public void executionEffet() {
+		
 	}
 	
 }

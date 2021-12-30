@@ -44,7 +44,7 @@ public class Hunt{
 			this.effetAssocie = new EffetH9();
 		}
 		else if (numCarte == 10) {
-			this.effetAssocie = new EffetH10();
+			this.effetAssocie = new EffetH8();
 		}
 		else if (numCarte == 11) {
 			this.effetAssocie = new EffetH11();
