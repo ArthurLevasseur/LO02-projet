@@ -329,10 +329,17 @@ public class ControlerGUI extends Observable{
 	public void setInputNextPlayerVoler(JButton btnJoueur, int joueur) {
 		btnJoueur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int randomCard = (int) (Math.random() * Jeu.getInstance().getJoueur(joueur).getCarteEnMain().size());
-				Jeu.getInstance().getVueActuelle().afficherCarteVolee(Jeu.getInstance().getJoueur(joueur).getCarteEnMain().get(randomCard));
-				Jeu.getInstance().getEnTour().getCarteEnMain().add(Jeu.getInstance().getJoueur(joueur).seFairePrendreCarteRumeur(randomCard));
-				Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(joueur));
+				if (Jeu.getInstance().getJoueur(joueur).getCarteEnMain().isEmpty()) {
+					Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(joueur));
+					Jeu.getInstance().getVueActuelle().passerTourSuivant();
+				}
+				else {
+					int randomCard = (int) (Math.random() * Jeu.getInstance().getJoueur(joueur).getCarteEnMain().size());
+					Jeu.getInstance().getVueActuelle().afficherCarteVolee(Jeu.getInstance().getJoueur(joueur).getCarteEnMain().get(randomCard));
+					Jeu.getInstance().getEnTour().getCarteEnMain().add(Jeu.getInstance().getJoueur(joueur).seFairePrendreCarteRumeur(randomCard));
+					Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(joueur));
+				}
+				
 			}
 		});
 		

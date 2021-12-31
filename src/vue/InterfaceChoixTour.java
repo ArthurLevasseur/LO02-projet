@@ -497,7 +497,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 		
 		LayeredPaneAccuser.removeAll();
-		
+
 		LayeredPaneChoixTour.removeAll();
 		
 		lblTitre.setText("Joueur \"" + Jeu.getInstance().getJoueur(joueur).getPseudo() + "\", joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" vous accuse !");
@@ -1046,31 +1046,25 @@ public class InterfaceChoixTour implements Observer, Vue {
 			this.btnJouerCarte.setVisible(false);
 			
 			
-			LayeredPaneAccuser = new JLayeredPane();
-			LayeredPaneAccuser.setBounds(0, 0, 1280, 1080);
-			LayeredPaneAccuser.setBackground(UIManager.getColor("Button.background"));
-			LayeredPaneEnsemble.add(LayeredPaneAccuser);
+			LayeredPaneChoixNext = new JLayeredPane();
+			LayeredPaneChoixNext.setBounds(0, 0, 1280, 1080);
+			LayeredPaneChoixNext.setBackground(UIManager.getColor("Button.background"));
+			LayeredPaneEnsemble.add(LayeredPaneChoixNext);
 			
-			JButton btnAnnuler = new JButton("<");
-			btnAnnuler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
-			btnAnnuler.setBackground(new Color(255,255,255));
-			btnAnnuler.setBounds(10, 10, 60, 60);
-			LayeredPaneAccuser.add(btnAnnuler);
+			JPanel panelChoixNext = new JPanel();
+			panelChoixNext.setBackground(UIManager.getColor("Button.background"));
+			panelChoixNext.setBounds(0, 0, 1280, 1080);
+			LayeredPaneChoixNext.add(panelChoixNext);
 			
-			JPanel panelChoixAccuse = new JPanel();
-			panelChoixAccuse.setBackground(UIManager.getColor("Button.background"));
-			panelChoixAccuse.setBounds(0, 0, 1280, 1080);
-			LayeredPaneAccuser.add(panelChoixAccuse);
-			
-			JPanel pnlTitreAccuse = new JPanel();
-			FlowLayout flowLayout_2 = (FlowLayout) pnlTitreAccuse.getLayout();
+			JPanel pnlTitreChoixNext = new JPanel();
+			FlowLayout flowLayout_2 = (FlowLayout) pnlTitreChoixNext.getLayout();
 			flowLayout_2.setHgap(400);
-			pnlTitreAccuse.setBackground(new Color(0, 0, 0, 0));
-			panelChoixAccuse.add(pnlTitreAccuse);
+			pnlTitreChoixNext.setBackground(new Color(0, 0, 0, 0));
+			panelChoixNext.add(pnlTitreChoixNext);
 			
-			JLabel lblQuiVoulezvousAccuser = new JLabel("Qui voulez-vous accuser ?");
-			lblQuiVoulezvousAccuser.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
-			pnlTitreAccuse.add(lblQuiVoulezvousAccuser);
+			JLabel lblChoixNext = new JLabel("Qui voulez-vous accuser ?");
+			lblChoixNext.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			pnlTitreChoixNext.add(lblChoixNext);
 			
 
 			compteur = 0;
@@ -1098,7 +1092,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 					
 					pnlbouton.add(btnJoueur);
 					
-					panelChoixAccuse.add(pnlbouton);
+					panelChoixNext.add(pnlbouton);
 					
 					
 				}
@@ -1106,6 +1100,13 @@ public class InterfaceChoixTour implements Observer, Vue {
 				compteur++;
 				
 			});
+			
+			LayeredPaneChoixNext.setVisible(true);
+			LayeredPaneChoixTour.setVisible(false);
+			layeredPaneCarteHunt.removeAll();
+			layeredPaneCarteHunt.setVisible(false);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneChoixNext);
+			LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
 	}
 	
 	public void revelerHunt(int Joueur) {
@@ -1137,10 +1138,11 @@ public class InterfaceChoixTour implements Observer, Vue {
 		if (Jeu.getInstance().getJoueur(Joueur).getIdentiteAssociee().getIsWitch() == true) {
 			lblTitreReveler = new JLabel("Joueur \"" + Jeu.getInstance().getJoueur(Joueur).getPseudo() + "\" était une witch, bravo !");
 			lblTitreReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			lblTitreReveler.setBounds(0, 35, 1266, 31);
 			lblTitreReveler.setHorizontalAlignment(SwingConstants.CENTER);
 			panelTitreReveler.add(lblTitreReveler);
 			
-			lblDescriptifReveler = new JLabel("Vous gagnez 2 points et prenez le prochain tour !");
+			lblDescriptifReveler = new JLabel("Vous prenez le prochain tour !");
 			lblDescriptifReveler.setHorizontalAlignment(SwingConstants.CENTER);
 			lblDescriptifReveler.setForeground(SystemColor.controlDkShadow);
 			lblDescriptifReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
@@ -1153,7 +1155,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 			lblTitreReveler.setHorizontalAlignment(SwingConstants.CENTER);
 			panelTitreReveler.add(lblTitreReveler);
 			
-			lblDescriptifReveler = new JLabel("Vous perdez 2 points, \"" + Jeu.getInstance().getJoueur(Joueur).getPseudo() + "\" prend le prochain tour !");
+			lblDescriptifReveler = new JLabel("Il prend le prochain tour !");
 			lblDescriptifReveler.setHorizontalAlignment(SwingConstants.CENTER);
 			lblDescriptifReveler.setForeground(SystemColor.controlDkShadow);
 			lblDescriptifReveler.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
@@ -1165,7 +1167,10 @@ public class InterfaceChoixTour implements Observer, Vue {
 		LayeredPaneEnsemble.moveToFront(layeredPaneReveler);
 		LayeredPaneChoixTour.setVisible(false);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
-		LayeredPaneAccuser.removeAll();
+		if (LayeredPaneChoixNext != null) {
+			LayeredPaneChoixNext.removeAll();
+			LayeredPaneChoixNext.setVisible(false);
+		}
 		
 		if (!(Jeu.getInstance().getJoueur(Joueur).getIdentiteAssociee().getIsWitch())) {
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(Joueur));
@@ -1361,15 +1366,12 @@ public class InterfaceChoixTour implements Observer, Vue {
 		compteur = 0;
 		Jeu.getInstance().getAccused().getCarteEnMain().forEach(card -> {		
 			try {
-				if (card.getNumCarte() != 2) {
 					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
 					JButton picLabel = new JButton(new ImageIcon(myPicture));
 					picLabel.setBackground(new Color(255,255,255));
 					picLabel.setSize(250, 735);
 					panelCartesWitch.add(picLabel);
 					Jeu.getInstance().getControler().setInputDiscardCarte(picLabel,compteur);
-					
-				}
 				
 			}
 			
@@ -1448,7 +1450,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 			LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
 			layeredPaneCarteHunt.setVisible(true);
 			LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
-			layeredPaneCarteHunt.setVisible(true);
+			LayeredPaneSuivi.setVisible(true);
 		}
 		else {
 			layeredPaneCarteWitch.removeAll();
@@ -1482,20 +1484,22 @@ public class InterfaceChoixTour implements Observer, Vue {
 			pnlTitreWitch.add(pnlCartesWitch);
 			
 			compteur = 0;
-			Jeu.getInstance().getAccused().getCarteRevelees().forEach(card -> {		
-				try {
-					BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
-					JButton picLabel = new JButton(new ImageIcon(myPicture));
-					picLabel.setBackground(new Color(255,255,255));
-					picLabel.setSize(250, 735);
-					panelCartesWitch.add(picLabel);
-					Jeu.getInstance().getControler().setInputRecupererRevelee(false,picLabel,compteur);	
+			Jeu.getInstance().getAccused().getCarteRevelees().forEach(card -> {	
+				if (card.getNumCarte() != 3) {
+					try {
+						BufferedImage myPicture = ImageIO.read(new File("Carte" + card.getNumCarte() + ".png"));
+						JButton picLabel = new JButton(new ImageIcon(myPicture));
+						picLabel.setBackground(new Color(255,255,255));
+						picLabel.setSize(250, 735);
+						panelCartesWitch.add(picLabel);
+						Jeu.getInstance().getControler().setInputRecupererRevelee(false,picLabel,compteur);	
+					}
+					
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+					compteur += 1;
 				}
-				
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				compteur += 1;
 			});
 			
 			LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
@@ -1553,6 +1557,11 @@ public class InterfaceChoixTour implements Observer, Vue {
 			}
 			compteur += 1;
 		});
+		
+		if (Jeu.getInstance().getEnTour().getCarteEnMain().isEmpty()) {
+			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
+			this.passerTourSuivant();
+		}
 		
 		LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
 		layeredPaneCarteWitch.setVisible(true);
@@ -2013,8 +2022,9 @@ public class InterfaceChoixTour implements Observer, Vue {
 	}
 	
 	public void petNewtChoixCarte(Joueur joueur) {
-		layeredPaneCarteHunt.removeAll();
-		layeredPaneCarteHunt.setVisible(false);
+		
+		LayeredPaneChoixNext.setVisible(false);
+		LayeredPaneChoixNext.removeAll();
 		
 		layeredPaneCarteHunt = new JLayeredPane();
 		layeredPaneCarteHunt.setBounds(0, 0, 1280, 1080);
@@ -2039,7 +2049,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 		flowLayout.setHgap(500);
 		panelCartesHunt.add(pnlTitreHunt);
 		
-		JLabel pnlCartesHunt = new JLabel("Cartes defaussées :");
+		JLabel pnlCartesHunt = new JLabel("Cartes révélées :");
 		pnlCartesHunt.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
 		pnlTitreHunt.add(pnlCartesHunt);
 		
@@ -2062,11 +2072,10 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 		if (joueur.getCarteRevelees().isEmpty()) {
 			
-			this.choisirProchainJoueur();
+			this.choisirProchainJoueur(null);
 		}
 		
 		LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
-		layeredPaneCarteHunt.setVisible(true);
 		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
 		layeredPaneCarteHunt.setVisible(true);
 	}
