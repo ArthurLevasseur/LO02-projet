@@ -43,7 +43,7 @@ public class InterfaceChoixPseudos implements Vue {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1280, 1080);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,7 +81,7 @@ public class InterfaceChoixPseudos implements Vue {
 			InterfaceChoixPseudos JoueurSuivant = new InterfaceChoixPseudos(Jeu.getInstance().getJoueur(compteur));
 		}
 		else {
-			Jeu.getInstance().initJeu();
+			Jeu.getInstance().initRound();
 		}
 	}
 }

@@ -261,6 +261,10 @@ public abstract class Joueur {
 	public void setCarteEnMain(ArrayList<CarteRumeur> carteEnMain) {
 		this.carteEnMain = carteEnMain;
 	}
+
+	public abstract void repondreAccusation();
+
+	public abstract void jouerTour();
 	
 	
 	

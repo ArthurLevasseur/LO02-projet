@@ -148,7 +148,7 @@ public class Jeu extends Observable{
 			InterfaceChoixPseudos interJ1 = new InterfaceChoixPseudos(this.getJoueur(0));
 		}
 		else {
-			this.initJeu();
+			this.initRound();
 		}
 		
 	}
@@ -315,18 +315,16 @@ public class Jeu extends Observable{
 		
 	}
 	
-	public void initJeu() {
+	public void initRound() {
 		
 		Jeu instanceJeu = Jeu.getInstance();
-		int maxPoints = 0;
-		//le tout premier joueur est choisi aléatoirement
 		
-
-		//Les cartes des mains des joueurs, leurs cartes révélées ainsi que la défausse sont réinitialisées
+		Jeu.getInstance().getEnsembleJoueurs().forEach(joueur -> joueur.getIdentiteAssociee().randomIdentite());
 		
+		for (int i=0;i<instanceJeu.getNombreJoueurs();i++) {
+			instanceJeu.getJoueur(i).getIdentiteAssociee().setDevoilee(false);
+		}
 		
-		
-		//Création d'un round (contenant le déroulement du round aussi)
 		if (this.getNombrePhy()>0) {
 			
 			this.setVueActuelle(new InterfaceIdentite(0));
@@ -336,7 +334,7 @@ public class Jeu extends Observable{
 			this.setEnTour(this.getJoueur(premierJoueur));
 			Round roundEnCours = new Round();
 			this.round = roundEnCours;
-			roundEnCours.initRound(instanceJeu.getJoueur(premierJoueur));
+			roundEnCours.fonctionnementRound(instanceJeu.getJoueur(premierJoueur));
 		}
 			
 		

@@ -38,7 +38,16 @@ public class Identite {
 		this.devoilee = devoilee;
 	}
 	
-	
+	public void randomIdentite() {
+		int random = (int) (Math.random() * 2);
+		if (random == 0) {
+			this.isWitch = true;
+		}
+		else {
+			this.isWitch = false;
+		}
+		
+	}
 	
 	
 }

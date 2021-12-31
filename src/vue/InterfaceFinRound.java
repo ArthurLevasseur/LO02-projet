@@ -46,7 +46,7 @@ public class InterfaceFinRound implements Vue{
 	 * Initialize the contents of the frame.
 	 * @param gagnant 
 	 */
-	private void initialize(Joueur gagnant) {
+	public void initialize(Joueur gagnant) {
 		Jeu.getInstance().setVueActuelle(this);
 		
 		frame = new JFrame();
@@ -102,14 +102,7 @@ public class InterfaceFinRound implements Vue{
 			InterfaceFinJeu finJeu = new InterfaceFinJeu(Jeu.getInstance().getGagnants());
 		}
 		else {
-			if (Jeu.getInstance().getNombrePhy() > 0) {
-				InterfaceIdentite choixID = new InterfaceIdentite(0);
-			}
-			else {
-				Round roundEnCours = new Round();
-				Jeu.getInstance().setRound(roundEnCours);
-				roundEnCours.initRound(Jeu.getInstance().getEnTour());
-			}
+			Jeu.getInstance().initRound();
 		}
 		
 		

@@ -63,7 +63,7 @@ public class InterfaceDebut implements Vue {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1280, 1080);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

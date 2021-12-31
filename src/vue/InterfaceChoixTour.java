@@ -107,22 +107,40 @@ public class InterfaceChoixTour implements Observer, Vue {
 	 * Create the application.
 	 */
 	public InterfaceChoixTour() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					initialize();
-					
-				} catch (Exception e) {
-					e.printStackTrace();
+		Jeu.getInstance().setVueActuelle(this);
+		Jeu.getInstance().addObserver(this);
+		if (Jeu.getInstance().getEnTour().isIA()) {
+			Jeu.getInstance().getEnTour().jouerTour();
+		}
+		else {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						initialize();
+					}
+						
+					catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	
+	public void isAccusedIA(int joueurAccused) {
+		Jeu.getInstance().getVueActuelle().repondreAccusation(joueurAccused);
+		if (Jeu.getInstance().getJoueur(joueurAccused).isIA()) {
+			
+			Jeu.getInstance().getJoueur(joueurAccused).repondreAccusation();
+		}
+		
+	}
+	
+	public void initialize() {
 		
 		String[][] infoJoueur = new String[Jeu.getInstance().getNombreJoueurs() + 1][3];
 		
@@ -236,7 +254,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 			pnlContourID.setBackground(Color.BLACK);
 			FlowLayout flowLayout_1 = (FlowLayout) pnlContourID.getLayout();
 			flowLayout_1.setVgap(20);
-			flowLayout_1.setHgap(50);
+			flowLayout_1.setHgap(30);
 			panelID.add(pnlContourID);
 			
 			lblWitch = new JLabel("WITCH");
@@ -252,7 +270,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 			pnlContourID.setBackground(Color.WHITE);
 			FlowLayout flowLayout_1 = (FlowLayout) pnlContourID.getLayout();
 			flowLayout_1.setVgap(20);
-			flowLayout_1.setHgap(50);
+			flowLayout_1.setHgap(30);
 			panelID.add(pnlContourID);
 			
 			lblWitch = new JLabel("VILLAGER");
@@ -369,8 +387,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 		
 		
-		Jeu.getInstance().setVueActuelle(this);
-		Jeu.getInstance().addObserver(this);
+		
 		this.frame.setVisible(true);
 	}
 	
@@ -500,7 +517,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 
 		LayeredPaneChoixTour.removeAll();
 		
-		lblTitre.setText("Joueur \"" + Jeu.getInstance().getJoueur(joueur).getPseudo() + "\", joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" vous accuse !");
+		lblTitre.setText("\"" + Jeu.getInstance().getJoueur(joueur).getPseudo() + "\", \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" vous accuse !");
 		
 		
 		
@@ -531,7 +548,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 			pnlContourID.setBackground(Color.BLACK);
 			FlowLayout flowLayout_1 = (FlowLayout) pnlContourID.getLayout();
 			flowLayout_1.setVgap(20);
-			flowLayout_1.setHgap(50);
+			flowLayout_1.setHgap(30);
 			panelID.add(pnlContourID);
 			
 			lblWitch = new JLabel("WITCH");
@@ -547,7 +564,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 			pnlContourID.setBackground(Color.WHITE);
 			FlowLayout flowLayout_1 = (FlowLayout) pnlContourID.getLayout();
 			flowLayout_1.setVgap(20);
-			flowLayout_1.setHgap(50);
+			flowLayout_1.setHgap(30);
 			panelID.add(pnlContourID);
 			
 			lblWitch = new JLabel("VILLAGER");
@@ -596,7 +613,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 		panelTitre.setBounds(0, 35, 1266, 50);
 		LayeredPaneChoixTour.add(panelTitre);
 		
-		lblTitre = new JLabel("Joueur \"" + Jeu.getInstance().getJoueur(joueur).getPseudo() + "\", joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" vous accuse !");
+		lblTitre = new JLabel("\"" + Jeu.getInstance().getJoueur(joueur).getPseudo() + "\", \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" vous accuse !");
 		lblTitre.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
 		panelTitre.add(lblTitre);
 		
@@ -655,7 +672,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 	}
 	@Override
 	public void reveler() {
-		Jeu.getInstance().getAccused().revelerIdentite();
+		
 		
 		
 		layeredPaneReveler = new JLayeredPane();
@@ -1847,6 +1864,8 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 		int carteDefaussee = (int) (Math.random() * Jeu.getInstance().getEnTour().getCarteEnMain().size());
 		
+		
+		
 		LayeredPaneRecap = new JLayeredPane();
 		LayeredPaneRecap.setBounds(0, 0, 1280, 1080);
 		LayeredPaneRecap.setBackground(UIManager.getColor("Button.background"));
@@ -1884,11 +1903,10 @@ public class InterfaceChoixTour implements Observer, Vue {
 		LayeredPaneRecap.add(btnNext);
 		Jeu.getInstance().getControler().setImputNextTurn(btnNext);
 		
-		Jeu.getInstance().getEnTour().seFairePrendreCarteRumeur(carteDefaussee);
+		
+		
+		Jeu.getInstance().getRound().seFaireDefausserCard(carteDefaussee, Jeu.getInstance().getEnTour());
 		Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
-		
-		
-		
 		
 		LayeredPaneRecap.setVisible(true);
 		LayeredPaneAccuser.setVisible(false);

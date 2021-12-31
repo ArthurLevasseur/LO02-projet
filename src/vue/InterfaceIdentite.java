@@ -47,7 +47,7 @@ public class InterfaceIdentite implements Vue{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int joueur) {
+	public void initialize(int joueur) {
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1280, 1080);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,10 +109,10 @@ public class InterfaceIdentite implements Vue{
 				Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(premierJoueur));
 				Round roundEnCours = new Round();
 				Jeu.getInstance().setRound(roundEnCours);
-				roundEnCours.initRound(Jeu.getInstance().getJoueur(premierJoueur));
+				roundEnCours.fonctionnementRound(Jeu.getInstance().getJoueur(premierJoueur));
 			}
 			else {
-				Jeu.getInstance().getRound().initRound(Jeu.getInstance().getEnTour());
+				Jeu.getInstance().getRound().fonctionnementRound(Jeu.getInstance().getEnTour());
 			}
 		}
 	}

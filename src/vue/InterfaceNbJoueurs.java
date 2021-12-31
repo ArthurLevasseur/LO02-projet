@@ -55,7 +55,7 @@ public class InterfaceNbJoueurs implements Observer, Vue{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		Jeu.getInstance().setNombrePhy(3);
 		
 		frame = new JFrame();

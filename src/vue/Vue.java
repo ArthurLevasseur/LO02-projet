@@ -53,7 +53,7 @@ public interface Vue {
 	public void repondreAccusation(Joueur j);
 	public void choisirIdentite(Joueur j);
 	public void demarrerRound();
-	public void jouerHunt(); //à supprimer peut-être plus tard ?
+	public void jouerHunt(CarteRumeur choixCarte); //à supprimer peut-être plus tard ?
 	public void choixAccuse();
 	public void choisirHunt();
 	public void jouerWitch();
@@ -97,5 +97,11 @@ public interface Vue {
 	public void duckingStoolChoixCible(int joueur);
 	public void passerTourSuivantAccusable();
 	public void choisirProchainJoueurVoler();
+	
+	
+	
+	public void revelerIA();
+	public void initialize();
+	public void isAccusedIA(int joueurCible);
 	
 }

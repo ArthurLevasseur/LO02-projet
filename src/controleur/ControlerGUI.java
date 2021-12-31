@@ -120,7 +120,7 @@ public class ControlerGUI extends Observable{
 		bouton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Jeu.getInstance().setAccused(Jeu.getInstance().getJoueur(JoueurCible));
-				Jeu.getInstance().getVueActuelle().repondreAccusation(JoueurCible);
+				Jeu.getInstance().getVueActuelle().isAccusedIA(JoueurCible);
 			}
 		});
 	}
@@ -134,6 +134,7 @@ public class ControlerGUI extends Observable{
 		
 		btnAccuser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getAccused().revelerIdentite();
 				Jeu.getInstance().getVueActuelle().reveler();
 			}
 		});

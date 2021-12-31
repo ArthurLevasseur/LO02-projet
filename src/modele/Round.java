@@ -74,23 +74,10 @@ public class Round {
 		
 	}
 	
-	public void initRound(Joueur premierJoueur) {
+	public void fonctionnementRound(Joueur premierJoueur) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		
-		System.out.println("c'est au joueur " + premierJoueur.getPseudo() + " de commencer ce round !");
-		
-		for (int i=0;i<instanceJeu.getNombreJoueurs();i++) {
-			instanceJeu.getJoueur(i).getIdentiteAssociee().setDevoilee(false);
-		}
-		
-		/*
-		if (instanceJeu.getNombrePhy()>0){
-			Jeu.getInstance().setVueActuelle(new InterfaceIdentite(0));
-		}
-		*/
-		
-		//GagnantRound permet de déterminer le premier joueur du round suivant, sauf pour le premier round.
 		if (instanceJeu.getEnTour() != null) {
 			premierJoueur = instanceJeu.getEnTour();
 		}
@@ -101,19 +88,23 @@ public class Round {
 		
 		instanceJeu.setEnTour(premierJoueur);
 		
+		
+		
 		this.jouerUnTour();
+		
 		//Tour du premier joueur qui retourne le joueur du tour suivant dans la variable "enTour"
 	}
 	
 	public void choisirProchainJoueur() {
 		
 	}
+	
 	public void jouerUnTour() {
 		Jeu instanceJeu = Jeu.getInstance();
-		SaisirInt scan = SaisirInt.getInstance();
 		instanceJeu.setVueActuelle(new InterfaceChoixTour());
 		instanceJeu.getVueActuelle().debutTour();
 	}
+	
 	public Joueur jouerTour() {
 
 		//Affichage des infos générales du joueur en tour
@@ -154,5 +145,10 @@ public class Round {
 		else {
 			return false;
 		}
+	}
+
+
+	public void seFaireDefausserCard(int carteDefaussee, Joueur enTour) {
+		Jeu.getInstance().getTasDefausse().getContenu().add(enTour.seFairePrendreCarteRumeur(carteDefaussee));
 	}
 }

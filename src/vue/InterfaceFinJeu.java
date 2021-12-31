@@ -111,7 +111,7 @@ public class InterfaceFinJeu implements Vue {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initializeWinner(Joueur winner) {
+	public void initializeWinner(Joueur winner) {
 		
 		frame = new JFrame();
 		frame.setBounds(0, 0, 1280, 1080);

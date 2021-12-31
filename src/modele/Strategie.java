@@ -15,5 +15,9 @@ public abstract class Strategie {
 	abstract public int choisirProchainJoueur();
 	
 	abstract public int choisirProchainJoueurWitch();
+
+	protected abstract void repondreAccusation();
+
+	protected abstract void jouerTourIA();
 	
 }
