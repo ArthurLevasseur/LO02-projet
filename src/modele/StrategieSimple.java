@@ -82,11 +82,20 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 	
-	public int choixRevelees() {
+	public int choixReveleesHunt() {
 		Jeu instance = Jeu.getInstance();
-		int choix = -1;
-		while (choix < 0 || choix > instance.getEnTour().getCarteRevelees().size()) {
-			choix = (int)(Math.random() * instance.getEnTour().getCarteEnMain().size());
+		int choix = (int)(Math.random() * instance.getEnTour().getCarteRevelees().size());
+		if (instance.getEnTour().getCarteRevelees().isEmpty()) {
+			return -1;
+		}
+		return choix;
+	}
+	
+	public int choixReveleesWitch() {
+		Jeu instance = Jeu.getInstance();
+		int choix = (int)(Math.random() * instance.getAccused().getCarteRevelees().size());
+		if (instance.getAccused().getCarteRevelees().isEmpty()) {
+			return -1;
 		}
 		return choix;
 	}
@@ -235,6 +244,16 @@ public class StrategieSimple extends Strategie {
 			if (Jeu.getInstance().getJoueur(cibleHunt).getIdentiteAssociee().getIsWitch()) {
 				joueurCibleAccuser = cibleHunt;
 			}
+			Jeu.getInstance().getVueActuelle().passerTourSuivant();
+		}
+		if (carte.getNumCarte() == 3) {
+			int choix = choixReveleesHunt();
+			CarteRumeur carteRecup = Jeu.getInstance().getEnTour().getCarteRevelees().get(choix);
+			Jeu.getInstance().getEnTour().prendreCarteRumeur(carteRecup);
+			Jeu.getInstance().getEnTour().getCarteRevelees().remove(choix);
+			
+			int prochainJoueur = choisirProchainJoueur();
+			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(prochainJoueur));
 		}
 			
 	}

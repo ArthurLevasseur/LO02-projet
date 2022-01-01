@@ -109,6 +109,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 	public InterfaceChoixTour() {
 		Jeu.getInstance().setVueActuelle(this);
 		Jeu.getInstance().addObserver(this);
+		
 		if (Jeu.getInstance().getEnTour().isIA()) {
 			Jeu.getInstance().getEnTour().jouerTour();
 		}
