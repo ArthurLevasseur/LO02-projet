@@ -21,7 +21,7 @@ public class ControlerGUI extends Observable{
     }
 	
 	
-	public void setInputsDemarrer(JButton demarrer, JButton quitter, JFrame frame) {
+	public void setInputsDemarrer(JButton demarrer, JButton quitter, JButton Regles, JFrame frame) {
 		
 		demarrer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -32,6 +32,12 @@ public class ControlerGUI extends Observable{
 		quitter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
+			}
+		});
+		
+		Regles.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().afficherRegles();
 			}
 		});
 	}
@@ -425,6 +431,15 @@ public class ControlerGUI extends Observable{
 				Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(joueur));
 				
 				Jeu.getInstance().getVueActuelle().passerTourSuivantAccusable();
+			}
+		});
+	}
+
+
+	public void setInputReturnDebut(JButton retour) {
+		retour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().initialize();
 			}
 		});
 	}

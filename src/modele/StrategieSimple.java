@@ -167,7 +167,7 @@ public class StrategieSimple extends Strategie {
 			Jeu.getInstance().setAccused(Jeu.getInstance().getJoueur(choixAccuse));
 			Jeu.getInstance().getVueActuelle().initialize();
 			Jeu.getInstance().getVueActuelle().accuser();
-			Jeu.getInstance().getVueActuelle().repondreAccusation(choixAccuse);
+			Jeu.getInstance().getVueActuelle().isAccusedIA(choixAccuse);
 		}
 		else {
 			//DECIDE JOUER CARTE

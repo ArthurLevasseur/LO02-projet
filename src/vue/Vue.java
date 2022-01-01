@@ -103,5 +103,6 @@ public interface Vue {
 	public void revelerIA();
 	public void initialize();
 	public void isAccusedIA(int joueurCible);
+	public void afficherRegles();
 	
 }
