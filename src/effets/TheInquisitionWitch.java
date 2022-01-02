@@ -6,9 +6,9 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
-public class EffetW2 extends Effet {
+public class TheInquisitionWitch extends Effet {
 	
-	public EffetW2() {
+	public TheInquisitionWitch() {
 		super();
 		this.explication = "Vous défaussez une carte de votre main.\nVous prenez le prochain tour.";
 	}

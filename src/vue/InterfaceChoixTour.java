@@ -79,6 +79,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 	private JLayeredPane layeredPaneCarteHunt;
 	private JLayeredPane LayeredPaneRecap;
 	private JLayeredPane LayeredPaneChoixDuckingStool;
+	private JLayeredPane LayeredPaneRecapIA;
 	
 	private boolean accusable;
 	private int compteur;
@@ -107,6 +108,7 @@ public class InterfaceChoixTour implements Observer, Vue {
 	 * Create the application.
 	 */
 	public InterfaceChoixTour() {
+		
 		Jeu.getInstance().setVueActuelle(this);
 		Jeu.getInstance().addObserver(this);
 		
@@ -731,7 +733,10 @@ public class InterfaceChoixTour implements Observer, Vue {
 	
 	
 	public void updateSuivi() {
-		LayeredPaneSuivi.removeAll();
+		if (LayeredPaneSuivi != null) {
+			LayeredPaneSuivi.removeAll();
+		}
+		
 		
 		String[][] infoJoueur = new String[Jeu.getInstance().getNombreJoueurs() + 1][3];
 		
@@ -806,23 +811,40 @@ public class InterfaceChoixTour implements Observer, Vue {
 	
 	public void passerTourSuivant() {
 		
-		this.frame.setVisible(false);
 		Jeu.getInstance().getEnsembleJoueurs().forEach(Joueur ->{
 			Joueur.setAccusable(true);
 		});
 		
-		
-		if (Jeu.getInstance().getRound().isRoundEnd()) {
-			
-			Jeu.getInstance().getGagnantRound().gagnerPoints();
-			
-			InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
-			
+		if (Jeu.getInstance().getAccused() != null) {
+			if (Jeu.getInstance().getAccused().isIA()) {
+				Jeu.getInstance().getAccused().recapIA();
+			}
+			else {
+				this.frame.setVisible(false);
+				
+				
+				if (Jeu.getInstance().getRound().isRoundEnd()) {
+					Jeu.getInstance().getGagnantRound().gagnerPoints();	
+					InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+				}
+				else {
+					Jeu.getInstance().getRound().jouerUnTour();
+					
+				}
+			}
 		}
 		else {
-			Jeu.getInstance().getRound().jouerUnTour();
+			this.frame.setVisible(false);
+			
+			if (Jeu.getInstance().getRound().isRoundEnd()) {
+				Jeu.getInstance().getGagnantRound().gagnerPoints();	
+				InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+			}
+			else {
+				Jeu.getInstance().getRound().jouerUnTour();
+				
+			}
 		}
-		
 	}
 	
 	public void choisirHunt() {
@@ -1400,11 +1422,13 @@ public class InterfaceChoixTour implements Observer, Vue {
 		});
 		
 		if (Jeu.getInstance().getAccused().getCarteEnMain().isEmpty()) {
-			JButton btnJoueur = new JButton("Aucunes cartes en main");
+
+			JButton btnJoueur = new JButton("Main vide !");
 			btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
-			btnJoueur.setBounds(500, 600, 323, 80);
-			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
-			Jeu.getInstance().getVueActuelle().passerTourSuivant();
+			btnJoueur.setBounds(500, 800, 323, 80);
+			layeredPaneCarteWitch.add(btnJoueur);
+			
+			Jeu.getInstance().getControler().setImputNextTurn(btnJoueur);
 		}
 		
 		LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
@@ -1578,7 +1602,13 @@ public class InterfaceChoixTour implements Observer, Vue {
 		
 		if (Jeu.getInstance().getEnTour().getCarteEnMain().isEmpty()) {
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
-			this.passerTourSuivant();
+			
+			JButton btnJoueur = new JButton("Main vide !");
+			btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+			btnJoueur.setBounds(500, 800, 323, 80);
+			layeredPaneCarteWitch.add(btnJoueur);
+			
+			Jeu.getInstance().getControler().setImputNextTurn(btnJoueur);
 		}
 		
 		LayeredPaneEnsemble.moveToFront(layeredPaneCarteWitch);
@@ -1877,14 +1907,22 @@ public class InterfaceChoixTour implements Observer, Vue {
 		panelRecap.setBounds(0, 150, 1280, 100);
 		LayeredPaneRecap.add(panelRecap);
 		
-		JLabel lblTitreRecap = new JLabel("Joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" défausse : " + Jeu.getInstance().getEnTour().getCarteEnMain().get(carteDefaussee).getNomCarte());
-		lblTitreRecap.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
-		lblTitreRecap.setForeground(new Color(0,0,0));
-		lblTitreRecap.setBounds(0, 150, 1266, 21);
-		lblTitreRecap.setHorizontalAlignment(SwingConstants.CENTER);
-		panelRecap.add(lblTitreRecap);
-		
-		
+		if (Jeu.getInstance().getEnTour().getCarteEnMain().isEmpty()) {
+			JLabel lblTitreRecap = new JLabel("Joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" ne défausse rien, sa main est vide !");
+			lblTitreRecap.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			lblTitreRecap.setForeground(new Color(0,0,0));
+			lblTitreRecap.setBounds(0, 150, 1266, 21);
+			lblTitreRecap.setHorizontalAlignment(SwingConstants.CENTER);
+			panelRecap.add(lblTitreRecap);
+		}
+		else {
+			JLabel lblTitreRecap = new JLabel("Joueur \"" + Jeu.getInstance().getEnTour().getPseudo() + "\" défausse : " + Jeu.getInstance().getEnTour().getCarteEnMain().get(carteDefaussee).getNomCarte());
+			lblTitreRecap.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+			lblTitreRecap.setForeground(new Color(0,0,0));
+			lblTitreRecap.setBounds(0, 150, 1266, 21);
+			lblTitreRecap.setHorizontalAlignment(SwingConstants.CENTER);
+			panelRecap.add(lblTitreRecap);
+		}
 		
 		JPanel pnlDescriptifRecap = new JPanel();
 		pnlDescriptifRecap.setBackground(UIManager.getColor("Button.background"));
@@ -1971,7 +2009,13 @@ public class InterfaceChoixTour implements Observer, Vue {
 			Jeu.getInstance().getTasDefausse().getContenu().add(Jeu.getInstance().getEnTour().getCarteRevelees().get(Jeu.getInstance().getEnTour().getCarteRevelees().size() - 1));
 			Jeu.getInstance().getEnTour().getCarteRevelees().remove(Jeu.getInstance().getEnTour().getCarteRevelees().size() - 1);
 			
-			this.passerTourSuivant();
+			JButton btnJoueur = new JButton("défausse vide !");
+			btnJoueur.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+			btnJoueur.setBounds(500, 800, 323, 80);
+			layeredPaneCarteHunt.add(btnJoueur);
+			
+			Jeu.getInstance().getControler().setImputNextTurn(btnJoueur);
+			
 		}
 		
 		LayeredPaneEnsemble.moveToFront(layeredPaneCarteHunt);
@@ -2316,16 +2360,281 @@ public class InterfaceChoixTour implements Observer, Vue {
 	public void passerTourSuivantAccusable() {
 		
 		
-		if (Jeu.getInstance().getRound().isRoundEnd()) {
+		if (Jeu.getInstance().getAccused() != null) {
+			if (Jeu.getInstance().getAccused().isIA()) {
+				Jeu.getInstance().getAccused().recapIAAccused();
+			}
+			else {
+				this.frame.setVisible(false);
+				
+				if (Jeu.getInstance().getRound().isRoundEnd()) {
+					Jeu.getInstance().getGagnantRound().gagnerPoints();	
+					InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+				}
+				else {
+					Jeu.getInstance().getRound().jouerUnTour();
+					
+				}
+			}
+		}
+		else {
+			this.frame.setVisible(false);
 			
-			Jeu.getInstance().getGagnantRound().gagnerPoints();
+			if (Jeu.getInstance().getRound().isRoundEnd()) {
+				Jeu.getInstance().getGagnantRound().gagnerPoints();	
+				InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+			}
+			else {
+				Jeu.getInstance().getRound().jouerUnTour();
+				
+			}
+		}
+		
+	}
+	
+	public void recapIA(Joueur ancienEnTour, int choixReveler, int choixCarte, int choixCarteJoueur, int choixCartePrise) {
+		
+		LayeredPaneEnsemble.removeAll();
+		
+		
+		LayeredPaneRecapIA = new JLayeredPane();
+		LayeredPaneRecapIA.setBounds(0, 0, 1280, 1080);
+		LayeredPaneRecapIA.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneRecapIA);
+		
+		JPanel panelTitreRecapIA = new JPanel();
+		panelTitreRecapIA.setBounds(0, 35, 1266, 50);
+		LayeredPaneRecapIA.add(panelTitreRecapIA);
+		
+		JLabel lblTitreRecapIA = new JLabel("Récapitulatif de " + Jeu.getInstance().getAccused().getPseudo());
+		lblTitreRecapIA.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		lblTitreRecapIA.setBounds(0, 35, 1266, 31);
+		lblTitreRecapIA.setHorizontalAlignment(SwingConstants.CENTER);
+		panelTitreRecapIA.add(lblTitreRecapIA);
+
+		
+		
+		if (choixReveler == 1) {
 			
-			InterfaceFinRound finRound = new InterfaceFinRound(Jeu.getInstance().getGagnantRound());
+			
+			JLabel lblDescriptifRecapIA = new JLabel(Jeu.getInstance().getAccused().getPseudo() + " a décidé de révéler son identité !");
+			lblDescriptifRecapIA.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifRecapIA.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifRecapIA.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifRecapIA.setBounds(0, 250, 1266, 50);
+			LayeredPaneRecapIA.add(lblDescriptifRecapIA);
+			
+			if (Jeu.getInstance().getAccused().getIdentiteAssociee().getIsWitch()) {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il était une Witch, " + ancienEnTour.getPseudo() + " gagne 1 point, il prend le prochain tour !");
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 450, 1266, 50);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+			}
+			else {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il était un Villager et prend le prochain tour !");
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 450, 1266, 50);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+			}
+			
 			
 		}
 		else {
-			Jeu.getInstance().getRound().jouerUnTour();
+			JLabel lblDescriptifRecapIA = new JLabel("Il a décidé de jouer l'effet witch de la carte : ");
+			lblDescriptifRecapIA.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifRecapIA.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifRecapIA.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifRecapIA.setBounds(0, 150, 1266, 50);
+			LayeredPaneRecapIA.add(lblDescriptifRecapIA);
+			
+			BufferedImage myPicture;
+			try {
+				myPicture = ImageIO.read(new File("Carte" + choixCarte + ".png"));
+				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+				picLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				picLabel.setSize(250, 735);
+				picLabel.setBounds(0, 200, 1266, 250);
+				LayeredPaneRecapIA.add(picLabel);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (choixCarte == 2 || choixCarte == 3 || choixCarte == 4) {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il a choisit la carte : ");
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 550, 1266, 21);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+				
+				try {
+					BufferedImage myPicture2 = ImageIO.read(new File("Carte" + choixCartePrise + ".png"));
+					JLabel picLabel2 = new JLabel(new ImageIcon(myPicture2));
+					picLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+					picLabel2.setSize(250, 735);
+					picLabel2.setBounds(0, 600, 1266, 250);
+					LayeredPaneRecapIA.add(picLabel2);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			else if (choixCarte == 7 || choixCarte == 9) {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il a ciblé le joueur " + Jeu.getInstance().getJoueur(choixCarteJoueur).getPseudo());
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 550, 1266, 21);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+			}
+			
 		}
 		
+		JButton btnTourSuivant = new JButton("Passer à la suite");
+		btnTourSuivant.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnTourSuivant.setBounds(470, 850, 323, 80);
+		LayeredPaneRecapIA.add(btnTourSuivant);
+		
+		this.updateSuivi();
+		LayeredPaneEnsemble.moveToFront(LayeredPaneRecapIA);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+
+		Jeu.getInstance().getControler().setImputNextTurn(btnTourSuivant);
+	}
+	
+	public void recapIAAccused(Joueur ancienEnTour, int choixReveler, int choixCarte, int choixCarteJoueur, int choixCartePrise) {
+		
+		LayeredPaneEnsemble.removeAll();
+		
+		
+		LayeredPaneRecapIA = new JLayeredPane();
+		LayeredPaneRecapIA.setBounds(0, 0, 1280, 1080);
+		LayeredPaneRecapIA.setBackground(UIManager.getColor("Button.background"));
+		LayeredPaneEnsemble.add(LayeredPaneRecapIA);
+		
+		JPanel panelTitreRecapIA = new JPanel();
+		panelTitreRecapIA.setBounds(0, 35, 1266, 50);
+		LayeredPaneRecapIA.add(panelTitreRecapIA);
+		
+		JLabel lblTitreRecapIA = new JLabel("Récapitulatif de " + Jeu.getInstance().getAccused().getPseudo());
+		lblTitreRecapIA.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
+		lblTitreRecapIA.setBounds(0, 35, 1266, 31);
+		lblTitreRecapIA.setHorizontalAlignment(SwingConstants.CENTER);
+		panelTitreRecapIA.add(lblTitreRecapIA);
+
+		
+		
+		if (choixReveler == 1) {
+			
+			
+			JLabel lblDescriptifRecapIA = new JLabel(Jeu.getInstance().getAccused().getPseudo() + " a décidé de révéler son identité !");
+			lblDescriptifRecapIA.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifRecapIA.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifRecapIA.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifRecapIA.setBounds(0, 250, 1266, 50);
+			LayeredPaneRecapIA.add(lblDescriptifRecapIA);
+			
+			if (Jeu.getInstance().getAccused().getIdentiteAssociee().getIsWitch()) {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il était une Witch, " + ancienEnTour.getPseudo() + " gagne 1 point, il prend le prochain tour !");
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 450, 1266, 50);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+			}
+			else {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il était un Villager et prend le prochain tour !");
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 450, 1266, 50);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+			}
+			
+			
+		}
+		else {
+			JLabel lblDescriptifRecapIA = new JLabel("Il a décidé de jouer l'effet witch de la carte : ");
+			lblDescriptifRecapIA.setHorizontalAlignment(SwingConstants.CENTER);
+			lblDescriptifRecapIA.setForeground(SystemColor.controlDkShadow);
+			lblDescriptifRecapIA.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+			lblDescriptifRecapIA.setBounds(0, 150, 1266, 50);
+			LayeredPaneRecapIA.add(lblDescriptifRecapIA);
+			
+			BufferedImage myPicture;
+			try {
+				myPicture = ImageIO.read(new File("Carte" + choixCarte + ".png"));
+				JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+				picLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				picLabel.setSize(250, 735);
+				picLabel.setBounds(0, 200, 1266, 250);
+				LayeredPaneRecapIA.add(picLabel);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (choixCarte == 2 || choixCarte == 3 || choixCarte == 4) {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il a choisit la carte : ");
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 550, 1266, 21);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+				if (choixCartePrise == -1) {
+					try {
+						BufferedImage myPicture2 = ImageIO.read(new File("EmptyCard.png"));
+						JLabel picLabel2 = new JLabel(new ImageIcon(myPicture2));
+						picLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+						picLabel2.setSize(250, 735);
+						picLabel2.setBounds(0, 600, 1266, 250);
+						LayeredPaneRecapIA.add(picLabel2);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else {
+					try {
+						BufferedImage myPicture2 = ImageIO.read(new File("Carte" + choixCartePrise + ".png"));
+						JLabel picLabel2 = new JLabel(new ImageIcon(myPicture2));
+						picLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+						picLabel2.setSize(250, 735);
+						picLabel2.setBounds(0, 600, 1266, 250);
+						LayeredPaneRecapIA.add(picLabel2);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			else if (choixCarte == 7 || choixCarte == 9) {
+				JLabel lblDescriptifRecapIA2 = new JLabel("Il a ciblé le joueur " + Jeu.getInstance().getJoueur(choixCarteJoueur).getPseudo());
+				lblDescriptifRecapIA2.setHorizontalAlignment(SwingConstants.CENTER);
+				lblDescriptifRecapIA2.setForeground(SystemColor.controlDkShadow);
+				lblDescriptifRecapIA2.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
+				lblDescriptifRecapIA2.setBounds(0, 550, 1266, 21);
+				LayeredPaneRecapIA.add(lblDescriptifRecapIA2);
+			}
+			
+		}
+		
+		JButton btnTourSuivant = new JButton("Passer à la suite");
+		btnTourSuivant.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
+		btnTourSuivant.setBounds(470, 850, 323, 80);
+		LayeredPaneRecapIA.add(btnTourSuivant);
+		
+		this.updateSuivi();
+		LayeredPaneEnsemble.moveToFront(LayeredPaneRecapIA);
+		LayeredPaneEnsemble.moveToFront(LayeredPaneSuivi);
+
+		Jeu.getInstance().getControler().setInputNextTurnAccusable(btnTourSuivant);
 	}
 }

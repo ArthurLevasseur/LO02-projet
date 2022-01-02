@@ -7,9 +7,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH4 extends Effet {
+public class HookedNoseHunt extends Effet {
 	
-	public EffetH4() {
+	public HookedNoseHunt() {
 		super();
 		this.explication = "Vous choisissez le prochain joueur.\nAvant son tour, vous prenez une carte rumeur de sa main et l'ajoutez dans la votre.";
 	}

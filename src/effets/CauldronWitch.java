@@ -5,16 +5,16 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.JoueurVirtuel;
 
-public class EffetW7 extends Effet {
+public class CauldronWitch extends Effet {
 	
-	public EffetW7() {
+	public CauldronWitch() {
 		super();
-		this.explication = "Vous choisissez le prochain joueur.";
+		this.explication = "Le joueur qui vous a accusé défausse une carte aléatoire de sa main.\nVous prenez le prochain tour.";
 	}
-
+	
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().choisirProchainJoueurWitch(this);
+		instanceJeu.getVueActuelle().chaudronWitch(this);
 	}
 	
 	public Joueur executionEffet() {
@@ -28,9 +28,14 @@ public class EffetW7 extends Effet {
 			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueurWitch());
 		}
 		else {
-			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le joueur à défausser.");
 		}
-		
-		return choix;
+		if (choix.getCarteEnMain().isEmpty()) {
+			System.out.println("Il n'a pas de cartes en main.");
+		}
+		else {
+			instanceDefausse.defausserUneCarte(choix.seFairePrendreCarteRumeur((int)(Math.random()*choix.getCarteEnMain().size())));
+		}
+		return instanceJeu.getAccused();
 	}
 }

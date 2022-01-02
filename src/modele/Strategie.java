@@ -19,5 +19,9 @@ public abstract class Strategie {
 	protected abstract void repondreAccusation();
 
 	protected abstract void jouerTourIA();
+
+	protected abstract void recapIA();
+	
+	protected abstract void recapIAAccused();
 	
 }

@@ -6,9 +6,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH3 extends Effet {
+public class PointedHatHunt extends Effet {
 	
-	public EffetH3() {
+	public PointedHatHunt() {
 		super();
 		this.explication = "Vous reprenez une de vos cartes rumeurs déjà révélées dans votre main.\nVous choisissez le prochain joueur.";
 	}

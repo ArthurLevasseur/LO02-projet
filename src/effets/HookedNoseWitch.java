@@ -6,9 +6,9 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
-public class EffetW4 extends Effet {
+public class HookedNoseWitch extends Effet {
 	
-	public EffetW4() {
+	public HookedNoseWitch() {
 		super();
 		this.explication = "Vous prenez une carte de la main du joueur qui vous a accusé.\nVous prenez le prochain tour.";
 	}

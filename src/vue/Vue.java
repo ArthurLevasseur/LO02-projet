@@ -104,5 +104,7 @@ public interface Vue {
 	public void initialize();
 	public void isAccusedIA(int joueurCible);
 	public void afficherRegles();
+	public void recapIA(Joueur joueurEnTour, int choixActionTour, int choixCarte, int choixCarteJoueur, int choixCartePrise);
+	public void recapIAAccused(Joueur joueurEnTour, int choixActionTour, int choixCarte, int choixCarteJoueur, int choixCartePrise);
 	
 }

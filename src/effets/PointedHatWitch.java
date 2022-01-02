@@ -7,9 +7,9 @@ import modele.Effet;
 import modele.Jeu;
 import modele.Joueur;
 
-public class EffetW3 extends Effet {
+public class PointedHatWitch extends Effet {
 	
-	public EffetW3() {
+	public PointedHatWitch() {
 		super();
 		this.explication = "Vous reprenez une de vos propres cartes rumeurs déjà révélées dans votre main.\nVous prenez le prochain tour.";
 	}

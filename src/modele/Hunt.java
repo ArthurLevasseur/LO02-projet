@@ -1,15 +1,15 @@
 package modele;
-import effets.EffetH1;
-import effets.EffetH10;
-import effets.EffetH11;
-import effets.EffetH12;
-import effets.EffetH2;
-import effets.EffetH3;
-import effets.EffetH4;
-import effets.EffetH5;
-import effets.EffetH7;
-import effets.EffetH8;
-import effets.EffetH9;
+import effets.AngryMobHunt;
+import effets.ToadHunt;
+import effets.BlackCatHunt;
+import effets.PetNewtHunt;
+import effets.TheInquisitionHunt;
+import effets.PointedHatHunt;
+import effets.HookedNoseHunt;
+import effets.BroomstickHunt;
+import effets.DuckingStoolHunt;
+import effets.CauldronHunt;
+import effets.EvilEyeHunt;
 
 public class Hunt{
 
@@ -17,40 +17,40 @@ public class Hunt{
 	
 	public Hunt(int numCarte) {
 		if (numCarte == 1) {
-			this.effetAssocie = new EffetH1();
+			this.effetAssocie = new AngryMobHunt();
 		}
 		else if (numCarte == 2) {
-			this.effetAssocie = new EffetH2();
+			this.effetAssocie = new TheInquisitionHunt();
 		}
 		else if (numCarte == 3) {
-			this.effetAssocie = new EffetH3();
+			this.effetAssocie = new PointedHatHunt();
 		}
 		else if (numCarte == 4) {
-			this.effetAssocie = new EffetH4();
+			this.effetAssocie = new HookedNoseHunt();
 		}
 		else if (numCarte == 5) {
-			this.effetAssocie = new EffetH5();
+			this.effetAssocie = new BroomstickHunt();
 		}
 		else if (numCarte == 6) {
-			this.effetAssocie = new EffetH5();
+			this.effetAssocie = new BroomstickHunt();
 		}
 		else if (numCarte == 7) {
-			this.effetAssocie = new EffetH7();
+			this.effetAssocie = new DuckingStoolHunt();
 		}
 		else if (numCarte == 8) {
-			this.effetAssocie = new EffetH8();
+			this.effetAssocie = new CauldronHunt();
 		}
 		else if (numCarte == 9) {
-			this.effetAssocie = new EffetH9();
+			this.effetAssocie = new EvilEyeHunt();
 		}
 		else if (numCarte == 10) {
-			this.effetAssocie = new EffetH8();
+			this.effetAssocie = new CauldronHunt();
 		}
 		else if (numCarte == 11) {
-			this.effetAssocie = new EffetH11();
+			this.effetAssocie = new BlackCatHunt();
 		}
 		else if (numCarte == 12) {
-			this.effetAssocie = new EffetH12();
+			this.effetAssocie = new PetNewtHunt();
 		}
 	}
 	

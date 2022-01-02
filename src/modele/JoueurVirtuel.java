@@ -27,4 +27,12 @@ public class JoueurVirtuel extends Joueur {
 	public void jouerTour() {
 		this.getStrategieActuelle().jouerTourIA();
 	}
+	
+	public void recapIA() {
+		this.getStrategieActuelle().recapIA();
+	}
+	
+	public void recapIAAccused() {
+		this.getStrategieActuelle().recapIAAccused();
+	}
 }

@@ -4,9 +4,9 @@ import modele.Effet;
 import modele.Jeu;
 import modele.Joueur;
 
-public class EffetW1 extends Effet {
+public class AngryMobWitch extends Effet {
 	
-	public EffetW1() {
+	public AngryMobWitch() {
 		super();
 		this.explication = "Vous prenez le prochain tour.";
 	}

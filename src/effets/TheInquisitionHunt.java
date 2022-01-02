@@ -6,9 +6,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH2 extends Effet {
+public class TheInquisitionHunt extends Effet {
 	
-	public EffetH2() {
+	public TheInquisitionHunt() {
 		super();
 		this.explication = "Vous choisissez le prochain joueur.\nAvant son tour, vous regardez secrètement l'identité du joueur";
 	}

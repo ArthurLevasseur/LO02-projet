@@ -7,10 +7,10 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH1 extends Effet {
+public class AngryMobHunt extends Effet {
 	
 	
-	public EffetH1() {
+	public AngryMobHunt() {
 		super();
 		this.explication = "Vous révélez l'identité d'un autre joueur.\n	- Si c'est une sorcière, vous gagnez 2 points et prenez le prochain tour.\n	- Si c'est un villageois, vous perdez 2 points et il prend le prochain tour.";
 	}

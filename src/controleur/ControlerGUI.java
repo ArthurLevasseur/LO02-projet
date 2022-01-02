@@ -445,4 +445,13 @@ public class ControlerGUI extends Observable{
 	}
 
 
+	public void setInputNextTurnAccusable(JButton btnTourSuivant) {
+		btnTourSuivant.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Jeu.getInstance().getVueActuelle().passerTourSuivantAccusable();
+			}
+		});
+	}
+
+
 }

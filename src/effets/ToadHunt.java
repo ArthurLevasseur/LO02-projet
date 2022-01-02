@@ -8,9 +8,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH10 extends Effet {
+public class ToadHunt extends Effet {
 	
-	public EffetH10() {
+	public ToadHunt() {
 		super();
 		this.explication = "Révelez votre identité. Si vous êtes un villageois, vous choisissez qui joue. Si vous êtes une sorcière, le joueur à votre gauche joue.";
 	}

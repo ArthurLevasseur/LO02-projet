@@ -8,9 +8,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH8 extends Effet {
+public class CauldronHunt extends Effet {
 	
-	public EffetH8() {
+	public CauldronHunt() {
 		super();
 		this.explication = "Vous révélez votre identité.\n	- Si vous êtes une sorcière, le joueur à votre gauche prend le prochain tour.\n	- Si vous êtes un villageois, vous choisissez le prochain joueur.";
 	}

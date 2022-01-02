@@ -5,16 +5,16 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.JoueurVirtuel;
 
-public class EffetW8 extends Effet {
+public class DuckingStoolWitch extends Effet {
 	
-	public EffetW8() {
+	public DuckingStoolWitch() {
 		super();
-		this.explication = "Le joueur qui vous a accusé défausse une carte aléatoire de sa main.\nVous prenez le prochain tour.";
+		this.explication = "Vous choisissez le prochain joueur.";
 	}
-	
+
 	public void appelVue() {
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getVueActuelle().chaudronWitch(this);
+		instanceJeu.getVueActuelle().choisirProchainJoueurWitch(this);
 	}
 	
 	public Joueur executionEffet() {
@@ -28,14 +28,9 @@ public class EffetW8 extends Effet {
 			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueurWitch());
 		}
 		else {
-			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le joueur à défausser.");
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
 		}
-		if (choix.getCarteEnMain().isEmpty()) {
-			System.out.println("Il n'a pas de cartes en main.");
-		}
-		else {
-			instanceDefausse.defausserUneCarte(choix.seFairePrendreCarteRumeur((int)(Math.random()*choix.getCarteEnMain().size())));
-		}
-		return instanceJeu.getAccused();
+		
+		return choix;
 	}
 }

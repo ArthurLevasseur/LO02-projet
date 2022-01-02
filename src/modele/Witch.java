@@ -1,11 +1,11 @@
 package modele;
-import effets.EffetW1;
-import effets.EffetW2;
-import effets.EffetW3;
-import effets.EffetW4;
-import effets.EffetW7;
-import effets.EffetW8;
-import effets.EffetW9;
+import effets.AngryMobWitch;
+import effets.TheInquisitionWitch;
+import effets.PointedHatWitch;
+import effets.HookedNoseWitch;
+import effets.DuckingStoolWitch;
+import effets.CauldronWitch;
+import effets.EvilEyeWitch;
 
 public class Witch{
 
@@ -13,40 +13,40 @@ public class Witch{
 	
 	public Witch(int numCarte) {
 		if (numCarte == 1) {
-			this.effetAssocie = new EffetW1();
+			this.effetAssocie = new AngryMobWitch();
 		}
 		else if (numCarte == 2) {
-			this.effetAssocie = new EffetW2();
+			this.effetAssocie = new TheInquisitionWitch();
 		}
 		else if (numCarte == 3) {
-			this.effetAssocie = new EffetW3();
+			this.effetAssocie = new PointedHatWitch();
 		}
 		else if (numCarte == 4) {
-			this.effetAssocie = new EffetW4();
+			this.effetAssocie = new HookedNoseWitch();
 		}
 		else if (numCarte == 5) {
-			this.effetAssocie = new EffetW1();
+			this.effetAssocie = new AngryMobWitch();
 		}
 		else if (numCarte == 6) {
-			this.effetAssocie = new EffetW1();
+			this.effetAssocie = new AngryMobWitch();
 		}
 		else if (numCarte == 7) {
-			this.effetAssocie = new EffetW7();
+			this.effetAssocie = new DuckingStoolWitch();
 		}
 		else if (numCarte == 8) {
-			this.effetAssocie = new EffetW8();
+			this.effetAssocie = new CauldronWitch();
 		}
 		else if (numCarte == 9) {
-			this.effetAssocie = new EffetW9();
+			this.effetAssocie = new EvilEyeWitch();
 		}
 		else if (numCarte == 10) {
-			this.effetAssocie = new EffetW1();
+			this.effetAssocie = new AngryMobWitch();
 		}
 		else if (numCarte == 11) {
-			this.effetAssocie = new EffetW1();
+			this.effetAssocie = new AngryMobWitch();
 		}
 		else if (numCarte == 12) {
-			this.effetAssocie = new EffetW1();
+			this.effetAssocie = new AngryMobWitch();
 		}
 	}
 	

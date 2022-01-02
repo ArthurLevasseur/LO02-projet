@@ -5,9 +5,9 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
-public class EffetH11 extends Effet {
+public class BlackCatHunt extends Effet {
 	
-	public EffetH11() {
+	public BlackCatHunt() {
 		super();
 		this.explication = "Vous ajoutez une des cartes défaussées à votre main, et vous vous défaussez de cette carte.\nVous prenez le prochain tour";
 	}

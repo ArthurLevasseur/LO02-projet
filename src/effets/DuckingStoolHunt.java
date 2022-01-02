@@ -7,9 +7,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH7 extends Effet {
+public class DuckingStoolHunt extends Effet {
 	
-	public EffetH7() {
+	public DuckingStoolHunt() {
 		super();
 		this.explication = "Vous choisissez un joueur, il doit révéler son identité ou défausser une de ses cartes en main.\n	- Si c'est une sorcière, vous gagnez 1 points et prenez le prochain tour.\\n	- Si c'est un villageois, vous perdez 1 points et il prend le prochain tour.\\n	- S'il décide de défausser une carte, il prend le prochain tour.";
 	}

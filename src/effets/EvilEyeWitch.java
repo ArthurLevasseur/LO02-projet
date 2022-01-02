@@ -5,9 +5,9 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.JoueurVirtuel;
 
-public class EffetW9 extends Effet {
+public class EvilEyeWitch extends Effet {
 	
-	public EffetW9() {
+	public EvilEyeWitch() {
 		super();
 		this.explication = "Vous choisissez le prochain joueur.\nDurant son tour, le joueur ciblé devra accuser un joueur autre que vous, si possible.";
 	}

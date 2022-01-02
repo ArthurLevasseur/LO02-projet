@@ -265,6 +265,10 @@ public abstract class Joueur {
 	public abstract void repondreAccusation();
 
 	public abstract void jouerTour();
+
+	public abstract void recapIA();
+
+	public abstract void recapIAAccused();
 	
 	
 	

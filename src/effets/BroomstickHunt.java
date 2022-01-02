@@ -6,9 +6,9 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
-public class EffetH5 extends Effet {
+public class BroomstickHunt extends Effet {
 	
-	public EffetH5() {
+	public BroomstickHunt() {
 		super();
 		this.explication = "Vous choisissez le prochain joueur.";
 	}
