@@ -552,7 +552,31 @@ public class VueConsole implements Vue {
 		
 	}
 	
-public void choisirProchainJoueur(Effet effet) {
+	public void pointedHat(Effet effet, boolean isHunt) {
+		int choix = -1;
+		if (isHunt) {
+			Jeu instanceJeu = Jeu.getInstance();
+			Defausse instanceDefausse = Defausse.getInstance();
+
+			if (instanceJeu.getAccused().isIA()) {
+				System.out.println(instanceJeu.getAccused().getPseudo() + " choisit une carte à reprendre dans sa main.");
+				choix = (int)(Math.random() * instanceJeu.getAccused().getCarteRevelees().size());
+			}
+			else {
+				instanceJeu.getAccused().getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteRevelees().indexOf(card) + " pour prendre " + card));
+				Scanner saisieUtilisateur = new Scanner(System.in);
+				choix = saisieUtilisateur.nextInt();			
+			}
+		}
+		
+		effet.executionEffet(choix);
+	}
+	
+	public void prendreProchainTour(Effet effet) {
+		effet.executionEffet();
+	}
+	
+	public void choisirProchainJoueur(Effet effet) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		Joueur choix;
@@ -565,6 +589,46 @@ public void choisirProchainJoueur(Effet effet) {
 		}
 		effet.executionEffet(choix);
 	}
+	
+	public void choisirProchainJoueurWitch(Effet effet) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Joueur choix;
+		if (instanceJeu.getAccused().isIA()) {
+			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit un adversaire.");
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueur());
+		}
+		else {
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
+		}
+		effet.executionEffet(choix);
+	}
+	
+	
+public void evilEye(Effet effet, boolean isHunt) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Joueur choix;
+		if (instanceJeu.getAccused().isIA()) {
+			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit un adversaire.");
+			if (isHunt) {
+				choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+			}
+			else {
+				choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueur());
+			}
+		}
+		else {
+			if (isHunt) {
+				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+			}
+			else {
+				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
+			}
+		}
+		effet.executionEffet(choix);
+	}
+	
 	
 	public void askOpponentSteal(Effet effet) {
 		
@@ -632,6 +696,40 @@ public void choisirProchainJoueur(Effet effet) {
 					choix = saisieUtilisateur.nextInt();
 				}
 			}
+		}
+		
+		effet.executionEffet(choix);
+	}
+	
+	public void blackCatHunt(Effet effet) {
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		int choix = -1;
+
+		if (instanceDefausse.getContenu() == null) {
+			System.out.println("Le tas de défausse est vide !");
+		}
+		else {
+			if (instanceJeu.getEnTour().isIA() == false) {
+				System.out.println("Voici les cartes rumeurs de la défausse, choisissez la carte que vous voulez prendre :");
+				instanceDefausse.getContenu().forEach(card -> System.out.println("TAPEZ "+instanceDefausse.getContenu().indexOf(card) + " pour jouer " + card));
+				choix = saisieUtilisateur.nextInt();
+				while (choix<0 || choix>instanceDefausse.getContenu().size()) {
+					System.out.println("Choix invalide !");
+					choix = saisieUtilisateur.nextInt();
+				}
+				instanceJeu.getEnTour().prendreCarteRumeur(instanceDefausse.seFairePrendreCarteRumeur(choix));
+			}
+			
+			else {
+				System.out.println(instanceJeu.getEnTour().getPseudo() + "recupère une carte de la défausse.");
+				
+				choix = (int) (Math.random()*instanceDefausse.getContenu().size());
+				instanceJeu.getEnTour().prendreCarteRumeur(instanceDefausse.seFairePrendreCarteRumeur(choix));
+			
+			}
+
 		}
 		
 		effet.executionEffet(choix);

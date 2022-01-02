@@ -17,22 +17,12 @@ public class EvilEyeWitch extends Effet {
 		instanceJeu.getVueActuelle().evilEye(this, false);
 	}
 
-	public Joueur executionEffet() {
+	public void executionEffet(Joueur selection) {
 
 		Jeu instanceJeu = Jeu.getInstance();
-		Defausse instanceDefausse = Defausse.getInstance();
-		Joueur choix;
+		selection.setMustAccuse(true);
+		instanceJeu.getEnTour().setAccusable(false);
+		instanceJeu.setEnTour(selection);
 		
-		if (instanceJeu.getAccused().isIA()) {
-			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit le prochain joueur.");
-			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueurWitch());
-		}
-		else {
-			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
-		}
-		
-		choix.setMustAccuse(true);
-		instanceJeu.getAccused().setAccusable(false);
-		return choix;
 	}
 }

@@ -53,9 +53,11 @@ public interface Vue {
 	public void repondreAccusation(Joueur j);
 	public void choisirIdentite(Joueur j);
 	public void demarrerRound();
+	public void jouerHunt();
 	public void jouerHunt(CarteRumeur choixCarte); //à supprimer peut-être plus tard ?
 	public void choixAccuse();
 	public void choisirHunt();
+	public void choisirHunt(Joueur j);
 	public void jouerWitch();
 	public void accuser();
 	public void reveler();

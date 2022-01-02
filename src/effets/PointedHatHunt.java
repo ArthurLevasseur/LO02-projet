@@ -22,7 +22,7 @@ public class PointedHatHunt extends Effet {
 		Jeu.getInstance().getVueActuelle().pointedHat(this, true);
 	}
 	
-	/*public void eeeeeeeexecutionEffet() {
+	/*public void executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;

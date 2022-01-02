@@ -17,20 +17,10 @@ public class DuckingStoolWitch extends Effet {
 		instanceJeu.getVueActuelle().choisirProchainJoueurWitch(this);
 	}
 	
-	public Joueur executionEffet() {
+	public void executionEffet(Joueur selection) {
 
 		Jeu instanceJeu = Jeu.getInstance();
-		Defausse instanceDefausse = Defausse.getInstance();
-		Joueur choix;
+		instanceJeu.setEnTour(selection);
 		
-		if (instanceJeu.getAccused().isIA()) {
-			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit le prochain joueur.");
-			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueurWitch());
-		}
-		else {
-			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");
-		}
-		
-		return choix;
 	}
 }
