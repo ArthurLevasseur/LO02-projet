@@ -177,7 +177,7 @@ public class Jeu extends Observable{
 			}
 		
 		}*/
-		//Collections.shuffle(this.ensembleCartes);
+		Collections.shuffle(this.ensembleCartes);
 		
 		System.out.println("Distribution des cartes Rumeurs...\n");
 		if (this.nombreDefausse == 2) {
@@ -255,7 +255,7 @@ public class Jeu extends Observable{
 		for (Joueur j : ensembleJoueurs) {
 			if (j.getPoints() > maxPoints) {
 				maxPoints = j.getPoints();
-			}	
+			}
 		}
 		
 		// déterminer les joueurs qui ont le max de points tout en étant supérieurs à 5 = le ou les gagnants

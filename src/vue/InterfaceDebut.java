@@ -91,7 +91,7 @@ public class InterfaceDebut implements Vue {
 		frame.getContentPane().add(debutJeu);
 		debutJeu.setVisible(true);
 		
-		lblBienvenu = new JLabel("Bienvenu dans Which Hunt !");
+		lblBienvenu = new JLabel("Bienvenue dans Witch Hunt !");
 		lblBienvenu.setBounds(0, 35, 1266, 49);
 		lblBienvenu.setFont(new Font("Tempus Sans ITC", Font.BOLD, 30));
 		lblBienvenu.setHorizontalAlignment(SwingConstants.CENTER);
