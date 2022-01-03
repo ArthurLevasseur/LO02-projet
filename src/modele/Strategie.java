@@ -24,4 +24,6 @@ public abstract class Strategie {
 	
 	protected abstract void recapIAAccused();
 	
+	protected abstract void reponseDuckingStool(int joueurCible);
+	
 }

@@ -270,6 +270,6 @@ public abstract class Joueur {
 
 	public abstract void recapIAAccused();
 	
-	
+	public abstract void reponseDuckingStool(int joueurCible);
 	
 }

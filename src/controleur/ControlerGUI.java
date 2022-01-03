@@ -391,7 +391,12 @@ public class ControlerGUI extends Observable{
 	public void setInputDuckingStoolCible(JButton btnJoueur, int Joueur) {
 		btnJoueur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Jeu.getInstance().getVueActuelle().duckingStoolChoixCible(Joueur);
+				if (Jeu.getInstance().getJoueur(Joueur).isIA()) {
+					Jeu.getInstance().getJoueur(Joueur).reponseDuckingStool(Joueur);
+				}
+				else {
+					Jeu.getInstance().getVueActuelle().duckingStoolChoixCible(Joueur);
+				}
 			}
 		});
 		
