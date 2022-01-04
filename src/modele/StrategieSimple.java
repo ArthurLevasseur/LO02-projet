@@ -59,11 +59,14 @@ public class StrategieSimple extends Strategie {
 				possibilites.add(i-1);
 			}
 		}
-		Collections.shuffle(possibilites);
-		if (possibilites == null) {
+		
+		if (possibilites.size() == 0) {
 			return -1;
 		}
-		return possibilites.get(0);
+		else {
+			Collections.shuffle(possibilites);
+			return possibilites.get(0);
+		}
 	}
 	
 	
@@ -79,12 +82,15 @@ public class StrategieSimple extends Strategie {
 					possibilites.add(i);
 				}
 			}
-			if (possibilites == null) {
+			if (possibilites.size() == 0) {
 				return -1;
 			}
-			Collections.shuffle(possibilites);
-			//System.out.println("Il décide de choisir le joueur " + instance.getJoueur(possibilites.get(0)).getPseudo());
-			return possibilites.get(0);
+			else {
+				Collections.shuffle(possibilites);
+				//System.out.println("Il décide de choisir le joueur " + instance.getJoueur(possibilites.get(0)).getPseudo());
+				return possibilites.get(0);
+			}
+			
 	}
 	
 	public int choisirAutreJoueur() {

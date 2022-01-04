@@ -67,7 +67,7 @@ public class InterfaceFinRound implements Vue{
 			lblDescriptif.setHorizontalAlignment(SwingConstants.CENTER);
 			lblDescriptif.setForeground(SystemColor.controlDkShadow);
 			lblDescriptif.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
-			lblDescriptif.setBounds(0, 200, 1266, 21);
+			lblDescriptif.setBounds(0, 350, 1266, 21);
 			frame.getContentPane().add(lblDescriptif);
 		}
 		else {
@@ -75,14 +75,14 @@ public class InterfaceFinRound implements Vue{
 			lblDescriptif.setHorizontalAlignment(SwingConstants.CENTER);
 			lblDescriptif.setForeground(SystemColor.controlDkShadow);
 			lblDescriptif.setFont(new Font("Tempus Sans ITC", Font.BOLD, 20));
-			lblDescriptif.setBounds(0, 200, 1266, 21);
+			lblDescriptif.setBounds(0, 350, 1266, 21);
 			frame.getContentPane().add(lblDescriptif);
 		}
 		
 		JButton btnNextRound = new JButton("Round suivant");
 		btnNextRound.setFont(new Font("Tempus Sans ITC", Font.BOLD, 25));
 		btnNextRound.setBackground(Color.WHITE);
-		btnNextRound.setBounds(476, 356, 323, 80);
+		btnNextRound.setBounds(476, 650, 323, 80);
 		frame.getContentPane().add(btnNextRound);
 		
 		
