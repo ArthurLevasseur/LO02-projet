@@ -24,12 +24,10 @@ public class CauldronHunt extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
-		Joueur next = null;
 		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		
 		instanceJeu.getEnTour().getIdentiteAssociee().ReveleIdentite();
 		if (instanceJeu.getEnTour().getIdentiteAssociee().getIsWitch() == true) {
-			System.out.println("Vous etiez une sorcière. Le prochain joueur sera celui à votre gauche.");
 			int i = 0;
 			ArrayList<Joueur> listeJoueurs = new ArrayList<>();
 			for (i=0; i<instanceJeu.getEnsembleJoueurs().size(); i++) {
@@ -38,33 +36,30 @@ public class CauldronHunt extends Effet {
 				}
 				if (instanceJeu.getJoueur(i) == instanceJeu.getEnTour()) {
 					if (i == instanceJeu.getEnsembleJoueurs().size()-1) {
-						next = instanceJeu.getJoueur(0);
+						instanceJeu.setEnTour(instanceJeu.getJoueur(0));
 					}
-					else {next = instanceJeu.getJoueur(i+1);}
+					else {instanceJeu.setEnTour(instanceJeu.getJoueur(i+1));}
 				}
 			}
 			for (i=0; i<listeJoueurs.size(); i++) {
 				if (listeJoueurs.get(i) == instanceJeu.getEnTour()) {
 					if (i == listeJoueurs.size()-1) {
-						next = listeJoueurs.get(0);
+						instanceJeu.setEnTour(listeJoueurs.get(0));
 					}
-					else {next = listeJoueurs.get(i+1);}
+					else {instanceJeu.setEnTour(listeJoueurs.get(i+1));}
 				}
 			}
 		}
 		else {
-			System.out.println("Vous etiez un villageois.");
 			if (instanceJeu.getEnTour().isIA() == false) {
-				next = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+				instanceJeu.setEnTour(instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur."));
 			}
 			else {
-				int choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse();
-				next = instanceJeu.getJoueur(choix);
+				int choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur();
+				instanceJeu.setEnTour(instanceJeu.getJoueur(choix));
 			}
+			
 		}
-		
-		instanceJeu.setEnTour(next);
-
 		
 	}
 }

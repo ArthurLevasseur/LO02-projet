@@ -20,7 +20,7 @@ public class ToadHunt extends Effet {
 		instanceJeu.getVueActuelle().chaudronHunt(this);
 	}
 	
-	public Joueur executionEffet() {
+	public void executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
@@ -28,7 +28,6 @@ public class ToadHunt extends Effet {
 		
 		instanceJeu.getEnTour().getIdentiteAssociee().ReveleIdentite();
 		if (instanceJeu.getEnTour().getIdentiteAssociee().getIsWitch() == true) {
-			System.out.println("Vous etiez une sorcière. Le prochain joueur sera celui à votre gauche.");
 			int i = 0;
 			ArrayList<Joueur> listeJoueurs = new ArrayList<>();
 			for (i=0; i<instanceJeu.getEnsembleJoueurs().size(); i++) {
@@ -37,33 +36,30 @@ public class ToadHunt extends Effet {
 				}
 				if (instanceJeu.getJoueur(i) == instanceJeu.getEnTour()) {
 					if (i == instanceJeu.getEnsembleJoueurs().size()-1) {
-						return instanceJeu.getJoueur(0);
+						instanceJeu.setEnTour(instanceJeu.getJoueur(0));
 					}
-					else {return instanceJeu.getJoueur(i+1);}
+					else {instanceJeu.setEnTour(instanceJeu.getJoueur(i+1));}
 				}
 			}
 			for (i=0; i<listeJoueurs.size(); i++) {
 				if (listeJoueurs.get(i) == instanceJeu.getEnTour()) {
 					if (i == listeJoueurs.size()-1) {
-						return listeJoueurs.get(0);
+						instanceJeu.setEnTour(listeJoueurs.get(0));
 					}
-					else {return listeJoueurs.get(i+1);}
+					else {instanceJeu.setEnTour(listeJoueurs.get(i+1));}
 				}
 			}
 		}
 		else {
-			System.out.println("Vous etiez un villageois.");
 			if (instanceJeu.getEnTour().isIA() == false) {
-				return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+				instanceJeu.setEnTour(instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur."));
 			}
 			else {
 				int choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur();
-				return instanceJeu.getJoueur(choix);
+				instanceJeu.setEnTour(instanceJeu.getJoueur(choix));
 			}
 			
 		}
-		
-		return null;
 		
 	}
 }

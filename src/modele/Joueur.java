@@ -80,7 +80,7 @@ public abstract class Joueur {
 		if (this.isIA() == false) {
 			instanceJeu.getVueActuelle().repondreAccusation(this);
 		}
-		/*else {
+		else {
 			int choix;
 			if (this.carteEnMain.isEmpty() || (this.carteEnMain.size() == 1 && this.carteEnMain.get(0).getNumCarte() == 3 && this.carteRevelees.isEmpty())) {
 				choix = 1;
@@ -95,7 +95,7 @@ public abstract class Joueur {
 			else {
 				this.revelerIdentite();
 			}
-		}*/
+		}
 		
 
 

@@ -2,6 +2,7 @@ package vue;
 
 import modele.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import controleur.*;
@@ -733,6 +734,49 @@ public void evilEye(Effet effet, boolean isHunt) {
 		}
 		
 		effet.executionEffet(choix);
+	}
+	
+	public void cauldronHunt(Effet effet) {
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		
+		if (instanceJeu.getEnTour().getIdentiteAssociee().getIsWitch() == true) {
+			System.out.println("Vous etiez une sorcière. Le prochain joueur sera celui à votre gauche.");
+		}
+		else {
+			System.out.println("Vous etiez un villageois.");
+			
+		}
+		
+		effet.executionEffet();
+	}
+	
+	public void hookedNoseWitch(Effet effet) {
+		
+		int choix = -1;
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+
+		if (instanceJeu.getEnTour().getCarteEnMain().isEmpty()) {
+			System.out.println("Vous ne pouvez pas lui voler une carte, sa main est vide");
+		}
+		else {
+			if (instanceJeu.getAccused().isIA()) {
+				System.out.println(instanceJeu.getAccused().getPseudo() + " choisit une carte à reprendre dans sa main.");
+				choix = (int)(Math.random() * instanceJeu.getEnTour().getCarteEnMain().size());
+			}
+			else {
+				instanceJeu.getEnTour().getCarteEnMain().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().getCarteEnMain().indexOf(card) + " pour prendre " + card));
+				SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+				choix = saisieUtilisateur.nextInt();
+			}
+			
+		}
+		
+		effet.executionEffet(choix);
+		
 	}
 	
 }
