@@ -8,5 +8,6 @@ abstract public class Effet {
 	public abstract void executionEffet();
 	public abstract void executionEffet(Joueur selection);
 	public abstract void executionEffet(int choix);
+	public abstract void executionEffet(Joueur selection, int choix);
 	
 }

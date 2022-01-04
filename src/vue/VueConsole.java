@@ -605,6 +605,10 @@ public class VueConsole implements Vue {
 		effet.executionEffet(choix);
 	}
 	
+	public void prendreProchainTour(Effet effet) {
+		effet.executionEffet();
+	}
+	
 	
 public void evilEye(Effet effet, boolean isHunt) {
 		
@@ -777,6 +781,72 @@ public void evilEye(Effet effet, boolean isHunt) {
 		
 		effet.executionEffet(choix);
 		
+	}
+	
+	public void cauldronWitch(Effet effet) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		System.out.println(instanceJeu.getEnTour()+" doit défausser une carte au hasard. C'est au tour de "+instanceJeu.getAccused());
+		
+		effet.executionEffet();
+		
+	}
+	
+	public void cauldronWitch2(Effet effet, CarteRumeur carte) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		if (carte != null) {
+			System.out.println("Vous avez défaussé : " + carte);
+		}
+		else {
+			System.out.println("Rien n'a été défaussé.");
+		}
+	}
+	
+	public void petNewtHunt(Effet effet) {
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		Joueur choix;
+
+		if (instanceJeu.getEnTour().isIA()) {
+			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
+		}
+		else {
+			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous voler une carte rumeur révélée ?");
+		}
+		
+		effet.executionEffet(choix);
+	}
+	
+	public void petNewtHunt2(Effet effet, Joueur selection) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		Joueur choix;
+		int choixCarte = -1;
+		
+		if (instanceJeu.getEnTour().isIA() == false) {
+			System.out.println("Voici ses cartes rumeurs révélées, choisissez la carte que vous voulez reprendre :");
+			selection.getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+selection.getCarteRevelees().indexOf(card) + " pour jouer " + card));
+			choixCarte = saisieUtilisateur.nextInt();
+			while (choixCarte<0 || choixCarte>selection.getCarteRevelees().size()) {
+				System.out.println("Choix invalide !");
+				choixCarte = saisieUtilisateur.nextInt();
+			}
+		}
+		else {
+			choixCarte = (int) (Math.random() * selection.getCarteRevelees().size());
+		}
+		
+		effet.executionEffet(selection, choixCarte);
+	}
+	
+	public void duckingStoolHunt(Effet effet) {
+		effet.executionEffet();
 	}
 	
 }

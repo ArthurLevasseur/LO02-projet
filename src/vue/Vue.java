@@ -80,8 +80,10 @@ public interface Vue {
 	public void discard(Effet effet);
 	public void chaudronHunt(Effet effet);
 	public void chaudronWitch(Effet effet);
+	public void chaudronWitch2(Effet effet, CarteRumeur carte);
 	public void blackCatHunt(Effet effet);
 	public void petNewtHunt(Effet effet);
+	public void petNewtHunt2(Effet effet, Joueur selection);
 	public void duckingStoolHunt(Effet effet);
 	public void evilEye(Effet effet, boolean isHunt);
 	public void angryMobHunt(Effet effet);

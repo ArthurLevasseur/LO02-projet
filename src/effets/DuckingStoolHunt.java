@@ -19,7 +19,7 @@ public class DuckingStoolHunt extends Effet {
 		instanceJeu.getVueActuelle().duckingStoolHunt(this);
 	}
 	
-	public Joueur executionEffet() {
+	public void executionEffet() {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
@@ -52,11 +52,11 @@ public class DuckingStoolHunt extends Effet {
 					}
 					if (compteur == 1) {
 						System.out.println("Aucun joueur n'est ciblable.");
-						return instanceJeu.getJoueur(idAutreJoueur);
+						instanceJeu.setEnTour(instanceJeu.getJoueur(idAutreJoueur));
 					}
 				}
 			}
-			return selection.accusedBucher();
+			instanceJeu.setEnTour(selection.accusedBucher());
 			
 		}
 		else {
@@ -88,7 +88,7 @@ public class DuckingStoolHunt extends Effet {
 			}
 			
 			
-			return selection.accusedBucher();
+			instanceJeu.setEnTour(selection.accusedBucher());
 		}
 	}
 }

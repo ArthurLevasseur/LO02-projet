@@ -1,9 +1,6 @@
 package effets;
-import modele.Defausse;
-import modele.Effet;
-import modele.Jeu;
-import modele.Joueur;
-import modele.JoueurVirtuel;
+import modele.*;
+
 
 public class CauldronWitch extends Effet {
 	
@@ -17,25 +14,21 @@ public class CauldronWitch extends Effet {
 		instanceJeu.getVueActuelle().chaudronWitch(this);
 	}
 	
-	public Joueur executionEffet() {
+	public void executionEffet() {
 
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
-		Joueur choix;
+		CarteRumeur carteADefausser;
 		
-		if (instanceJeu.getAccused().isIA()) {
-			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit le prochain joueur.");
-			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueurWitch());
+		if (instanceJeu.getEnTour().getCarteEnMain().isEmpty()) {
+			carteADefausser = null;
+			instanceJeu.setEnTour(instanceJeu.getAccused());
 		}
 		else {
-			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le joueur à défausser.");
+			carteADefausser = instanceJeu.getEnTour().seFairePrendreCarteRumeur((int)(Math.random()*instanceJeu.getEnTour().getCarteEnMain().size()));
+			instanceDefausse.defausserUneCarte(carteADefausser);
 		}
-		if (choix.getCarteEnMain().isEmpty()) {
-			System.out.println("Il n'a pas de cartes en main.");
-		}
-		else {
-			instanceDefausse.defausserUneCarte(choix.seFairePrendreCarteRumeur((int)(Math.random()*choix.getCarteEnMain().size())));
-		}
-		return instanceJeu.getAccused();
+		instanceJeu.setEnTour(instanceJeu.getAccused());
+		instanceJeu.getVueActuelle().chaudronWitch2(this, carteADefausser);
 	}
 }

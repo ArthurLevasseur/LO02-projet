@@ -18,53 +18,42 @@ public class PetNewtHunt extends Effet {
 		instanceJeu.getVueActuelle().petNewtHunt(this);
 	}
 	
-	public Joueur executionEffet() {
+	public void executionEffet(Joueur selection) {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
 		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
 		Joueur choix;
 
-		if (instanceJeu.getEnTour().isIA()) {
-			choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
-		}
-		else {
-			choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"De quel joueur souhaitez vous voler une carte rumeur révélée ?");
-		}
 		
-		if (choix.getCarteRevelees().isEmpty()) {
+		if (selection.getCarteRevelees().isEmpty()) {
 			System.out.println("Son tas de cartes rumeurs révélées est vide, dommage !");
-			if (instanceJeu.getEnTour().isIA() == false) {
-				return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
-			}
-			else {
-				int choixJoueur = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur();
-				return instanceJeu.getJoueur(choixJoueur);
-			}
-			
-		}
-		else {
-			if (instanceJeu.getEnTour().isIA() == false) {
-				System.out.println("Voici ses cartes rumeurs révélées, choisissez la carte que vous voulez reprendre :");
-				choix.getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+choix.getCarteRevelees().indexOf(card) + " pour jouer " + card));
-				int choixCarte = saisieUtilisateur.nextInt();
-				while (choixCarte<0 || choixCarte>choix.getCarteRevelees().size()) {
-					System.out.println("Choix invalide !");
-					choixCarte = saisieUtilisateur.nextInt();
-				}
-				instanceJeu.getEnTour().prendreCarteRumeur(choix.getCarteRevelees().get(choixCarte));
-				
-				return instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
-			}
-			else {
-				int choixCarte = (int) (Math.random() * choix.getCarteRevelees().size());
-				instanceJeu.getEnTour().prendreCarteRumeur(choix.getCarteRevelees().get(choixCarte));
-				return instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
-			}
-			
+			instanceJeu.getVueActuelle().petNewtHunt(this);
 		}
 		
+		else {
+			instanceJeu.getVueActuelle().petNewtHunt2(this, selection);
+		}
 		
 
+	}
+	
+	public void executionEffet(Joueur selection, int choix) {
+		
+		Jeu instanceJeu = Jeu.getInstance();
+		Defausse instanceDefausse = Defausse.getInstance();
+		boolean visable = true;
+		SaisirInt saisieUtilisateur = SaisirInt.getInstance();
+		
+		if (instanceJeu.getEnTour().isIA() == false) {
+			
+			instanceJeu.getEnTour().prendreCarteRumeur(selection.getCarteRevelees().get(choix));
+			
+			instanceJeu.setEnTour(instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur."));
+		}
+		else {
+			instanceJeu.getEnTour().prendreCarteRumeur(selection.getCarteRevelees().get(choix));
+			instanceJeu.setEnTour(instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur()));
+		}
 	}
 }

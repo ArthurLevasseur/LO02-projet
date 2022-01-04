@@ -177,7 +177,7 @@ public class Jeu extends Observable{
 			}
 		
 		}*/
-		Collections.shuffle(this.ensembleCartes);
+		//Collections.shuffle(this.ensembleCartes);
 		
 		System.out.println("Distribution des cartes Rumeurs...\n");
 		if (this.nombreDefausse == 2) {
