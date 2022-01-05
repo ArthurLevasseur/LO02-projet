@@ -1,4 +1,4 @@
-	package vue;
+package vue;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;

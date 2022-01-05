@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import controleur.ControleurInter;
 
+
+
 public abstract class Joueur {
 	
 	private int points = 0;

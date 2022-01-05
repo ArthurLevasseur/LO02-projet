@@ -10,47 +10,152 @@ import java.util.concurrent.TimeUnit;
 import controleur.*;
 import vue.*;
 
+
+/** 
+ * La classe principale du jeu. Elle dirige l'initialisation du jeu et son déroulement. Le déroulement des rounds est prévu par la classe {@link #round}
+ * Hérite d'observable pour la communication avec l'interface graphique.
+ *
+ */
+
 public class Jeu extends Observable{
 	
 	
+	/**
+	 * Attribut contenant une référence vers la vue actuelle : VueConsole si le jeu est démarré en mode console, ou une autre vue si le jeu est démarré en interface graphique
+	 */
+	
 	private static Vue vueActuelle;
+	
+	/** 
+	 * Nombre de joueurs peu importe leur types
+	 */
+	
 	private int nombreJoueurs;
+	
+	/**
+	 * Nombre de joueurs physiques
+	 */
+	
 	private int nombrePhy;
+	
+	/** 
+	 * Nombre de joueurs virtuels
+	 */
+	
 	private int nombreIA;
+	
+	/**
+	 * Nombre de cartes à défausser. Utilisé pour l'initialisation du jeu.
+	 */
+	
 	private int nombreDefausse;
+	
+	/**
+	 * Attribut contenant l'instance du jeu (patron de conception singleton).
+	 */
+	
 	private static Jeu Instance;
+	
+	/**
+	 * Attribut contenant une référence vers le joueur en train de jouer.
+	 */
+	
 	private Joueur enTour;
+	
+	/**
+	 * Attribut contenant une référence vers le joueur en train d'être accusé.
+	 */
+	
 	private Joueur accused;
-	//private CarteRumeur[] ensembleCartes;
+	
+	/**
+	 * Attribut contenant une collection de l'ensemble des cartes rumeurs du jeu.
+	 */
+	
 	private ArrayList<CarteRumeur> ensembleCartes = new ArrayList<CarteRumeur>();
+	
+	/**
+	 * Collection contenant les joueurs de la partie.
+	 */
+	
 	private ArrayList<Joueur> ensembleJoueurs = new ArrayList<Joueur>();
+	
+	/**
+	 * Référence à la défausse
+	 * @see Defausse
+	 */
+	
 	private Defausse tasDefausse;
+	
+	/**
+	 * Collection contenant le ou les gagnants. Sous forme de collection pour gérer les égalités.
+	 */
+	
 	private ArrayList<Joueur> gagnants = new ArrayList<Joueur>();
+	
+	/**
+	 * Référence au contrôleur de l'interface graphique
+	 */
+	
 	private ControlerGUI controler;
 	private Round round;
 	private int compteur;
 	
+	/**
+	 * Référence à un contrôleur permettant de séparer certains affichages consoles et GUI présents dans certaines méthodes du modèle
+	 */
+	
 	private ControleurInter inter = ControleurInter.getInstance();
+	
+	/**
+	 * Getter retournant la vue actuelle.
+	 * @return La vue actuelle
+	 */
 	
 	public static Vue getVueActuelle() {
 		return Jeu.vueActuelle;
 	}
 	
+	/**
+	 * Setter permettant de modifier la vue actuelle.
+	 * @param vue La vue à choisir.
+	 */
+	
 	public static void setVueActuelle(Vue vue) {
 		Jeu.vueActuelle = vue;
 	}
+	
+	/**
+	 * Getter retournant le nombre de joueurs
+	 * @return Le nombre de joueurs
+	 */
 	
 	public int getNombreJoueurs() {
 		return this.nombreJoueurs;
 	}
 	
+	/**
+	 * Getter retournant le joueur ayant l'id choisi
+	 * @param i L'id du joueur à retourner
+	 * @return Le joueur ayant l'id sélectionné
+	 */
+	
 	public Joueur getJoueur(int i) {
 		return this.ensembleJoueurs.get(i);
 	}
 	
+	/**
+	 * Setter permettant de désigner un gagnant
+	 * @param gagnantDuJeu Le gagnant à ajouter à la collection
+	 */
+	
 	public void setGagnants(Joueur gagnantDuJeu) {
 		this.gagnants.add(gagnantDuJeu);
 	}
+	
+	/**
+	 * 
+	 */
 	
 	public void retirerCartes() {
 		for (int i=0;i<this.ensembleJoueurs.size();i++) {
@@ -59,6 +164,13 @@ public class Jeu extends Observable{
 		}
 		this.tasDefausse.resetContenu();
 	}
+	
+	/**
+	 * Méthode permettant à un joueur de sélectionner un de ses adversaires. Un message est affiché en mode console.
+	 * @param selecteur Le joueur devant sélectionner un de ses adversaires et ne figurant donc pas parmi les choix possibles.
+	 * @param Message affiché
+	 * @return Le joueur ayant été sélectionné
+	 */
 	
 	public Joueur selectionnerAdversaire(Joueur selecteur, String Message) {
 		SaisirInt scan = SaisirInt.getInstance();
@@ -100,22 +212,45 @@ public class Jeu extends Observable{
 		
 	}
 	
+	/**
+	 * Getter du nombre de joueurs physiques
+	 * @return Le nombre de joueurs physiques
+	 */
 	
 	public int getNombrePhy() {
 		return nombrePhy;
 	}
+	
+	/**
+	 * Setter du nombre de joueurs physiques
+	 * @param nombrePhy Nombre de joueurs physiques
+	 */
 
 	public void setNombrePhy(int nombrePhy) {
 		this.nombrePhy = nombrePhy;
 	}
+	
+	/**
+	 * Getter du nombre de joueurs virtuels
+	 * @return Le nombre de joueurs physiques
+	 */
 
 	public int getNombreIA() {
 		return nombreIA;
 	}
+	
+	/**
+	 * Setter du nombre de joueurs virtuels
+	 * @param nombrePhy Nombre de joueurs physiques
+	 */
 
 	public void setNombreIA(int nombreIA) {
 		this.nombreIA = nombreIA;
 	}
+	
+	/**
+	 * Initialise le jeu. Instancie les {@link Joueurs}, la {@link Defausse} et les  {@link CarteRumeur}.
+	 */
 	
 	public void initGame() {
 		
@@ -143,7 +278,7 @@ public class Jeu extends Observable{
 		this.inter.entrerPseudo();
 	}
 	
-	 public void setPseudo() {
+	public void setPseudo() {
 		if (this.nombrePhy != 0) {
 			InterfaceChoixPseudos interJ1 = new InterfaceChoixPseudos(this.getJoueur(0));
 		}
@@ -159,6 +294,10 @@ public class Jeu extends Observable{
 			System.out.println(this.ensembleCartes[i]);
 		}
 	}*/
+	
+	/**
+	 * Distribue les cartes rumeurs aux joueurs et place les cartes restantes dans la défausse.
+	 */
 	
 	
 	public void distributionCartesRumeurs() {
@@ -216,6 +355,8 @@ public class Jeu extends Observable{
 		*/
 		
 	}
+	
+	
 	public void implementGagnant() {
 		
 		int maxPoints = 5;
@@ -237,6 +378,12 @@ public class Jeu extends Observable{
 		
 	}
 	
+	/**
+	 * Permet de récupérer le classement d'un joueur selon ses points.
+	 * @param joueur Le joueur dont on veut connaître le classement.
+	 * @return Un entier contenant son classement.
+	 */
+	
 	public int getClassement(Joueur joueur) {
 		compteur = 1;
 		this.getEnsembleJoueurs().forEach(JoueurCompared -> {
@@ -246,6 +393,10 @@ public class Jeu extends Observable{
 		});
 		return compteur;
 	}
+	
+	/**
+	 * Détermine qui remporte la partie, départage les égalités si nécessaire.
+	 */
 	
 	public void determinerGagnant() {
 		
@@ -282,6 +433,11 @@ public class Jeu extends Observable{
 		
 	}
 	
+	/**
+	 * Met en place les rounds : distribue les cartes, construit et lance les rounds.
+	 * @see Round
+	 */
+	
 	public void orgaRounds() {
 		
 		Jeu instanceJeu = Jeu.getInstance();
@@ -315,6 +471,10 @@ public class Jeu extends Observable{
 		
 	}
 	
+	/**
+	 * Initialise le tour.
+	 */
+	
 	public void initRound() {
 		
 		Jeu instanceJeu = Jeu.getInstance();
@@ -327,7 +487,7 @@ public class Jeu extends Observable{
 		
 		if (this.getNombrePhy()>0) {
 			
-			this.setVueActuelle(new InterfaceIdentite(0));
+			this.setVueActuelle(new InterfaceIdentite(0)); // à modifier ???
 		}
 		else {
 			int premierJoueur = (int) (Math.random() * instanceJeu.nombreJoueurs);
@@ -339,6 +499,8 @@ public class Jeu extends Observable{
 			
 		
 	}
+	
+
 	
 	public void jouerTieBreaker() throws InterruptedException {
 		

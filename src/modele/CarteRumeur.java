@@ -1,15 +1,48 @@
 package modele;
 import effets.*;
 
+/**
+ * Classe représentant une carte rumeur. Les effets des cartes sont définis dans le package effets et héritent de la classe {@link Effet}. 
+ * 
+ *
+ */
+
 public class CarteRumeur {
+	
+	/**
+	 * Numéro de la carte. Utilisé pour l'instanciation et l'attribution des effets (1 à 12 pour les cartes du jeu).
+	 */
 
 	protected int numCarte;
+	
+	/**
+	 * Nom de la carte.
+	 */
+	
 	protected String nomCarte;
+	
+	/**
+	 * Description d'un effet supplémentaire de la carte, que ce soit une condition ou 
+	 */
+	
 	protected String effetSupp = "";
 	protected static int nbCarte = 0;
+	
+	/**
+	 * Référence à l'effet hunt associé.
+	 */
+	
 	protected Hunt effetHunt;
+	
+	/**
+	 * Référence à l'effet witch associé.
+	 */
+	
 	protected Witch effetWitch;
 	
+	/**
+	 * Constructeur de la classe. Selon le numéro de la carte la description est attribuée.
+	 */
 	
 	public CarteRumeur() {
 		nbCarte += 1;
@@ -58,6 +91,10 @@ public class CarteRumeur {
 		this.effetWitch = new Witch(numCarte);
 	}
 	
+	/**
+	 * Affiche la carte sous forme de chaîne de caractère.
+	 */
+	
 	public String toString() {
 		StringBuffer str = new StringBuffer();
 		str.append("Carte Rumeur : " + this.nomCarte + "(n°" + this.numCarte + ")" + "\n" + effetSupp);
@@ -66,34 +103,71 @@ public class CarteRumeur {
 		return str.toString();
 	}
 	
+	/**
+	 * Execute l'effet hunt. Appelle la fonction {@link Hunt.executerEffet} de la classe {@link Hunt}.
+	 */
+	
 	public void appliquerEffetHunt() {
 		this.effetHunt.executerEffet(this.numCarte);
 	}
 	
+	/**
+	 * Execute l'effet witch. Appelle la fonction {@link Witch.executerEffet} de la classe {@link Witch}.
+	 */
+	
 	public void appliquerEffetWitch(Joueur accused) {
 		this.effetWitch.executerEffet(this.numCarte);
 	}
+	
+	/**
+	 * Getter pour récupérer le numéro de la carte.
+	 * @return Le numéro de la carte.
+	 */
 
 	public int getNumCarte() {
 		return numCarte;
 	}
+	
+	/**
+	 * Setter pour changer le numéro de la carte.
+	 * @param numCarte Numéro de la carte à attribuer.
+	 */
 
 	public void setNumCarte(int numCarte) {
 		this.numCarte = numCarte;
 	}
+	
+	/**
+	 * Getter pour récupérer le nom de la carte.
+	 * @return Le nom de la carte.
+	 */
 
 	public String getNomCarte() {
 		return nomCarte;
 	}
+	
+	/**
+	 * Setter pour changer le nom de la carte.
+	 * @param numCarte nom de la carte à attribuer.
+	 */
 
 	public void setNomCarte(String nomCarte) {
 		this.nomCarte = nomCarte;
 	}
+	
+	/**
+	 * Retourne l'effet hunt de la carte.
+	 * @return L'effet hunt de la carte.
+	 */
 
 	public Hunt getEffetHunt() {
 		return effetHunt;
 	}
-
+	
+	/**
+	 * Retourne l'effet witch de la carte.
+	 * @return L'effet witch de la carte.
+	 */
 
 	public Witch getEffetWitch() {
 		return effetWitch;
