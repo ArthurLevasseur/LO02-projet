@@ -316,7 +316,7 @@ public class Jeu extends Observable{
 			}
 		
 		}*/
-		//Collections.shuffle(this.ensembleCartes);
+		Collections.shuffle(this.ensembleCartes);
 		
 		System.out.println("Distribution des cartes Rumeurs...\n");
 		if (this.nombreDefausse == 2) {
@@ -420,16 +420,22 @@ public class Jeu extends Observable{
 			System.out.print("Bravo ");
 			Instance.gagnants.forEach(joueur -> System.out.print(joueur.getPseudo() +", "));
 			System.out.println("vous avez gagné la partie !");
+			controleur.ControlerCLI arretDuJeu = new controleur.ControlerCLI();
+			arretDuJeu.stopJeu();
 		}
 		
 		if (Instance.gagnants.size()>1) {
 			try {
 				this.jouerTieBreaker();
+				controleur.ControlerCLI arretDuJeu = new controleur.ControlerCLI();
+				arretDuJeu.stopJeu();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
+		
 		
 	}
 	

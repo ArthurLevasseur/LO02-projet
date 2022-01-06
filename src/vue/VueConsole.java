@@ -724,15 +724,13 @@ public void evilEye(Effet effet, boolean isHunt) {
 					System.out.println("Choix invalide !");
 					choix = saisieUtilisateur.nextInt();
 				}
-				instanceJeu.getEnTour().prendreCarteRumeur(instanceDefausse.seFairePrendreCarteRumeur(choix));
 			}
 			
 			else {
 				System.out.println(instanceJeu.getEnTour().getPseudo() + "recupère une carte de la défausse.");
 				
 				choix = (int) (Math.random()*instanceDefausse.getContenu().size());
-				instanceJeu.getEnTour().prendreCarteRumeur(instanceDefausse.seFairePrendreCarteRumeur(choix));
-			
+				
 			}
 
 		}
@@ -740,7 +738,7 @@ public void evilEye(Effet effet, boolean isHunt) {
 		effet.executionEffet(choix);
 	}
 	
-	public void cauldronHunt(Effet effet) {
+	public void chaudronHunt(Effet effet) {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		boolean visable = true;
@@ -783,7 +781,7 @@ public void evilEye(Effet effet, boolean isHunt) {
 		
 	}
 	
-	public void cauldronWitch(Effet effet) {
+	public void chaudronWitch(Effet effet) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		System.out.println(instanceJeu.getEnTour()+" doit défausser une carte au hasard. C'est au tour de "+instanceJeu.getAccused());
@@ -792,7 +790,7 @@ public void evilEye(Effet effet, boolean isHunt) {
 		
 	}
 	
-	public void cauldronWitch2(Effet effet, CarteRumeur carte) {
+	public void chaudronWitch2(Effet effet, CarteRumeur carte) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		if (carte != null) {

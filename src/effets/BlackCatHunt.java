@@ -21,7 +21,11 @@ public class BlackCatHunt extends Effet {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
-		instanceJeu.getEnTour().prendreCarteRumeur(instanceDefausse.seFairePrendreCarteRumeur(choix));
+		
+		if (!instanceDefausse.getContenu().isEmpty()) {
+			instanceJeu.getEnTour().prendreCarteRumeur(instanceDefausse.seFairePrendreCarteRumeur(choix));
+		} 
+		
 		instanceJeu.setEnTour(instanceJeu.getEnTour());
 		
 	}

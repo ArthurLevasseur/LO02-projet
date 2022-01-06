@@ -28,7 +28,7 @@ public class PetNewtHunt extends Effet {
 		
 		if (selection.getCarteRevelees().isEmpty()) {
 			System.out.println("Son tas de cartes rumeurs révélées est vide, dommage !");
-			instanceJeu.getVueActuelle().petNewtHunt(this);
+			//instanceJeu.getVueActuelle().petNewtHunt(this);
 		}
 		
 		else {

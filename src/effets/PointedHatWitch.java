@@ -24,8 +24,12 @@ public class PointedHatWitch extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 
-		CarteRumeur carteARecuperer = instanceJeu.getAccused().getCarteRevelees().get(choix);
-		instanceJeu.getAccused().prendreCarteRumeur(carteARecuperer);
+		if (choix != -1) {
+			CarteRumeur carteARecuperer = instanceJeu.getAccused().getCarteRevelees().get(choix);
+			instanceJeu.getAccused().prendreCarteRumeur(carteARecuperer);
+		}
+		
+		
 		instanceJeu.setEnTour(instanceJeu.getAccused());
 		
 		

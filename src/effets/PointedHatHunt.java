@@ -66,7 +66,11 @@ public class PointedHatHunt extends Effet {
 	public void executionEffet(int choix) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
-		instanceJeu.getEnTour().prendreCarteRumeur(instanceJeu.getEnTour().getCarteRevelees().get(choix));
+		
+		if (!instanceJeu.getEnTour().getCarteRevelees().isEmpty()) {
+			instanceJeu.getEnTour().prendreCarteRumeur(instanceJeu.getEnTour().getCarteRevelees().get(choix));
+		}
+		
 		
 	}
 	
