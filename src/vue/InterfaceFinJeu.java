@@ -193,6 +193,7 @@ public class InterfaceFinJeu implements Vue {
 	
 	public void leave() {
 		this.frame.setVisible(false);
+		System.exit(0);
 	}
 	
 	public void fight(ArrayList<Joueur> listeGagnants) {

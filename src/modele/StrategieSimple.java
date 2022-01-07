@@ -18,6 +18,8 @@ public class StrategieSimple extends Strategie {
 	private int cibleHunt;
 	private int secondeCibleHunt;
 	
+	private boolean accusable;
+	
 	public void reinitialiserAttributs() {
 		
 		//WITCH
@@ -60,7 +62,7 @@ public class StrategieSimple extends Strategie {
 			}
 		}
 		
-		if (possibilites.size() == 0) {
+		if (possibilites.isEmpty()) {
 			return -1;
 		}
 		else {
@@ -69,6 +71,65 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 	
+	public int choisirAccuseAngryMob() {
+		
+		Jeu instance = Jeu.getInstance();
+		ArrayList<Integer> possibilites = new ArrayList<Integer>();
+		
+		
+		for (int i=1 ; i<instance.getNombreJoueurs()+1 ; i++) {
+			
+			accusable = true;
+			
+			instance.getJoueur(i-1).getCarteRevelees().forEach(Card -> {
+				if (Card.getNumCarte() == 5) {
+					accusable = false;
+				}
+			});
+			
+			if (instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && instance.getJoueur(i-1)!=instance.getEnTour() && instance.getJoueur(i-1).isAccusable()==true && accusable == true) {
+				possibilites.add(i-1);
+			}
+		}
+		
+		if (possibilites.isEmpty()) {
+			return -1;
+		}
+		else {
+			Collections.shuffle(possibilites);
+			return possibilites.get(0);
+		}
+	}
+	
+	public int choisirAccuseDuckingStool() {
+		
+		Jeu instance = Jeu.getInstance();
+		ArrayList<Integer> possibilites = new ArrayList<Integer>();
+		
+		
+		for (int i=1 ; i<instance.getNombreJoueurs()+1 ; i++) {
+			
+			accusable = true;
+			
+			instance.getJoueur(i-1).getCarteRevelees().forEach(Card -> {
+				if (Card.getNumCarte() == 6) {
+					accusable = false;
+				}
+			});
+			
+			if (instance.getJoueur(i-1).getIdentiteAssociee().getDevoilee() == false && instance.getJoueur(i-1)!=instance.getEnTour() && instance.getJoueur(i-1).isAccusable()==true && accusable == true) {
+				possibilites.add(i-1);
+			}
+		}
+		
+		if (possibilites.isEmpty()) {
+			return -1;
+		}
+		else {
+			Collections.shuffle(possibilites);
+			return possibilites.get(0);
+		}
+	}
 	
 	
 	public int choisirProchainJoueur() {
@@ -82,12 +143,13 @@ public class StrategieSimple extends Strategie {
 					possibilites.add(i);
 				}
 			}
-			if (possibilites.size() == 0) {
+			
+			if (possibilites.isEmpty()) {
 				return -1;
 			}
 			else {
 				Collections.shuffle(possibilites);
-				//System.out.println("Il décide de choisir le joueur " + instance.getJoueur(possibilites.get(0)).getPseudo());
+				
 				return possibilites.get(0);
 			}
 			
@@ -246,8 +308,6 @@ public class StrategieSimple extends Strategie {
 		choixActionTour = choisirActionTour();
 		choixAccuse = choisirAccuse();
 		choixCarte = choisirCarteHunt();
-
-		choixActionTour = 1;
 		
 		if (choixCarte == -1) {
 			choixActionTour = 1;
@@ -386,14 +446,16 @@ public class StrategieSimple extends Strategie {
 		
 		carte.appliquerEffetHunt();
 		if (carte.getNumCarte() == 1) {
-			cibleHunt = choisirAccuse();
-			if (Jeu.getInstance().getJoueur(cibleHunt).getIdentiteAssociee().getIsWitch()) {
-				Jeu.getInstance().getEnTour().setPoints(Jeu.getInstance().getEnTour().getPoints()+2);
+			cibleHunt = choisirAccuseAngryMob();
+			if (cibleHunt != -1) {
+				if (Jeu.getInstance().getJoueur(cibleHunt).getIdentiteAssociee().getIsWitch()) {
+					Jeu.getInstance().getEnTour().setPoints(Jeu.getInstance().getEnTour().getPoints()+2);
+				}
+				else {
+					Jeu.getInstance().getEnTour().setPoints(Jeu.getInstance().getEnTour().getPoints()-2);
+				}
+				Jeu.getInstance().getVueActuelle().revelerHunt(cibleHunt);
 			}
-			else {
-				Jeu.getInstance().getEnTour().setPoints(Jeu.getInstance().getEnTour().getPoints()-2);
-			}
-			Jeu.getInstance().getVueActuelle().revelerHunt(cibleHunt);
 		}
 		if (carte.getNumCarte() == 2) {
 			cibleHunt = choisirProchainJoueur();
@@ -430,20 +492,40 @@ public class StrategieSimple extends Strategie {
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(cibleHunt));
 		}
 		if (carte.getNumCarte() == 7) {
-			cibleHunt = choisirAccuse();
+			cibleHunt = choisirAccuseDuckingStool();
 			
 		}
 		if (carte.getNumCarte() == 8 || carte.getNumCarte() == 10) {
-			if (!Jeu.getInstance().getEnTour().getIdentiteAssociee().getIsWitch()) {
+			if (Jeu.getInstance().getEnTour().getIdentiteAssociee().getIsWitch() == false) {
 				cibleHunt = choisirProchainJoueur();
 				Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(cibleHunt));
+			}
+			else {
+				ArrayList<Joueur> listeJoueurs = new ArrayList<>();
+				for (int i=0; i<Jeu.getInstance().getEnsembleJoueurs().size(); i++) {
+					if (((Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getDevoilee() == true && Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getIsWitch() == false) || Jeu.getInstance().getJoueur(i).getIdentiteAssociee().getDevoilee() == false) || Jeu.getInstance().getJoueur(i) == Jeu.getInstance().getEnTour()) {
+						listeJoueurs.add(Jeu.getInstance().getJoueur(i));
+					}
+				}
+				for (int i=0; i<listeJoueurs.size(); i++) {
+					if (listeJoueurs.get(i) == Jeu.getInstance().getEnTour()) {
+						if (i == listeJoueurs.size()-1) {
+							Jeu.getInstance().setEnTour(listeJoueurs.get(0));
+							break;
+						}
+						else {
+							Jeu.getInstance().setEnTour(listeJoueurs.get(i+1));
+							break;
+						}
+					}
+				}
 			}
 		}
 		if (carte.getNumCarte() == 9) {
 			cibleHunt = choisirProchainJoueur();
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(cibleHunt));
 		}
-		if (carte.getNumCarte() == 11) {//
+		if (carte.getNumCarte() == 11) {
 			
 			if (!Jeu.getInstance().getTasDefausse().getContenu().isEmpty()) {
 				int emplacementCartePrise = choisirCarteDefausse();
@@ -508,9 +590,10 @@ public class StrategieSimple extends Strategie {
 		int choixPrincipal = (int) (Math.random() * 2);
 		if (choixPrincipal == 1) {
 			int choixDiscard = (int) (Math.random() * Jeu.getInstance().getJoueur(joueur).getCarteEnMain().size());
-			if (!(Jeu.getInstance().getJoueur(joueur).getCarteEnMain().isEmpty())) {
+			if (Jeu.getInstance().getJoueur(joueur).getCarteEnMain().size() > 0) {
 				Jeu.getInstance().getTasDefausse().defausserUneCarte(Jeu.getInstance().getJoueur(joueur).seFairePrendreCarteRumeur(choixDiscard));
-				choixDiscard = Jeu.getInstance().getJoueur(joueur).getCarteEnMain().get(choixDiscard).getNumCarte();
+				choixDiscard = Jeu.getInstance().getTasDefausse().getContenu().get(Jeu.getInstance().getTasDefausse().getContenu().size()-1).getNumCarte();
+				System.out.println(choixDiscard);
 			}
 			else {
 				choixDiscard = -1;
