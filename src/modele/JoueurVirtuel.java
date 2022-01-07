@@ -32,10 +32,6 @@ public class JoueurVirtuel extends Joueur {
 		this.getStrategieActuelle().recapIA();
 	}
 	
-	public void recapIAAccused() {
-		this.getStrategieActuelle().recapIAAccused();
-	}
-	
 	public void reponseDuckingStool(int joueur) {
 		this.getStrategieActuelle().reponseDuckingStool(joueur);
 	}

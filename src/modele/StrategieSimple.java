@@ -392,7 +392,7 @@ public class StrategieSimple extends Strategie {
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
 			Jeu.getInstance().getVueActuelle().passerTourSuivant();
 		}
-		if (carte.getNumCarte() == 3) {
+		else if (carte.getNumCarte() == 3) {
 			int emplacementCartePrise = choixReveleesWitchPointedHat();
 			if (emplacementCartePrise != -1) {
 				choixCartePrise = Jeu.getInstance().getAccused().getCarteRevelees().get(emplacementCartePrise).getNumCarte();
@@ -402,7 +402,7 @@ public class StrategieSimple extends Strategie {
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
 			Jeu.getInstance().getVueActuelle().passerTourSuivant();
 		}
-		if (carte.getNumCarte() == 4) {
+		else if (carte.getNumCarte() == 4) {
 			int emplacementCartePrise = (int) (Math.random() * Jeu.getInstance().getEnTour().getCarteEnMain().size());
 			if (!(Jeu.getInstance().getEnTour().getCarteEnMain().isEmpty())) {
 				choixCartePrise = Jeu.getInstance().getEnTour().getCarteEnMain().get(emplacementCartePrise).getNumCarte();
@@ -411,18 +411,17 @@ public class StrategieSimple extends Strategie {
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getAccused());
 			Jeu.getInstance().getVueActuelle().passerTourSuivant();
 		}
-		if (carte.getNumCarte() == 7) {
+		else if (carte.getNumCarte() == 7) {
 			int prochainJoueur = choisirProchainJoueurWitch();
 			choixCarteJoueur = prochainJoueur;
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(prochainJoueur));
 			Jeu.getInstance().getVueActuelle().passerTourSuivant();
 		}
-		if (carte.getNumCarte() == 8) {
-
+		else if (carte.getNumCarte() == 8) {
 			Jeu.getInstance().getVueActuelle().passerTourSuivant();
 		}
 		
-		if (carte.getNumCarte() == 9) {
+		else if (carte.getNumCarte() == 9) {
 			
 			int prochainJoueur = choisirProchainJoueurWitch();
 			choixCarteJoueur = prochainJoueur;
@@ -523,6 +522,7 @@ public class StrategieSimple extends Strategie {
 		}
 		if (carte.getNumCarte() == 9) {
 			cibleHunt = choisirProchainJoueur();
+			Jeu.getInstance().getEnTour().setAccusable(false);
 			Jeu.getInstance().setEnTour(Jeu.getInstance().getJoueur(cibleHunt));
 		}
 		if (carte.getNumCarte() == 11) {
@@ -575,15 +575,10 @@ public class StrategieSimple extends Strategie {
 	}
 
 	public void recapIA() {
+		System.out.println(choixCarte);
 		Jeu.getInstance().getVueActuelle().recapIA(joueurEnTour,choixActionTour,choixCarte,choixCarteJoueur,choixCartePrise);
-		Jeu.getInstance().setAccused(null);
 		this.reinitialiserAttributs();
-	}
-	
-	public void recapIAAccused() {
-		Jeu.getInstance().getVueActuelle().recapIAAccused(joueurEnTour,choixActionTour,choixCarte,choixCarteJoueur,choixCartePrise);
 		Jeu.getInstance().setAccused(null);
-		this.reinitialiserAttributs();
 	}
 	
 	public void reponseDuckingStool(int joueur) {

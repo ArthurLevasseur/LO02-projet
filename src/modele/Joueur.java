@@ -269,8 +269,6 @@ public abstract class Joueur {
 	public abstract void jouerTour();
 
 	public abstract void recapIA();
-
-	public abstract void recapIAAccused();
 	
 	public abstract void reponseDuckingStool(int joueurCible);
 	

@@ -109,8 +109,8 @@ public interface Vue {
 	public void isAccusedIA(int joueurCible);
 	public void afficherRegles();
 	public void recapIA(Joueur joueurEnTour, int choixActionTour, int choixCarte, int choixCarteJoueur, int choixCartePrise);
-	public void recapIAAccused(Joueur joueurEnTour, int choixActionTour, int choixCarte, int choixCarteJoueur, int choixCartePrise);
 	public void recapIAHunt(Joueur joueurEnTour, int choixActionTour, int choixAccuse, int choixCarteHunt, int choixCarteHuntJoueur, int choixCarteHuntCarte, int secondeCibleHunt);
 	public void recapIADuckingStool(int choixPrincipal, int i, int joueur);
+	public void passerTourSuivantAccusableHunt();
 	
 }
