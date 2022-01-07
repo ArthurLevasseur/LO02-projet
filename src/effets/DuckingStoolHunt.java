@@ -27,36 +27,43 @@ public class DuckingStoolHunt extends Effet {
 		
 		if (instanceJeu.getEnTour().isIA()) {
 			System.out.println(instanceJeu.getEnTour().getPseudo() + " Choisit un joueur à cibler avec la carte \"Un bûcher\"");
-			Joueur selection = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse());
-			int condition = -1;
-			while (condition<0) {
-				visable = true;
-				for(CarteRumeur carte : selection.getCarteRevelees()) {
-					if (carte.getNumCarte() == 6) {
-						visable = false;
-					}
-				}
-				if (visable == true) {
-					condition = 1;
-					
-				}
-				else {
-					selection = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse());
-					int compteur = 0;
-					int idAutreJoueur=-1;
-					for (int i=0; i<instanceJeu.getEnsembleJoueurs().size(); i++) {
-						if ((instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) && instanceJeu.getJoueur(i) != instanceJeu.getEnTour() && instanceJeu.getJoueur(i).isAccusable()==true){
-							compteur += 1;
-							idAutreJoueur = i;
+			int choix = ((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse();
+			if (choix != - 1) {
+				Joueur selection = instanceJeu.getJoueur(choix);
+				int condition = -1;
+				while (condition<0) {
+					visable = true;
+					for(CarteRumeur carte : selection.getCarteRevelees()) {
+						if (carte.getNumCarte() == 6) {
+							visable = false;
 						}
 					}
-					if (compteur == 1) {
-						System.out.println("Aucun joueur n'est ciblable.");
-						instanceJeu.setEnTour(instanceJeu.getJoueur(idAutreJoueur));
+					if (visable == true) {
+						condition = 1;
+						
+					}
+					else {
+						selection = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirAccuse());
+						int compteur = 0;
+						int idAutreJoueur=-1;
+						for (int i=0; i<instanceJeu.getEnsembleJoueurs().size(); i++) {
+							if ((instanceJeu.getJoueur(i).getIdentiteAssociee().getDevoilee() == false) && instanceJeu.getJoueur(i) != instanceJeu.getEnTour() && instanceJeu.getJoueur(i).isAccusable()==true){
+								compteur += 1;
+								idAutreJoueur = i;
+							}
+						}
+						if (compteur == 1) {
+							System.out.println("Aucun joueur n'est ciblable.");
+							instanceJeu.setEnTour(instanceJeu.getJoueur(idAutreJoueur));
+						}
 					}
 				}
+				instanceJeu.setEnTour(selection.accusedBucher());
 			}
-			instanceJeu.setEnTour(selection.accusedBucher());
+			else {
+				instanceJeu.setEnTour(instanceJeu.getEnTour());
+			}
+			
 			
 		}
 		else {

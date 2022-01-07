@@ -23,7 +23,7 @@ public class HookedNoseWitch extends Effet {
 		Jeu instanceJeu = Jeu.getInstance();
 		Defausse instanceDefausse = Defausse.getInstance();
 		
-		if (choix != 1) {
+		if (choix != -1) {
 			CarteRumeur carteARecuperer = instanceJeu.getEnTour().getCarteEnMain().get(choix);
 			instanceJeu.getAccused().prendreCarteRumeur(carteARecuperer);
 		}

@@ -558,16 +558,32 @@ public class VueConsole implements Vue {
 		if (isHunt) {
 			Jeu instanceJeu = Jeu.getInstance();
 			Defausse instanceDefausse = Defausse.getInstance();
-
-			if (instanceJeu.getAccused().isIA()) {
-				System.out.println(instanceJeu.getAccused().getPseudo() + " choisit une carte à reprendre dans sa main.");
-				choix = (int)(Math.random() * instanceJeu.getAccused().getCarteRevelees().size());
+			
+			if (isHunt) {
+				if (instanceJeu.getEnTour().isIA()) {
+					System.out.println(instanceJeu.getEnTour().getPseudo() + " choisit une carte à reprendre dans sa main.");
+					choix = (int)(Math.random() * instanceJeu.getEnTour().getCarteRevelees().size()-1);
+				}
+				else {
+					instanceJeu.getEnTour().getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getEnTour().getCarteRevelees().indexOf(card) + " pour prendre " + card));
+					Scanner saisieUtilisateur = new Scanner(System.in);
+					choix = saisieUtilisateur.nextInt();			
+				}
 			}
+			
 			else {
-				instanceJeu.getAccused().getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteRevelees().indexOf(card) + " pour prendre " + card));
-				Scanner saisieUtilisateur = new Scanner(System.in);
-				choix = saisieUtilisateur.nextInt();			
+				if (instanceJeu.getAccused().isIA()) {
+					System.out.println(instanceJeu.getAccused().getPseudo() + " choisit une carte à reprendre dans sa main.");
+					choix = (int)(Math.random() * instanceJeu.getAccused().getCarteRevelees().size()-1);
+				}
+				else {
+					instanceJeu.getAccused().getCarteRevelees().forEach(card -> System.out.println("TAPEZ "+instanceJeu.getAccused().getCarteRevelees().indexOf(card) + " pour prendre " + card));
+					Scanner saisieUtilisateur = new Scanner(System.in);
+					choix = saisieUtilisateur.nextInt();			
+				}
 			}
+
+			
 		}
 		
 		effet.executionEffet(choix);
@@ -614,18 +630,20 @@ public void evilEye(Effet effet, boolean isHunt) {
 		
 		Jeu instanceJeu = Jeu.getInstance();
 		Joueur choix;
-		if (instanceJeu.getAccused().isIA()) {
-			System.out.println(instanceJeu.getAccused().getPseudo() + " choisit un adversaire.");
-			if (isHunt) {
+		
+		if (isHunt) {
+			if (instanceJeu.getEnTour().isIA()) {
+				System.out.println(instanceJeu.getAccused().getPseudo() + " choisit un adversaire.");
 				choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getEnTour()).getStrategieActuelle().choisirProchainJoueur());
 			}
 			else {
-				choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueur());
+				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
 			}
 		}
 		else {
-			if (isHunt) {
-				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getEnTour(),"Choisissez le prochain joueur.");
+			if (instanceJeu.getEnTour().isIA()) {
+				System.out.println(instanceJeu.getAccused().getPseudo() + " choisit un adversaire.");
+				choix = instanceJeu.getJoueur(((JoueurVirtuel) instanceJeu.getAccused()).getStrategieActuelle().choisirProchainJoueur());
 			}
 			else {
 				choix = instanceJeu.selectionnerAdversaire(instanceJeu.getAccused(),"Choisissez le prochain joueur.");

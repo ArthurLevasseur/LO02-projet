@@ -359,7 +359,7 @@ public class Jeu extends Observable{
 	
 	public void implementGagnant() {
 		
-		int maxPoints = 50;
+		int maxPoints = 5;
 		
 		// déterminer quel est le max de points
 		for (Joueur j : ensembleJoueurs) {
