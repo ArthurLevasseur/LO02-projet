@@ -7,9 +7,24 @@ import effets.DuckingStoolWitch;
 import effets.CauldronWitch;
 import effets.EvilEyeWitch;
 
+/**
+ * Classe représentant l'effet Witch d'une carte Rumeur. Avec la classe {@link Hunt}, elle compose la classe {@link CarteRumeur}.
+ *
+ */
+
 public class Witch{
+	
+	/**
+	 * Effet associé à la partie Witch de la carte.
+	 */
 
 	private Effet effetAssocie;
+	
+	/**
+	 * Constructeur de la carte. Selon le numéro attribué lors de sa création, l'effet Witch sélectionné sera différent.
+	 * @param numCarte Le numéro de la carte. Le numéro correspond à l'ordre de la carte dans les règles du jeu.
+	 * @see effets
+	 */
 	
 	public Witch(int numCarte) {
 		if (numCarte == 1) {
@@ -49,6 +64,11 @@ public class Witch{
 			this.effetAssocie = new AngryMobWitch();
 		}
 	}
+	
+	/**
+	 * Exécute l'effet en appelant la vue associée à l'effet.
+	 * @param numCarte
+	 */
 	
 	public void executerEffet(int numCarte) {
 		this.effetAssocie.appelVue();
@@ -109,6 +129,10 @@ public class Witch{
 		
 		return null;*/
 	}
+	
+	/**
+	 * Convertit la carte en chaîne de caractère.
+	 */
 	
 	public String toString() {
 		StringBuffer str = new StringBuffer();

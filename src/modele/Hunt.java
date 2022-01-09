@@ -11,9 +11,24 @@ import effets.DuckingStoolHunt;
 import effets.CauldronHunt;
 import effets.EvilEyeHunt;
 
+/**
+ * Classe représentant l'effet Hunt d'une carte Rumeur. Avec la classe {@link Witch}, elle compose la classe {@link CarteRumeur}.
+ *
+ */
+
 public class Hunt{
+	
+	/**
+	 * Effet associé à la partie Hunt de la carte.
+	 */
 
 	private Effet effetAssocie;
+	
+	/**
+	 * Constructeur de la carte. Selon le numéro attribué lors de sa création, l'effet Hunt sélectionné sera différent.
+	 * @param numCarte Le numéro de la carte. Le numéro correspond à l'ordre de la carte dans les règles du jeu.
+	 * @see effets
+	 */
 	
 	public Hunt(int numCarte) {
 		if (numCarte == 1) {
@@ -53,6 +68,11 @@ public class Hunt{
 			this.effetAssocie = new PetNewtHunt();
 		}
 	}
+	
+	/**
+	 * Exécute l'effet en appelant la vue associée à l'effet.
+	 * @param numCarte
+	 */
 	
 	public void executerEffet(int numCarte) {
 		
@@ -278,6 +298,10 @@ public class Hunt{
 		
 		return null;*/
 	}
+	
+	/**
+	 * Convertit la carte en chaîne de caractère.
+	 */
 	
 	public String toString() {
 		StringBuffer str = new StringBuffer();

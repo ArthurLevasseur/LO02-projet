@@ -621,9 +621,6 @@ public class VueConsole implements Vue {
 		effet.executionEffet(choix);
 	}
 	
-	public void prendreProchainTour(Effet effet) {
-		effet.executionEffet();
-	}
 	
 	
 public void evilEye(Effet effet, boolean isHunt) {

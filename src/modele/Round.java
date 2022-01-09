@@ -3,10 +3,27 @@ package modele;
 import controleur.*;
 import vue.*;
 
+/**
+ * Classe représentant un round du jeu. Les classes round sont instanciés dans la fonction {@link Jeu.orgaRounds()}.
+ *
+ */
 public class Round {
 	
+	/**
+	 * Tableau contenant les joueurs dont les identités sont revelées.
+	 */
+	
 	private Joueur[] identitesRevelees = new Joueur[6];
+	
+	/**
+	 * Référence à un joueur ayant gagné le round. Est à null si le round est encore en cours.
+	 */
+	
 	private Joueur gagnantRound = null;
+	
+	/**
+	 * Référence à un contrôleur permettant de séparer certains affichages consoles et GUI présents dans certaines méthodes du modèle
+	 */
 	
 	private ControleurInter inter = ControleurInter.getInstance();
 	
@@ -15,6 +32,10 @@ public class Round {
 		
 	}
 	
+	/**
+	 * Débute le round. Demande aux joueurs de choisir leur identité, puis appelle la fonction {@link jouerTour()} pour les joueurs.
+	 * @param premierJoueur Joueur qui joue en premier dans ce round.
+	 */
 	
 	public void debutRound(Joueur premierJoueur) {
 		

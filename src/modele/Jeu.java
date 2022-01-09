@@ -249,7 +249,7 @@ public class Jeu extends Observable{
 	}
 	
 	/**
-	 * Initialise le jeu. Instancie les {@link Joueurs}, la {@link Defausse} et les  {@link CarteRumeur}.
+	 * Initialise le jeu. Instancie les {@link Joueurs}, la {@link Defausse} et les  {@link CarteRumeur}. Demande ensuite aux joueurs d'écrire leurs pseudos.
 	 */
 	
 	public void initGame() {
@@ -356,6 +356,9 @@ public class Jeu extends Observable{
 		
 	}
 	
+	/**
+	 * Détermine qui est le gagnant. Si un joueur est le seul à avoir atteint ou dépassé le score de 5, il remporte la partie. Si plusieurs joueurs ont dépassé 5, celui qui a le plus de points gagne. S'ils sont à égalité, le gagnant est tiré au sort.
+	 */
 	
 	public void implementGagnant() {
 		
@@ -478,7 +481,7 @@ public class Jeu extends Observable{
 	}
 	
 	/**
-	 * Initialise le tour.
+	 * Initialise le tour. Choisit la bonne vue, instancie le tour et choisit le joueur qui commence la partie.
 	 */
 	
 	public void initRound() {
@@ -506,6 +509,11 @@ public class Jeu extends Observable{
 		
 	}
 	
+	
+	/**
+	 * Fonction qui tire au sort le vainqueur en mode console.
+	 * @throws InterruptedException
+	 */
 
 	
 	public void jouerTieBreaker() throws InterruptedException {
@@ -536,21 +544,46 @@ public class Jeu extends Observable{
 		System.out.println("Bravo à lui et à une prochaine !");
 	}
 	
+	/**
+	 * Getter qui retourne le joueur en tour.
+	 * @return Le joueur en tour.
+	 */
+	
 	public Joueur getEnTour() {
 		return this.enTour;
 	}
+	
+	/**
+	 * Setter qui sélectionne le joueur en tour.
+	 * @param joueur Le joueur qui va jouer son tour.
+	 */
 	
 	public void setEnTour(Joueur joueur) {
 		this.enTour = joueur;
 	}
 	
+	/**
+	 * Getter qui retourne le joueur accusé.
+	 * @return Le joueur en train d'être accusé.
+	 */
+	
 	public Joueur getAccused() {
 		return this.accused;
 	}
 	
+	/**
+	 * Setter qui sélectionne le joueur en cours d'accusation.
+	 * @param joueur Le joueur qui va être accusé.
+	 */
+	
 	public void setAccused(Joueur joueur) {
 		this.accused = joueur;
 	}
+	
+	/**
+	 * Permet de récupérer l'instance de la classe jeu, et la crée si elle n'existe pas. Utilisée dans le cadre du patron de conception singleton.
+	 * @return L'instance de jeu.
+	 */
 	
 	public static Jeu getInstance() {
 		if (Instance == null) {
@@ -559,64 +592,73 @@ public class Jeu extends Observable{
         return Instance;
     }
 	
-	
+	/**
+	 * Getter qui retourne la collection contenant l'ensemble des joueurs.
+	 * @return L'ensemble des joueurs.
+	 */
 	
 	public ArrayList<Joueur> getEnsembleJoueurs() {
 		return ensembleJoueurs;
 	}
+	
+	/**
+	 * Setter qui modifie la collection contenant l'ensemble des joueurs.
+	 * @param ensembleJoueurs L'ensemble des joueurs qui remplacera le précédent.
+	 */
 
 	public void setEnsembleJoueurs(ArrayList<Joueur> ensembleJoueurs) {
 		this.ensembleJoueurs = ensembleJoueurs;
 	}
+	
+	/**
+	 * Notifie les observers de la modification de l'état de la classe Jeu.
+	 */
 	
 	public void actualisationInterface() {
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
-	
-	//public static void main(String[] args) {
-		
-		/*
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Jeu instanceJeu = new Jeu();
-					InterfaceDebut window = new InterfaceDebut();
-					Jeu.setVueActuelle(window);
-					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		*/
-		
-		
-		
-		
-		//démarrage du jeu par console
-		
-		
-	//}
+	/**
+	 * Setter qui modifie le nombre de joueurs.
+	 * @param nombreJoueurs Nombre de joueurs à fixer.
+	 */
 
 	public void setNombreJoueurs(int nombreJoueurs) {
 		this.nombreJoueurs = nombreJoueurs;
 	}
+	
+	/**
+	 * Retourne le contrôleur de l'interface graphique.
+	 * @return Le contrôleur de l'interface graphique.
+	 */
 
 	public ControlerGUI getControler() {
 		return controler;
 	}
+	
+	/**
+	 * Setter modifiant le contrôleur de l'interface graphique.
+	 * @param controler Contrôleur de l'interface graphique
+	 */
 
 	public void setControler(ControlerGUI controler) {
 		this.controler = controler;
 	}
 	
+	/**
+	 * Setter modifiant le contrôleur "intermédiaire" (contrôleur qui détermine quel affichage doit être utilisé dans certaines méthodes ne respectant pas encore totalement le principe du MVC).
+	 * @param controler Contrôleur
+	 */
+	
 	public ControleurInter getInter() {
 		return inter;
 	}
+	
+	/**
+	 * Getter retournant le gagnant du round. Vérifie combien de joueurs ne sont pas encore révelés. S'il en reste qu'un, il remporte le round. Sinon, la fonction retourne null.
+	 * @return Le joueur gagnant du round s'il y en a un. Sinon, null.
+	 */
 
 	public Joueur getGagnantRound() {
 		
@@ -632,22 +674,47 @@ public class Jeu extends Observable{
 		return null;
 		
 	}
+	
+	/**
+	 * Retourne le round en cours.
+	 * @return Round en cours.
+	 */
 
 	public Round getRound() {
 		return round;
 	}
+	
+	/**
+	 * Setter modifiant le round en cours.
+	 * @param round Round en cours.
+	 */
 
 	public void setRound(Round round) {
 		this.round = round;
 	}
+	
+	/**
+	 * Getter retournant la liste des gagnants.
+	 * @return La liste des gagnants
+	 */
 
 	public ArrayList<Joueur> getGagnants() {
 		return gagnants;
 	}
+	
+	/**
+	 * Getter de la défausse.
+	 * @return La défausse
+	 */
 
 	public Defausse getTasDefausse() {
 		return tasDefausse;
 	}
+	
+	/**
+	 * Setter de la défausse.
+	 * @param tasDefausse La défausse.
+	 */
 
 	public void setTasDefausse(Defausse tasDefausse) {
 		this.tasDefausse = tasDefausse;

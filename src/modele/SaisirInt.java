@@ -1,8 +1,17 @@
 package modele;
 import java.util.Scanner;
 
+/**
+ * Classe permettant la saisie d'un nombre entier dans la console.
+ */
+
 public class SaisirInt {
 	private static SaisirInt scanner;
+	
+	/**
+	 * Fonction à appeler pour réaliser la saisie d'un entier dans la console.
+	 * @return L'entier saisi.
+	 */
 	
 	public int nextInt() {
 		int value;
@@ -18,6 +27,11 @@ public class SaisirInt {
 		System.out.print("\n");
 		return value;
 	}
+	
+	/**
+	 * Retourne l'instance de saisirInt. Utilisé pour la réalisation du patron de conception singleton.
+	 * @return L'instance de saisirInt
+	 */
 	
 	public static SaisirInt getInstance() {
 		if (scanner == null) {
