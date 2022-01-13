@@ -61,6 +61,9 @@ public class StrategieSimple extends Strategie {
 	
 	private boolean accusable;
 	
+	/**
+	 * Remet les attributs de la classe à -1 pour les entiers et null pour les autres types. Utilisée à la fin d'un tour en préparation du suivant.
+	 */
 	public void reinitialiserAttributs() {
 		
 		//WITCH
@@ -78,6 +81,10 @@ public class StrategieSimple extends Strategie {
 		this.secondeCibleHunt = -1;
 	}
 	
+	/**
+	 * Le joueur virtuel choisit son action du tour : accuser ou jouer un effet hunt.
+	 * @return 1 s'il accuse, 2 s'il joue un effet hunt
+	 */
 	public int choisirActionTour() {
 		int choix = (int) (Math.random() * 1.5);
 		if (choix == 1) {
@@ -91,6 +98,10 @@ public class StrategieSimple extends Strategie {
 
 	}
 	
+	/**
+	 * Retourne l'ID du joueur accusé. Appelée quand le joueur virtuel accuse un autre joueur.
+	 * @return ID du joueur
+	 */
 	public int choisirAccuse() {
 		
 		Jeu instance = Jeu.getInstance();
@@ -112,6 +123,10 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 	
+	/**
+	 * Retourne l'ID du joueur accusé par la carte angry mob. Appelée quand le joueur virtuel accuse un autre joueur.
+	 * @return ID du joueur
+	 */
 	public int choisirAccuseAngryMob() {
 		
 		Jeu instance = Jeu.getInstance();
@@ -142,6 +157,10 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 	
+	/**
+	 * Retourne l'ID du joueur accusé par la carte Ducking Stool. Appelée quand le joueur virtuel accuse un autre joueur.
+	 * @return ID du joueur
+	 */
 	public int choisirAccuseDuckingStool() {
 		
 		Jeu instance = Jeu.getInstance();
@@ -172,7 +191,10 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 	
-	
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir le prochain joueur.
+	 * @return L'id du joueur sélectionné
+	 */
 	public int choisirProchainJoueur() {
 			
 			Jeu instance = Jeu.getInstance();
@@ -196,6 +218,10 @@ public class StrategieSimple extends Strategie {
 			
 	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir le prochain joueur.
+	 * @return L'id du joueur sélectionné
+	 */
 	public int choisirAutreJoueur() {
 		
 		Jeu instance = Jeu.getInstance();
@@ -210,8 +236,12 @@ public class StrategieSimple extends Strategie {
 		Collections.shuffle(possibilites);
 		//System.out.println("Il décide de choisir le joueur " + instance.getJoueur(possibilites.get(0)).getPseudo());
 		return possibilites.get(0);
-}
+	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir le prochain joueur à l'issue d'une carte witch.
+	 * @return L'id du joueur sélectionné
+	 */
 	public int choisirProchainJoueurWitch() {
 		
 		Jeu instance = Jeu.getInstance();
@@ -228,6 +258,10 @@ public class StrategieSimple extends Strategie {
 		return possibilites.get(0);
 	}
 
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une carte de sa main.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixCarteMain() {
 		Jeu instance = Jeu.getInstance();
 		int choix = -1;
@@ -237,6 +271,10 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une carte de sa main après l'effet d'une carte witch.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixCarteMainWitch() {
 		Jeu instance = Jeu.getInstance();
 		int choix = (int)(Math.random() * instance.getAccused().getCarteEnMain().size());
@@ -246,6 +284,10 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une carte de sa main après l'effet de la carte witch de l'inquisition.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixCarteMainWitchTheInquisition() {
 		Jeu instance = Jeu.getInstance();
 		int choix = (int)(Math.random() * instance.getAccused().getCarteEnMain().size());
@@ -255,6 +297,10 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une de ses cartes revelées après l'effet d'une carte hunt.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixReveleesHunt() {
 		Jeu instance = Jeu.getInstance();
 		int choix = (int)(Math.random() * instance.getEnTour().getCarteRevelees().size());
@@ -264,6 +310,10 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une de ses cartes revelées après l'effet d'une carte witch.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixReveleesWitch() {
 		Jeu instance = Jeu.getInstance();
 		int choix = (int)(Math.random() * instance.getAccused().getCarteRevelees().size());
@@ -275,6 +325,10 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une de ses cartes revelées après l'effet witch de la carte pointed hat. Empêche le joueur de reprendre la carte en question.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixReveleesWitchPointedHat() {
 		Jeu instance = Jeu.getInstance();
 		if (instance.getAccused().getCarteRevelees().isEmpty() || (instance.getAccused().getCarteRevelees().size() == 1 && instance.getAccused().getCarteRevelees().get(0).getNumCarte() == 3)) {
@@ -288,6 +342,10 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel doit choisir une de ses cartes revelées après l'effet hunt de la carte pointed hat. Empêche le joueur de reprendre la carte en question.
+	 * @return L'id de la carte sélectionnée
+	 */
 	public int choixReveleesHuntPointedHat() {
 		Jeu instance = Jeu.getInstance();
 		if (instance.getEnTour().getCarteRevelees().isEmpty() || (instance.getEnTour().getCarteRevelees().size() == 1 && instance.getEnTour().getCarteRevelees().get(0).getNumCarte() == 3)) {
@@ -301,11 +359,18 @@ public class StrategieSimple extends Strategie {
 		return choix;
 	}
 
+	/**
+	 * Fonction appelée quand le joueur doit se défendre.
+	 */
 	public int seDefendre() {
 		
 		return 1;
 	}
 
+	/**
+	 * Fonction appelée quand le joueur virtuel choisit sa carte hunt.
+	 * @return L'id de la carte choisie
+	 */
 	public int choisirCarteHunt() {
 		ArrayList<Integer> possiblesCartes = new ArrayList<>();
 		
@@ -325,6 +390,10 @@ public class StrategieSimple extends Strategie {
 
 	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel choisit sa carte witch.
+	 * @return L'id de la carte choisie
+	 */
 	public int choisirCarteWitch() {
 		ArrayList<Integer> possiblesCartes = new ArrayList<>();
 		
@@ -344,7 +413,9 @@ public class StrategieSimple extends Strategie {
 
 	}
 
-
+	/**
+	 * Fonction réalisant tout le déroulement d'un tour d'une IA
+	 */
 	public void jouerTourIA() {
 		choixActionTour = choisirActionTour();
 		choixAccuse = choisirAccuse();
@@ -392,6 +463,10 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 
+	/**
+	 * Fonction utilisée pour la réponse à l'accusation d'un joueur virtuel.
+	 */
+	
 	public void repondreAccusation() {
 		choixActionTour = choisirActionTour();
 		int emplacementCarte = choisirCarteWitch();
@@ -604,6 +679,10 @@ public class StrategieSimple extends Strategie {
 		Jeu.getInstance().getVueActuelle().recapIAHunt(joueurEnTour, choixActionTour, choixAccuse, choixCarteHunt, cibleHunt, choixCarteHuntCarte, secondeCibleHunt);
 	}
 	
+	/**
+	 * Fonction appelée quand un joueur virtuel doit piocher dans la défausse.
+	 * @return Retourne l'id de la carte choisie
+	 */
 	private int choisirCarteDefausse() {
 		int choix = (int) (Math.random() * Jeu.getInstance().getTasDefausse().getContenu().size());
 
@@ -615,6 +694,9 @@ public class StrategieSimple extends Strategie {
 		}
 	}
 
+	/**
+	 * Réalise le récap d'un tour de l'IA.
+	 */
 	public void recapIA() {
 		System.out.println(choixCarte);
 		Jeu.getInstance().getVueActuelle().recapIA(joueurEnTour,choixActionTour,choixCarte,choixCarteJoueur,choixCartePrise);
@@ -622,6 +704,9 @@ public class StrategieSimple extends Strategie {
 		Jeu.getInstance().setAccused(null);
 	}
 	
+	/**
+	 * Fonction appelée quand le joueur virtuel est ciblé par la carte Ducking Stool
+	 */
 	public void reponseDuckingStool(int joueur) {
 		int choixPrincipal = (int) (Math.random() * 2);
 		if (choixPrincipal == 1) {

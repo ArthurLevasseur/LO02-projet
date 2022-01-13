@@ -19,7 +19,17 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
 
+/**
+ * Point de départ du programme. Demande à l'utilisateur quelle vue utiliser (console ou graphique).
+ *
+ */
+
 public class Main {
+	
+	/**
+	 * Fonction de départ
+	 * @param args
+	 */
 
 	public static void main(String[] args) {
 		
