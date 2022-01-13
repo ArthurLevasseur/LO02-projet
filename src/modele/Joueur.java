@@ -4,36 +4,90 @@ import java.util.ArrayList;
 
 import controleur.ControleurInter;
 
-
+/**
+ * Cette classe représente un joueur. Elle est abstraite : les joueurs héritent de {@link JoueurPhysique} et {@link JoueurVirtuel}.
+ *
+ */
 
 public abstract class Joueur {
 	
+	
+	/**
+	 * Total des points du joueur
+	 */
 	private int points = 0;
-	private int id;
+	//private int id;
 	//public CarteRumeur[] carteRevelees = new CarteRumeur[4];
+	
+	/**
+	 * Collection contenant les cartes révelées par le joueur.
+	 */
 	private ArrayList<CarteRumeur> carteRevelees = new ArrayList<CarteRumeur>();
 	//public CarteRumeur[] carteEnMain = new CarteRumeur[4];
+	
+	/**
+	 * Collection contenant les cartes en main du joueur.
+	 */
 	private ArrayList<CarteRumeur> carteEnMain = new ArrayList<CarteRumeur>();
+	
+	/**
+	 * Booléen valant true si le joueur est accusable, false s'il ne l'est pas. Valeur modifiée par les effets des cartes.
+	 */
 	private boolean accusable=true;
-	private int nbCartesEnMain = 0;
+	//private int nbCartesEnMain = 0;
+	
+	/**
+	 * Référence à la carte identitée associée au joueur.
+	 * @see Identite
+	 */
 	private Identite identiteAssociee;
+	
+	/**
+	 * Pseudonyme du joueur.
+	 */
 	private String pseudo;
+	
+	/**
+	 * Booléen valant true si le joueur est contraint d'accuser un autre joueur. Valeur modifiée par les effets des cartes.
+	 */
 	private boolean mustAccuse = false;
+	
+	/**
+	 * Référence à un contrôleur.
+	 * @see ControleurInter
+	 */
 	private ControleurInter inter = ControleurInter.getInstance();
 	
+	/**
+	 * Constructeur du joueur. Met son total de points à 0, le rend accusable et lui associe une identité.
+	 */
 	public Joueur() {
 		this.points = 0;
 		this.accusable = true;
 		this.identiteAssociee = new Identite();
 	}
 	
+	/**
+	 * Getter qui retourne le nombre de points
+	 * @return Nombre de points du joueur
+	 */
+	
 	public int getPoints() {
 		return this.points;
 	}
 	
+	/**
+	 * Ajoute des points au joueur
+	 * @param pointsAjoutes Points à ajouter
+	 */
+	
 	public void ajouterPoints(int pointsAjoutes) {
 		this.points = this.points+pointsAjoutes;
 	}
+	
+	/**
+	 * Méthode appelée à la fin du round chez le gagnant. Ajoute le nombre de points selon l'identité du joueur gagnant.
+	 */
 	
 	public void gagnerPoints() {
 		if (this.identiteAssociee.getIsWitch()==true) {
@@ -46,9 +100,10 @@ public abstract class Joueur {
 		}
 	}
 	
-	public void revelerCarteRumeur() {
-		
-	}
+	/**
+	 * Méthode permettant de vérifier si le joueur est une IA ou non.
+	 * @return True si le joueur est une IA. False sinon.
+	 */
 	
 	public boolean isIA() {
 		if (this instanceof JoueurVirtuel) {
@@ -60,9 +115,20 @@ public abstract class Joueur {
 		}
 	}
 	
+	/**
+	 * Ajoute la carte rumeur passée en argument à la main du joueur.
+	 * @param carteAjoutee Carte à ajouter à la main.
+	 */
+	
 	public void prendreCarteRumeur(CarteRumeur carteAjoutee) {
 		this.carteEnMain.add(carteAjoutee);
 	}
+	
+	/**
+	 * Méthode appelée quand une carte rumeur est prise par un autre joueur. Enlève la carte de la main du joueur.
+	 * @param indexOfCarte Id de la carte.
+	 * @return La carte prise.
+	 */
 	
 	public CarteRumeur seFairePrendreCarteRumeur(int indexOfCarte) {
 		CarteRumeur cartePrise = this.carteEnMain.get(indexOfCarte);
@@ -70,10 +136,17 @@ public abstract class Joueur {
 		return cartePrise;
 	}
 	
+	// ???
+	
 	public boolean accuser(Jeu Instance, int choix) {
 		
 		return true;
 	}
+	
+	/**
+	 * Méthode appelée quand un joueur est accusé. Appelle la vue si le joueur est un joueur physique.
+	 * @return
+	 */
 	
 	public Joueur estAccuse() {
 
@@ -105,11 +178,19 @@ public abstract class Joueur {
 		return instanceJeu.getEnTour();
 	}
 	
+	/**
+	 * Méthode appelée lorsque le joueur fait le choix de jouer une carte witch.
+	 */
+	
 	public void jouerCarteWitch() {
 		
 		inter.choixDeCarteWitch();
 		
 	}
+	
+	/**
+	 * Méthode appelée lorsque le joueur fait le choix de jouer une carte hunt.
+	 */
 	
 	public void jouerCarteHunt() {
 		
@@ -117,6 +198,11 @@ public abstract class Joueur {
 		
 		
 	}
+	
+	/**
+	 * Méthode appelée quand un joueur décide de réveler son identité. Donne le joueur qui doit jouer son prochain tour.
+	 * @return
+	 */
 	
 	public Joueur revelerIdentite() {
 		Jeu instanceJeu = Jeu.getInstance();
@@ -132,18 +218,38 @@ public abstract class Joueur {
 			return this;
 		}
 	}
+	
+	/**
+	 * Getter qui retourne la valeur de mustAccuse.
+	 * @return True si le joueur doit accuser. False si le joueur ne doit pas obligatoirement accuser.
+	 */
 
 	public boolean isMustAccuse() {
 		return mustAccuse;
 	}
+	
+	/**
+	 * Setter qui définit la valeur de mustAccuse.
+	 * @param mustAccuse Valeur à affecter.
+	 */
 
 	public void setMustAccuse(boolean mustAccuse) {
 		this.mustAccuse = mustAccuse;
 	}
+	
+	/**
+	 * Getter qui retourne isAccusable.
+	 * @return Valeur de isAccusable
+	 */
 
 	public boolean isAccusable() {
 		return accusable;
 	}
+	
+	/**
+	 * Setter qui affecte une valeur à accusable.
+	 * @param accusable Valeur à affecter
+	 */
 
 	public void setAccusable(boolean accusable) {
 		this.accusable = accusable;
