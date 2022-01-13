@@ -1,21 +1,62 @@
 package modele;
-	import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class StrategieSimple extends Strategie {
 	
+	/**
+	 * int contenant le choix du tour. 1 s'il accuse, 2 s'il joue une carte.
+	 */
 	private int choixActionTour;
+	
+	/**
+	 * id de la carte jouée s'il joue une carte.
+	 */
 	private int choixCarte;
+	
+	/**
+	 * int contenant le joueur ciblé par l'accusation
+	 */
 	private int joueurCibleAccuser = -1;
+	
+	/**
+	 * id du joueur ciblé par la carte utilisée par le joeueur
+	 */
 	private int choixCarteJoueur;
+	
+	/**
+	 * id de la carte ciblée par l'effet joué par le joueur
+	 */
 	private int choixCartePrise;
 	
+	/**
+	 * Référence vers le joueur en train de jouer
+	 */
 	private Joueur joueurEnTour;
 	
+	/**
+	 * 
+	 */
 	private int choixAccuse;
+	
+	/**
+	 * Id de la carte hunt choisie.
+	 */
 	private int choixCarteHunt;
+	
+	/**
+	 * Id de la carte witch choisie.
+	 */
 	private int choixCarteHuntCarte;
+	
+	/**
+	 * Id de la cible de la carte hunt.
+	 */
 	private int cibleHunt;
+	
+	/**
+	 * Id de la 2e cible de la carte hunt si nécessaire.
+	 */
 	private int secondeCibleHunt;
 	
 	private boolean accusable;

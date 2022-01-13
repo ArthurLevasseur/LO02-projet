@@ -254,14 +254,29 @@ public abstract class Joueur {
 	public void setAccusable(boolean accusable) {
 		this.accusable = accusable;
 	}
+	
+	/**
+	 * Getter qui retourne la valeur de pseudo
+	 * @return La valeur de pseudo.
+	 */
 
 	public String getPseudo() {
 		return pseudo;
 	}
+	
+	/**
+	 * Setter qui affecte une valeur à pseudo
+	 * @param pseudo
+	 */
 
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
 	}
+	
+	/**
+	 * Méthode appelée quand le joueur est ciblé par la carte Le Bûcher. Le joueur doit d'abord décider de s'il doit dévoiler son identité ou défausser une carte, puis dans le 2nd cas, désigner la carte à défausser.
+	 * @return
+	 */
 	
 	public Joueur accusedBucher() {
 		Jeu instanceJeu = Jeu.getInstance();
@@ -333,38 +348,81 @@ public abstract class Joueur {
 			}
 		}
 	}
+	
+	/**
+	 * Setter qui affecte une valeur à points.
+	 * @param points Nouvelle valeur de points.
+	 */
 
 	public void setPoints(int points) {
 		this.points = points;
 	}
+	
+	/**
+	 * Retourne l'identité associée au joueur.
+	 * @return L'identité associée.
+	 */
 
 	public Identite getIdentiteAssociee() {
 		return identiteAssociee;
 	}
+	
+	/**
+	 * Affecte une nouvelle carte identité au joueur.
+	 * @param identiteAssociee Identité à affecter.
+	 */
 
 	public void setIdentiteAssociee(Identite identiteAssociee) {
 		this.identiteAssociee = identiteAssociee;
 	}
+	
+	/**
+	 * Retourne la liste des cartes revelées du joueur.
+	 * @return Listes des cartes revelées.
+	 */
 
 	public ArrayList<CarteRumeur> getCarteRevelees() {
 		return carteRevelees;
 	}
+	
+	/**
+	 * Crée la collection contenant les cartes revelées.
+	 */
 
 	public void createCarteRevelees() {
 		this.carteRevelees = new ArrayList<CarteRumeur>();
 	}
+	
+	/**
+	 * Retourne la liste des cartes en main du joueur.
+	 * @return Listes des cartes en main.
+	 */
 
 	public ArrayList<CarteRumeur> getCarteEnMain() {
 		return carteEnMain;
 	}
+	
+	/**
+	 * Crée la collection contenant les cartes en main.
+	 */
 
 	public void createCarteEnMain() {
 		this.carteEnMain = new ArrayList<CarteRumeur>();
 	}
+	
+	/**
+	 * Setter qui modifie le tableau de cartes revelées.
+	 * @param carteRevelees
+	 */
 
 	public void setCarteRevelees(ArrayList<CarteRumeur> carteRevelees) {
 		this.carteRevelees = carteRevelees;
 	}
+	
+	/**
+	 * Setter qui modifie le tableau de cartes en main.
+	 * @param carteRevelees
+	 */
 
 	public void setCarteEnMain(ArrayList<CarteRumeur> carteEnMain) {
 		this.carteEnMain = carteEnMain;
