@@ -1,7 +1,10 @@
 package effets;
 import modele.*;
 
-
+/**
+ * Classe de l'effet Witch de la carte Cauldron. Le joueur qui a accusé celui qui joue cette carte doit défausser une carte de sa main. Le joueur accusé prend le tour.
+ *
+ */
 public class CauldronWitch extends Effet {
 	
 	public CauldronWitch() {

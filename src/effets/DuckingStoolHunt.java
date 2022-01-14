@@ -7,6 +7,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet hunt de la carte DuckingStool. Le joueur qui joue cette carte en choisit un autre, qui doit réveler son identité ou défausser une de ses cartes en main. Si c'est une sorcière, le joueur qui a choisit l'autre gagne un point et prend le tour. Si c'est un villageois, il prend le tour et le joueur qui joue la carte perd un point. S'il décide de défausser une carte, il prend le prochain tour et aucun point n'est gagné ou perdu.
+ * 
+ */
+
 public class DuckingStoolHunt extends Effet {
 	
 	public DuckingStoolHunt() {

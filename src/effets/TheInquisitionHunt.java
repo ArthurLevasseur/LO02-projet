@@ -6,6 +6,10 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de The Inquisition. Le joueur qui joue la carte choisit le prochain joueur. Avant son tour, il regarde secrètement l'identité du joueur.
+ */
+
 public class TheInquisitionHunt extends Effet {
 	
 	public TheInquisitionHunt() {

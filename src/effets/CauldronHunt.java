@@ -8,6 +8,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de la carte Cauldron. Quand le joueur joue cet effet, il révèle son identité. S'il est une witch, le joueur à gauche prend le tour. Si c'est un villager, il choisit le prochain joueur.
+ *
+ */
+
 public class CauldronHunt extends Effet {
 	
 	public CauldronHunt() {

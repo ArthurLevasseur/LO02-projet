@@ -6,6 +6,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet hunt de la carte Pet Newt. Le joueur qui joue cette carte peut prendre la carte rumeur revelée par un autre joueur de son choix. Il choisit ensuite le prochain jour.
+ *
+ */
+
 public class PetNewtHunt extends Effet {
 	
 	public PetNewtHunt() {

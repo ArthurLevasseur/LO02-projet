@@ -6,6 +6,10 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
+/**
+ * Le joueur qui joue cet effet prend une carte de la main du joueur qui l'a accusé, puis prends le prochain tour.
+ */
+
 public class HookedNoseWitch extends Effet {
 	
 	public HookedNoseWitch() {

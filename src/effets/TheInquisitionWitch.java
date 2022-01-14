@@ -6,6 +6,11 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
+
+/**
+ * Classe de l'effet Witch de The Inquisition. Le joueur qui la joue défausse une carte de sa main et prend le prochain tour.
+ *
+ */
 public class TheInquisitionWitch extends Effet {
 	
 	public TheInquisitionWitch() {

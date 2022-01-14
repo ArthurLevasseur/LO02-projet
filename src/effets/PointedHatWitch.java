@@ -7,6 +7,10 @@ import modele.Effet;
 import modele.Jeu;
 import modele.Joueur;
 
+/**
+ * Classe de l'effet Witch de Pointed Hat. Le joueur qui la joue reprend une de ses cartes déjà révelées. Il choisit ensuite le prochain joueur.
+ */
+
 public class PointedHatWitch extends Effet {
 	
 	public PointedHatWitch() {

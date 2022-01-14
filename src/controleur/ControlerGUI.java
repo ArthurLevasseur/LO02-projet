@@ -13,6 +13,10 @@ import modele.*;
 import vue.*;
 import controleur.*;
 
+/**
+ * Contrôleur utilisé pour la vue interface graphique.
+ */
+
 public class ControlerGUI extends Observable{
 
 	
@@ -20,6 +24,13 @@ public class ControlerGUI extends Observable{
 		
     }
 	
+	/**
+	 * Contrôleur ajoutant les listeners pour les boutons du menu principal (jouer - quitter - règles). Lance le jeu pour le premier bouton, quitte le jeu pour le second, affiche les règles pour le 3e.
+	 * @param demarrer
+	 * @param quitter
+	 * @param Regles
+	 * @param frame
+	 */
 	
 	public void setInputsDemarrer(JButton demarrer, JButton quitter, JButton Regles, JFrame frame) {
 		
@@ -41,6 +52,17 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur ajoutant les listeners pour le choix du nombre de joueur. Vérifie que les contraintes sur le nombre de joueurs sont respectées : moins de 6, au moins 1 physique.
+	 * @param inter
+	 * @param redPhy
+	 * @param augPhy
+	 * @param redIA
+	 * @param augIA
+	 * @param valider
+	 * @param frame
+	 */
 	
 	public void setInputsNbJoueurs(InterfaceNbJoueurs inter, JButton redPhy, JButton augPhy, JButton redIA, JButton augIA, JButton valider, JFrame frame) {
 		
@@ -94,6 +116,11 @@ public class ControlerGUI extends Observable{
 			}
 		});
  }
+	
+	/**
+	 * Contrôleur ajoutant le listener permettant de lancer un round dès que les choix du joueur sont validés.
+	 * @param valider
+	 */
 
 	public void setInputsPseudos(JButton valider) {
 		valider.addActionListener(new ActionListener() {
@@ -104,6 +131,11 @@ public class ControlerGUI extends Observable{
 		
 	}
 
+	/**
+	 * Contrôleur permettant de récupérer l'appui sur les boutons accuser et jouer carte hunt.
+	 * @param Accuser
+	 * @param JouerCarte
+	 */
 	
 	public void setInputsTour(JButton Accuser, JButton JouerCarte) {
 		
@@ -122,6 +154,12 @@ public class ControlerGUI extends Observable{
 		
 	}
 	
+	/**
+	 * Contrôleur permettant de récupérer le choix du joueur accusé par le joueur lors d'une accusation.
+	 * @param bouton
+	 * @param JoueurCible
+	 */
+	
 	public void setInputAccusePlayer(JButton bouton, int JoueurCible) {
 		bouton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -130,6 +168,12 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur permettant de récupérer l'appui sur les boutons réveler identité et jouer carte witch lorsque le joueur est accusé.
+	 * @param btnJouerCarte
+	 * @param btnAccuser
+	 */
 
 	public void setInputsAccused(JButton btnJouerCarte, JButton btnAccuser) {
 		btnJouerCarte.addActionListener(new ActionListener() {
@@ -146,6 +190,13 @@ public class ControlerGUI extends Observable{
 		});
 		
 	}
+	
+	/**
+	 * Contrôleur récupérant le choix de l'identité réalisé par le joueur au début du round.
+	 * @param btnWitch
+	 * @param btnHunt
+	 * @param joueur
+	 */
 
 	public void setInputsChoixIdentités(JButton btnWitch, JButton btnHunt, int joueur) {
 		btnWitch.addActionListener(new ActionListener() {
@@ -173,6 +224,11 @@ public class ControlerGUI extends Observable{
 		});
 		
 	}
+	
+	/**
+	 * Contrôleur appelant la vue nécessaire au passage au prochain tour.
+	 * @param btnNextRound
+	 */
 
 	public void setInputNextRound(JButton btnNextRound) {
 		btnNextRound.addActionListener(new ActionListener() {
@@ -182,6 +238,11 @@ public class ControlerGUI extends Observable{
 		});
 		
 	}
+	
+	/**
+	 * Contrôlleur permettant de quitter le jeu.
+	 * @param btnQuitter
+	 */
 
 	public void setInputQuitter(JButton btnQuitter) {
 		btnQuitter.addActionListener(new ActionListener() {
@@ -191,6 +252,12 @@ public class ControlerGUI extends Observable{
 		});
 		
 	}
+	
+	/**
+	 * Contrôleur appelant la vue permettant de désigner un gagnant en cas d'égalité.
+	 * @param btnCombat
+	 * @param listeGagnants
+	 */
 
 	public void setInputFight(JButton btnCombat, ArrayList<Joueur> listeGagnants) {
 		
@@ -202,6 +269,13 @@ public class ControlerGUI extends Observable{
 	}
 
 
+	/**
+	 * Contrôleur appelant la vue nécessaire pour l'éxécution d'un effet de carte.
+	 * @param isHunt
+	 * @param picLabel
+	 * @param card
+	 * @param emplacementMain
+	 */
 	public void setInputCarteEffet(boolean isHunt, JButton picLabel, CarteRumeur card, int emplacementMain) {
 		picLabel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -222,6 +296,10 @@ public class ControlerGUI extends Observable{
 		
 	}
 
+	/**
+	 * Contrôleur appelant la vue précédente depuis le choix d'une carte witch.
+	 * @param btnAnnuler
+	 */
 
 	public void setInputBackWitch(JButton btnAnnuler) {
 		btnAnnuler.addActionListener(new ActionListener() {
@@ -231,6 +309,11 @@ public class ControlerGUI extends Observable{
 		});
 	}
 	
+	/**
+	 * Contrôleur appelant la vue précédente depuis le choix d'une carte hunt.
+	 * @param btnAnnuler
+	 */
+	
 	public void setInputBackHunt(JButton btnAnnuler) {
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -239,6 +322,10 @@ public class ControlerGUI extends Observable{
 		});
 	}
 
+	/**
+	 * Contrôleur appelant la vue précédente depuis la vue d'une accusation.
+	 * @param btnAnnuler
+	 */
 
 	public void setInputBackAccuse(JButton btnAnnuler) {
 		btnAnnuler.addActionListener(new ActionListener() {
@@ -247,6 +334,12 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur affectant les points à l'issue de l'accusation.
+	 * @param btnJoueur
+	 * @param Joueur
+	 */
 
 
 	public void setInputAccusePlayerHunt(JButton btnJoueur, int Joueur) {
@@ -262,7 +355,12 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
-
+	
+	/**
+	 * Contrôleur appelé lors du passage au prochain tour.
+	 * @param btnJoueur
+	 * @param compteur
+	 */
 
 	public void setInputNextPlayer(JButton btnJoueur, int compteur) {
 		btnJoueur.addActionListener(new ActionListener() {
@@ -272,6 +370,12 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur appelé lors de l'affichage de l'identité en secret d'un joueur.
+	 * @param btnJoueur
+	 * @param compteur
+	 */
 
 
 	public void setInputNextPlayerSecretly(JButton btnJoueur, int compteur) {
@@ -291,6 +395,11 @@ public class ControlerGUI extends Observable{
 		});
 	}
 
+	/**
+	 * Contrôleur appelé lors de la défausse d'une carte.
+	 * @param boutonCarte
+	 * @param compteur
+	 */
 
 	public void setInputDiscardCarte(JButton boutonCarte, int compteur) {
 		boutonCarte.addActionListener(new ActionListener() {
@@ -301,6 +410,13 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur appelé lorsqu'un joueur récupère une de ses cartes révelées.
+	 * @param isHunt
+	 * @param boutonCarte
+	 * @param card
+	 */
 
 
 	public void setInputRecupererRevelee(boolean isHunt, JButton boutonCarte, int card) {
@@ -321,6 +437,11 @@ public class ControlerGUI extends Observable{
 		});
 	}
 
+	/**
+	 * Contrôleur appelé lors du vol d'une carte
+	 * @param boutonCarte
+	 * @param compteur
+	 */
 
 	public void setInputVolerCarte(JButton boutonCarte, int compteur) {
 		boutonCarte.addActionListener(new ActionListener() {
@@ -331,6 +452,12 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur appelé pour retirer la carte volée par le joueur.
+	 * @param btnJoueur
+	 * @param joueur
+	 */
 
 
 	public void setInputNextPlayerVoler(JButton btnJoueur, int joueur) {
@@ -352,6 +479,12 @@ public class ControlerGUI extends Observable{
 		
 	}
 	
+	/**
+	 * Contrôleur appelant la vue permettant de choisir la carte à voler
+	 * @param btnJoueur
+	 * @param joueur
+	 */
+	
 	public void setInputNextPlayerChoixVoler(JButton btnJoueur, int joueur) {
 		btnJoueur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -360,6 +493,12 @@ public class ControlerGUI extends Observable{
 		});
 		
 	}
+	
+	/**
+	 * Contrôleur appelé lorsqu'un joueur récupère une carte dans la défausse
+	 * @param cartePrise
+	 * @param emplacementCarte
+	 */
 
 
 	public void setInputRecupererDefausse(JButton cartePrise, int emplacementCarte) {
@@ -387,7 +526,12 @@ public class ControlerGUI extends Observable{
 		
 	}
 
-
+/**
+ * Vue appelée lorsqu'un joueur doit choisir qui cibler avec la carte ducking stool.
+ * @param btnJoueur
+ * @param Joueur
+ */
+	
 	public void setInputDuckingStoolCible(JButton btnJoueur, int Joueur) {
 		btnJoueur.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -401,6 +545,13 @@ public class ControlerGUI extends Observable{
 		});
 		
 	}
+	
+	/**
+	 * Contrôleur appelé quand le joueur ciblé par la carte duckingstool doit faire son choix (se réveler ou défausser)
+	 * @param btnReveal
+	 * @param btnDiscard
+	 * @param joueur
+	 */
 
 	
 	public void setInputsChoixDuckingStool(JButton btnReveal, JButton btnDiscard, int joueur) {
@@ -422,6 +573,13 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur appelé lorsque la carte Evil Eye a été jouée
+	 * @param isHunt
+	 * @param btnJoueur
+	 * @param joueur
+	 */
 
 
 	public void setEvilEye(boolean isHunt, JButton btnJoueur, int joueur) {
@@ -439,6 +597,11 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur permettant au joueur de revenir à la vue précédente.
+	 * @param retour
+	 */
 
 
 	public void setInputReturnDebut(JButton retour) {
@@ -449,6 +612,10 @@ public class ControlerGUI extends Observable{
 		});
 	}
 
+	/**
+	 * Contrôleur permettant de passer au tour suivant. Remet à true le booleen accusable de chaque joueur. Si le joueur est une IA, le récap du tour est lancé.
+	 * @param btnTourSuivant
+	 */
 
 	public void setInputNextTurnAccusable(JButton btnTourSuivant) {
 		btnTourSuivant.addActionListener(new ActionListener() {
@@ -457,6 +624,11 @@ public class ControlerGUI extends Observable{
 			}
 		});
 	}
+	
+	/**
+	 * Contrôleur permettant de passer au tour suivant. Remet à true le booleen accusable de chaque joueur. Si le joueur est une IA, le récap du tour est lancé.
+	 * @param btnTourSuivant
+	 */
 
 	public void setInputNextTurnAccusableHunt(JButton btnTourSuivant) {
 		btnTourSuivant.addActionListener(new ActionListener() {

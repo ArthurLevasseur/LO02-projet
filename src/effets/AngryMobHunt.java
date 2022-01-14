@@ -7,6 +7,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet hunt de la carte Angry Mob. Le joueur choisit un adversaire à réveler. Si c'est une Witch, il gagne 2 points et garde le tour, si c'est un villageois, il perd 2 points ce joueur prend le tour. 
+ *
+ */
+
 public class AngryMobHunt extends Effet {
 	
 	

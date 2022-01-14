@@ -8,6 +8,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+
+/**
+ * Classe de l'effet Hunt de la carte Toad. Le joueur qui la joue révèle son identité. Si c'est un villageois, il choisit qui joue, si c'est une sorcière, le joueur à sa gauche joue.
+ *
+ */
 public class ToadHunt extends Effet {
 	
 	public ToadHunt() {

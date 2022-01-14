@@ -7,6 +7,10 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de la carte HookedHose. Le joueur qui joue l'effet choisit le prochain jour. Avant son tour, il choisit une carte de sa main et la met dans la sienne.
+ */
+
 public class HookedNoseHunt extends Effet {
 	
 	public HookedNoseHunt() {

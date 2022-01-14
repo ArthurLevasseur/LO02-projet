@@ -1,5 +1,10 @@
 package modele;
 
+/**
+ * Classe représentant un joueur virtuel.
+ *
+ */
+
 public class JoueurVirtuel extends Joueur {
 
 	/**

@@ -6,6 +6,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de Evil Eye. Le joueur ciblé par la carte devra accuser un autre joueur que celui qui a joué la carte.
+ *
+ */
+
 public class EvilEyeHunt extends Effet {
 	
 	public EvilEyeHunt() {

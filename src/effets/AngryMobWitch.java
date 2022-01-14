@@ -4,6 +4,11 @@ import modele.Effet;
 import modele.Jeu;
 import modele.Joueur;
 
+/**
+ * Classe de l'effet Witch de la carte Angry Mob. Le joueur qui joue la carte prend le prochain tour.
+ *
+ */
+
 public class AngryMobWitch extends Effet {
 	
 	public AngryMobWitch() {

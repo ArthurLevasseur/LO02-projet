@@ -6,6 +6,11 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de la carte Broomstick. Lorsque le joueur joue cet effet, il choisit le prochain jour. 
+ *
+ */
+
 public class BroomstickHunt extends Effet {
 	
 	public BroomstickHunt() {

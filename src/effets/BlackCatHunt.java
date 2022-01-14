@@ -5,6 +5,10 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de la carte Black Cat. Quand un joueur utilise cet effet, il peut prendre une carte de sa défausse, et défausse cette carte. Il prend le prochain tour.
+ */
+
 public class BlackCatHunt extends Effet {
 	
 	public BlackCatHunt() {

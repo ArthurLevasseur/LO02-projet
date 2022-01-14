@@ -6,6 +6,10 @@ import modele.Joueur;
 import modele.JoueurVirtuel;
 import modele.SaisirInt;
 
+/**
+ * Classe de l'effet Hunt de Pointed Hat. Le joueur qui la joue reprend une de ses cartes déjà révelées. Il choisit ensuite le prochain joueur.
+ */
+
 public class PointedHatHunt extends Effet {
 	
 	public PointedHatHunt() {

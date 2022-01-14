@@ -254,7 +254,6 @@ public class Jeu extends Observable{
 	
 	public void initGame() {
 		
-		//vueActuelle.initialisationDeLaPartie();
 		
 		
 		this.nombreJoueurs = this.nombrePhy + this.nombreIA;
@@ -265,14 +264,12 @@ public class Jeu extends Observable{
 			this.ensembleJoueurs.add(new JoueurVirtuel());
 		}
 		
-		//this.nombreJoueurs = nbPhy; // à modifier, le nombre de joueurs = nombre de joueurs totaux
 		this.tasDefausse = Defausse.getInstance();
 		
 		
 		for (int i = 0; i < 12; i++) {
 			
 			this.ensembleCartes.add(new CarteRumeur());
-			//System.out.println(this.ensembleCartes[i]);
 		}
 		
 		this.inter.entrerPseudo();
@@ -288,12 +285,7 @@ public class Jeu extends Observable{
 		
 	}
 
-	/*TEST DU TABLEAU DE CARTES DU DEBUT
-	public void afficherCartes() {
-		for (int i = 0; i < 12; i++) {
-			System.out.println(this.ensembleCartes[i]);
-		}
-	}*/
+	
 	
 	/**
 	 * Distribue les cartes rumeurs aux joueurs et place les cartes restantes dans la défausse.
@@ -304,18 +296,6 @@ public class Jeu extends Observable{
 		CarteRumeur transition;
 		System.out.println("Mélange des cartes Rumeurs...");
 		
-		/*int carteEch1;
-		int carteEch2;
-		for (int i = 0; i < 100; i++) {
-			carteEch1 = (int) (Math.random() * ( 13 - 1 ));
-			carteEch2 = (int) (Math.random() * ( 13 - 1 ));
-			if (carteEch1 != carteEch2) {
-				transition = this.ensembleCartes[carteEch1];
-				this.ensembleCartes[carteEch1] = this.ensembleCartes[carteEch2];
-				this.ensembleCartes[carteEch2] = transition;
-			}
-		
-		}*/
 		Collections.shuffle(this.ensembleCartes);
 		
 		System.out.println("Distribution des cartes Rumeurs...\n");
@@ -346,13 +326,6 @@ public class Jeu extends Observable{
 				}
 			}
 		}
-		
-		/*	TEST DE LA DISTRIBUTION POUR QUELQUES VALEURS
-		System.out.print("joueur 1 carte 1 " + ensembleJoueurs[0].carteEnMain[0]);
-		System.out.print("joueur 1 carte 2 " + ensembleJoueurs[0].carteEnMain[1]);
-		System.out.print("joueur 2 carte 2 " + ensembleJoueurs[1].carteEnMain[1]);
-		System.out.print("defausse " + tasDefausse.contenu[1]);
-		*/
 		
 	}
 	
@@ -466,12 +439,6 @@ public class Jeu extends Observable{
 			roundEnCours.debutRound(instanceJeu.getJoueur(premierJoueur));
 			
 			this.determinerGagnant();
-			//Analyse si un joueur a atteint les 5 points à l'aide de maxPoints à la fin d'un round
-			/*for (int i=0; i<this.nombreJoueurs; i++ ) {
-				if (this.ensembleJoueurs.get(i).getPoints() > maxPoints) {
-					maxPoints = this.ensembleJoueurs.get(i).getPoints();
-				}
-			}*/
 			
 			
 		}
